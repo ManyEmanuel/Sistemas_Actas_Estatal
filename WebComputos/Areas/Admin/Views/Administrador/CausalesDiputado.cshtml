@@ -1,0 +1,489 @@
+﻿
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    IEnumerable<SelectListItem> Distrito = ViewBag.ListaDistrito;
+   
+
+}
+<br />
+<div class="row" id="ParaBloq">
+    <div class="col-md-12">
+        <div class="card card-purple">
+            <div class="card-header">
+                <h3 class="card-title">Registro de las causales de la elección de Diputaciones en el Estado de Nayarit</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-2">
+                        <label for="Municipios">Distrito</label>
+                        @Html.DropDownList("Distrito", Distrito, "-Seleccione un Distrito-", new { @class = "form-control", @id = "Distritos" })<br />
+                    </div>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row" id="Prueba">
+    @if (User.IsInRole("Admin"))
+    {
+        <div class="card card-purple">
+            <div class="card-header">
+                <h3 class="card-title">Lista de causales en la elección de Diputaciones</h3>
+            </div>
+            <div class="card-body">
+                <table id="tblcaulectura" class="table table-hover table-bordered text-center">
+                    <thead>
+                        <tr>
+                            <th class="text-center">Sección</th>
+                            <th class="text-center">Casilla</th>
+                            <th class="text-center">Causal No. 1</th>
+                            <th class="text-center">Causal No. 2</th>
+                            <th class="text-center">Causal No. 3</th>
+                            <th class="text-center">Causal No. 4</th>
+                            <th class="text-center">Causal No. 5</th>
+                            <th class="text-center">Causal No. 6</th>
+                            <th class="text-center">Causal No. 7</th>
+                            <th class="text-center">Causal No. 8</th>
+                            <th class="text-center">Causal No. 9</th>
+                            <th class="text-center">Causal No. 10</th>
+                            <th class="text-center">Causal No. 11</th>
+                            <th class="text-center">Número de Causales</th>
+                            <th class="text-center">Opciones</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    }
+    @if (User.IsInRole("IEEN"))
+    {
+        <div class="card card-purple">
+            <div class="card-header">
+                <h3 class="card-title">Lista de causales en la elección de Diputaciones</h3>
+            </div>
+            <div class="card-body">
+                <table id="tblcauIEEN" class="table table-hover table-bordered text-center">
+                    <thead>
+                        <tr>
+                            <th class="text-center">Sección</th>
+                            <th class="text-center">Casilla</th>
+                            <th class="text-center">Causal No. 1</th>
+                            <th class="text-center">Causal No. 2</th>
+                            <th class="text-center">Causal No. 3</th>
+                            <th class="text-center">Causal No. 4</th>
+                            <th class="text-center">Causal No. 5</th>
+                            <th class="text-center">Causal No. 6</th>
+                            <th class="text-center">Causal No. 7</th>
+                            <th class="text-center">Causal No. 8</th>
+                            <th class="text-center">Causal No. 9</th>
+                            <th class="text-center">Causal No. 10</th>
+                            <th class="text-center">Causal No. 11</th>
+                            <th class="text-center">Número de Causales</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    }
+</div>
+<div id="VistaParcial" class="col-md-12">
+
+</div>
+@section Scripts
+{
+<script>
+    var datatable;
+
+    $(document).ready(function () {
+        Cargar();
+        Cargar2();
+        var tablA = document.getElementById("Prueba");
+        tablA.style.visibility = "hidden";
+
+    });
+
+    function Seleccionar(id) {
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'mr-2 btn btn-danger'
+            },
+            buttonsStyling: false,
+        })
+
+        swalWithBootstrapButtons.fire({
+            title: 'Esta seguro en subsanar las causales de esta casilla',
+            text: "Una vez aplicado, los cambios afectan a Computos!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Si, Subsanar!',
+            cancelButtonText: 'No, Cancelar!',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.value) {
+                bloqueo();
+                $.ajax({
+                    type: 'POST',
+                    url: "/Admin/Administrador/SubsanarCausal",
+                    data: {
+                        id: id
+                    },
+                    success: function (data) {
+                        if (data.success) {
+                            toastr.success(data.mensaje);
+                            window.setTimeout(Refresco, 3000);
+                        } else {
+                            toastr.error(data.mensaje);
+                        }
+                    }
+                })
+            }
+        })
+    }
+
+    function Refresco() {
+        window.location.reload(true);
+    }
+
+    function bloqueo() {
+        $('#ParaBloq button').attr('disabled', 'disabled');
+    }
+
+    function Cargar() {
+        $("#Distritos").change(function () {
+            var tablA = document.getElementById("Prueba");
+            tablA.style.visibility = "visible";
+            var a = document.getElementById("Distritos").value;
+            $("#VistaParcial").load(`CausalesDipAdmin/${a}`)
+            table = $('#tblcaulectura').DataTable();
+            table.destroy();
+            dataTable = $("#tblcaulectura").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+                "ajax": {
+                    "url": `/admin/Administrador/CargarCauDipAdmin`,
+                    "type": "GET",
+                    "datatype": "json",
+                    "data": { id: a }
+                },
+                "columns": [
+                    { "data": "seccion", "width": "10%" },
+                    { "data": "casilla", "width": "10%" },
+                    {
+                        "data": "cau1",
+                        "render": function (data, type, row) {
+                            if (row.cau1 == false) {
+                                return `<button type='button' class='btn  btn-success btn-sm' data-toggle="tooltip" data-placement="top" title="El paquete electoral fue entregado con el AEC" > <a><i class='fas fa-check'></i></a></button>`;
+                            } else {
+                                return `<button type='button' class='btn  btn-danger btn-sm' data-toggle="tooltip" data-placement="top" title="El paquete electoral fue entregado sin el AEC" ><a><i class='fas fa-times'></i></a></button>`;
+                            }
+                        }, "width": "5%"
+                    },
+                    {
+                        "data": "cau2",
+                        "render": function (data, type, row) {
+                            if (row.cau2 == false) {
+                                return `<button type='button' class='btn  btn-success btn-sm' data-toggle="tooltip" data-placement="top" title="Votos nulos menor a la diferencia entre el 1er y 2do lugar"> <a><i class='fas fa-check'></i></a></button>`;
+                            } else {
+                                return `<button type='button' class='btn  btn-danger btn-sm' data-toggle="tooltip" data-placement="top" title="Votos nulos mayor a la diferencia entre el 1er y 2do lugar"><a><i class='fas fa-times'></i></a></button>`;
+                            }
+                        }, "width": "5%"
+                    },
+                    {
+                        "data": "cau3",
+                        "render": function (data, type, row) {
+                            if (row.cau3 == false) {
+                                return `<button type='button' class='btn  btn-success btn-sm' data-toggle="tooltip" data-placement="top" title="Total de votos del sistema menor a las boletas entregadas"> <a><i class='fas fa-check'></i></a></button>`;
+                            } else {
+                                return `<button type='button' class='btn  btn-danger btn-sm' data-toggle="tooltip" data-placement="top" title="Total de votos del sistema mayor a las boletas entregadas"><a><i class='fas fa-times'></i></a></button>`;
+                            }
+                        }, "width": "5%"
+                    },
+                    {
+                        "data": "cau4",
+                        "render": function (data, type, row) {
+                            if (row.cau4 == false) {
+                                return `<button type='button' class='btn  btn-success btn-sm' data-toggle="tooltip" data-placement="top" title="Total de votos del sistema igual al total de votos del AEC"> <a><i class='fas fa-check'></i></a></button>`;
+                            } else {
+                                return `<button type='button' class='btn  btn-danger btn-sm' data-toggle="tooltip" data-placement="top" title="Total del votos del sistema diferente al total de votos del AEC"><a><i class='fas fa-times'></i></a></button>`;
+                            }
+                        }, "width": "5%"
+                    },
+                    {
+                        "data": "cau5",
+                        "render": function (data, type, row) {
+                            if (row.cau5 == false) {
+                                return `<button type='button' class='btn  btn-success btn-sm' data-toggle="tooltip" data-placement="top" title="Votos por mas de un partido politivo, coalición o candidato independiente"> <a><i class='fas fa-check'></i></a></button>`;
+                            } else {
+                                return `<button type='button' class='btn  btn-danger btn-sm' data-toggle="tooltip" data-placement="top" title="Votos por un solo partido politico, coalición o candidato independiente"><a><i class='fas fa-times'></i></a></button>`;
+                            }
+                        }, "width": "5%"
+                    },
+                    {
+                        "data": "cau6",
+                        "render": function (data, type, row) {
+                            if (row.cau6 == false) {
+                                return `<button type='button' class='btn  btn-success btn-sm' data-toggle="tooltip" data-placement="top" title="Acta legible"> <a><i class='fas fa-check'></i></a></button>`;
+                            } else {
+                                return `<button type='button' class='btn  btn-danger btn-sm' data-toggle="tooltip" data-placement="top" title="Acta Ilegible"><a><i class='fas fa-times'></i></a></button>`;
+                            }
+                        }, "width": "5%"
+                    },
+                    {
+                        "data": "cau7",
+                        "render": function (data, type, row) {
+                            if (row.cau7 == false) {
+                                return `<button type='button' class='btn  btn-success btn-sm' data-toggle="tooltip" data-placement="top" title="Acta sin alteraciones"> <a><i class='fas fa-check'></i></a></button>`;
+                            } else {
+                                return `<button type='button' class='btn  btn-danger btn-sm' data-toggle="tooltip" data-placement="top" title="Acta con alteraciones"><a><i class='fas fa-times'></i></a></button>`;
+                            }
+                        }, "width": "5%"
+                    },
+                    {
+                        "data": "cau8",
+                        "render": function (data, type, row) {
+                            if (row.cau8 == false) {
+                                return `<button type='button' class='btn  btn-success btn-sm' data-toggle="tooltip" data-placement="top" title="Paquete sin muestras de alteraciones"> <a><i class='fas fa-check'></i></a></button>`;
+                            } else {
+                                return `<button type='button' class='btn  btn-danger btn-sm' data-toggle="tooltip" data-placement="top" title="Paquete con muestras de alteraciones"><a><i class='fas fa-times'></i></a></button>`;
+                            }
+                        }, "width": "5%"
+                    },
+                    {
+                        "data": "cau9",
+                        "render": function (data, type, row) {
+                            if (row.cau9 == false) {
+                                return `<button type='button' class='btn  btn-success btn-sm' data-toggle="tooltip" data-placement="top" title="Ciudadanos que votaron igual al total de votos del sistema"> <a><i class='fas fa-check'></i></a></button>`;
+                            } else {
+                                return `<button type='button' class='btn  btn-danger btn-sm' data-toggle="tooltip" data-placement="top" title="Ciudadanos que votaron diferente al total de votos del sistema"><a><i class='fas fa-times'></i></a></button>`;
+                            }
+                        }, "width": "5%"
+                    },
+                    {
+                        "data": "cau10",
+                        "render": function (data, type, row) {
+                            if (row.cau10 == false) {
+                                return `<button type='button' class='btn  btn-success btn-sm' data-toggle="tooltip" data-placement="top" title="Boletas sobrantes mas ciudadanos que votaron menor a boletas entregadas"> <a><i class='fas fa-check'></i></a></button>`;
+                            } else {
+                                return `<button type='button' class='btn  btn-danger btn-sm' data-toggle="tooltip" data-placement="top" title="Boletas sobrantes mas ciudadanos que votaron mayor a boletas entregadas"><a><i class='fas fa-times'></i></a></button>`;
+                            }
+                        }, "width": "5%"
+                    },
+                    {
+                        "data": "cau11",
+                        "render": function (data, type, row) {
+                            if (row.cau11 == false) {
+                                return `<button type='button' class='btn  btn-success btn-sm' data-toggle="tooltip" data-placement="top" title="Boletas sobrantes mas total de votos del sistema menor a boletas entregadas"> <a><i class='fas fa-check'></i></a></button>`;
+                            } else {
+                                return `<button type='button' class='btn  btn-danger btn-sm' data-toggle="tooltip" data-placement="top" title="Boletas sobrantes mas total de votos del sistema mayor a boletas entregadas"><a><i class='fas fa-times'></i></a></button>`;
+                            }
+                        }, "width": "5%"
+                    },
+                    { "data": "numcau", "width": "10%", "name": "Numero" },
+                    {
+                        "data": "idcau",
+                        "render": function (data, type, row) {
+                            if (row.numcau != 0) {
+                                return `<div class="text-center">
+                             <button type='button' class='btn btn-info text-white' style='cursor:pointer; width:120px;' onclick='Seleccionar(${data})'>
+                            Subsanar
+                            </button>`;
+                            }
+                            else {
+                                return `<div class="text-center">
+                            <p class="text-center">Sin causales</p> </div>`;
+                            }
+                        },
+
+                    }
+
+                ],
+                "language": {
+                    "decimal": ",",
+                    "emptyTable": "No hay registros",
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                    "infoEmpty": "Mostrando 0 de 0 Entradas",
+                    "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                    "infoPostFix": "",
+                    "thousands": ",",
+                    "lengthMenu": "Mostrar _MENU_ Entradas",
+                    "loadingRecords": "Cargando...",
+                    "processing": "Procesando...",
+                    "search": "Buscar:",
+                    "zeroRecords": "Sin resultados encontrados",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Ultimo",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    },
+                    "width": "100%"
+                }
+            });
+
+        })
+    }
+
+
+    function Cargar2() {
+        $("#Distritos").change(function () {
+            var tablA = document.getElementById("Prueba");
+            tablA.style.visibility = "visible";
+            var a = document.getElementById("Distritos").value;
+            $("#VistaParcial").load(`CausalesDipAdmin/${a}`)
+            table = $('#tblcauIEEN').DataTable();
+            table.destroy();
+            dataTable = $("#tblcauIEEN").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+                "ajax": {
+                    "url": `/admin/Administrador/CargarCauDipAdmin`,
+                    "type": "GET",
+                    "datatype": "json",
+                    "data": { id: a }
+                },
+                "columns": [
+                    { "data": "seccion", "width": "10%" },
+                    { "data": "casilla", "width": "10%" },
+                    {
+                        "data": "cau1",
+                        "render": function (data, type, row) {
+                            if (row.cau1 == false) {
+                                return `<button type='button' class='btn  btn-success btn-sm' data-toggle="tooltip" data-placement="top" title="El paquete electoral fue entregado con el AEC" > <a><i class='fas fa-check'></i></a></button>`;
+                            } else {
+                                return `<button type='button' class='btn  btn-danger btn-sm' data-toggle="tooltip" data-placement="top" title="El paquete electoral fue entregado sin el AEC" ><a><i class='fas fa-times'></i></a></button>`;
+                            }
+                        }, "width": "5%"
+                    },
+                    {
+                        "data": "cau2",
+                        "render": function (data, type, row) {
+                            if (row.cau2 == false) {
+                                return `<button type='button' class='btn  btn-success btn-sm' data-toggle="tooltip" data-placement="top" title="Votos nulos menor a la diferencia entre el 1er y 2do lugar"> <a><i class='fas fa-check'></i></a></button>`;
+                            } else {
+                                return `<button type='button' class='btn  btn-danger btn-sm' data-toggle="tooltip" data-placement="top" title="Votos nulos mayor a la diferencia entre el 1er y 2do lugar"><a><i class='fas fa-times'></i></a></button>`;
+                            }
+                        }, "width": "5%"
+                    },
+                    {
+                        "data": "cau3",
+                        "render": function (data, type, row) {
+                            if (row.cau3 == false) {
+                                return `<button type='button' class='btn  btn-success btn-sm' data-toggle="tooltip" data-placement="top" title="Total de votos del sistema menor a las boletas entregadas"> <a><i class='fas fa-check'></i></a></button>`;
+                            } else {
+                                return `<button type='button' class='btn  btn-danger btn-sm' data-toggle="tooltip" data-placement="top" title="Total de votos del sistema mayor a las boletas entregadas"><a><i class='fas fa-times'></i></a></button>`;
+                            }
+                        }, "width": "5%"
+                    },
+                    {
+                        "data": "cau4",
+                        "render": function (data, type, row) {
+                            if (row.cau4 == false) {
+                                return `<button type='button' class='btn  btn-success btn-sm' data-toggle="tooltip" data-placement="top" title="Total de votos del sistema igual al total de votos del AEC"> <a><i class='fas fa-check'></i></a></button>`;
+                            } else {
+                                return `<button type='button' class='btn  btn-danger btn-sm' data-toggle="tooltip" data-placement="top" title="Total del votos del sistema diferente al total de votos del AEC"><a><i class='fas fa-times'></i></a></button>`;
+                            }
+                        }, "width": "5%"
+                    },
+                    {
+                        "data": "cau5",
+                        "render": function (data, type, row) {
+                            if (row.cau5 == false) {
+                                return `<button type='button' class='btn  btn-success btn-sm' data-toggle="tooltip" data-placement="top" title="Votos por mas de un partido politivo, coalición o candidato independiente"> <a><i class='fas fa-check'></i></a></button>`;
+                            } else {
+                                return `<button type='button' class='btn  btn-danger btn-sm' data-toggle="tooltip" data-placement="top" title="Votos por un solo partido politico, coalición o candidato independiente"><a><i class='fas fa-times'></i></a></button>`;
+                            }
+                        }, "width": "5%"
+                    },
+                    {
+                        "data": "cau6",
+                        "render": function (data, type, row) {
+                            if (row.cau6 == false) {
+                                return `<button type='button' class='btn  btn-success btn-sm' data-toggle="tooltip" data-placement="top" title="Acta legible"> <a><i class='fas fa-check'></i></a></button>`;
+                            } else {
+                                return `<button type='button' class='btn  btn-danger btn-sm' data-toggle="tooltip" data-placement="top" title="Acta Ilegible"><a><i class='fas fa-times'></i></a></button>`;
+                            }
+                        }, "width": "5%"
+                    },
+                    {
+                        "data": "cau7",
+                        "render": function (data, type, row) {
+                            if (row.cau7 == false) {
+                                return `<button type='button' class='btn  btn-success btn-sm' data-toggle="tooltip" data-placement="top" title="Acta sin alteraciones"> <a><i class='fas fa-check'></i></a></button>`;
+                            } else {
+                                return `<button type='button' class='btn  btn-danger btn-sm' data-toggle="tooltip" data-placement="top" title="Acta con alteraciones"><a><i class='fas fa-times'></i></a></button>`;
+                            }
+                        }, "width": "5%"
+                    },
+                    {
+                        "data": "cau8",
+                        "render": function (data, type, row) {
+                            if (row.cau8 == false) {
+                                return `<button type='button' class='btn  btn-success btn-sm' data-toggle="tooltip" data-placement="top" title="Paquete sin muestras de alteraciones"> <a><i class='fas fa-check'></i></a></button>`;
+                            } else {
+                                return `<button type='button' class='btn  btn-danger btn-sm' data-toggle="tooltip" data-placement="top" title="Paquete con muestras de alteraciones"><a><i class='fas fa-times'></i></a></button>`;
+                            }
+                        }, "width": "5%"
+                    },
+                    {
+                        "data": "cau9",
+                        "render": function (data, type, row) {
+                            if (row.cau9 == false) {
+                                return `<button type='button' class='btn  btn-success btn-sm' data-toggle="tooltip" data-placement="top" title="Ciudadanos que votaron igual al total de votos del sistema"> <a><i class='fas fa-check'></i></a></button>`;
+                            } else {
+                                return `<button type='button' class='btn  btn-danger btn-sm' data-toggle="tooltip" data-placement="top" title="Ciudadanos que votaron diferente al total de votos del sistema"><a><i class='fas fa-times'></i></a></button>`;
+                            }
+                        }, "width": "5%"
+                    },
+                    {
+                        "data": "cau10",
+                        "render": function (data, type, row) {
+                            if (row.cau10 == false) {
+                                return `<button type='button' class='btn  btn-success btn-sm' data-toggle="tooltip" data-placement="top" title="Boletas sobrantes mas ciudadanos que votaron menor a boletas entregadas"> <a><i class='fas fa-check'></i></a></button>`;
+                            } else {
+                                return `<button type='button' class='btn  btn-danger btn-sm' data-toggle="tooltip" data-placement="top" title="Boletas sobrantes mas ciudadanos que votaron mayor a boletas entregadas"><a><i class='fas fa-times'></i></a></button>`;
+                            }
+                        }, "width": "5%"
+                    },
+                    {
+                        "data": "cau11",
+                        "render": function (data, type, row) {
+                            if (row.cau11 == false) {
+                                return `<button type='button' class='btn  btn-success btn-sm' data-toggle="tooltip" data-placement="top" title="Boletas sobrantes mas total de votos del sistema menor a boletas entregadas"> <a><i class='fas fa-check'></i></a></button>`;
+                            } else {
+                                return `<button type='button' class='btn  btn-danger btn-sm' data-toggle="tooltip" data-placement="top" title="Boletas sobrantes mas total de votos del sistema mayor a boletas entregadas"><a><i class='fas fa-times'></i></a></button>`;
+                            }
+                        }, "width": "5%"
+                    },
+                    { "data": "numcau", "width": "10%", "name": "Numero" },
+                  
+                ],
+                "language": {
+                    "decimal": ",",
+                    "emptyTable": "No hay registros",
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                    "infoEmpty": "Mostrando 0 de 0 Entradas",
+                    "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                    "infoPostFix": "",
+                    "thousands": ",",
+                    "lengthMenu": "Mostrar _MENU_ Entradas",
+                    "loadingRecords": "Cargando...",
+                    "processing": "Procesando...",
+                    "search": "Buscar:",
+                    "zeroRecords": "Sin resultados encontrados",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Ultimo",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    },
+                    "width": "100%"
+                }
+            });
+
+        })
+    }
+</script>
+}

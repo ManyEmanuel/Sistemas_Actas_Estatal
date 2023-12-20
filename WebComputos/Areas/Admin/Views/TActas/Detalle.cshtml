@@ -1,0 +1,75 @@
+﻿@model WebComputos.Models.ViewModels.T_Actas_VM
+
+@{
+    ViewData["Title"] = "Detalle";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-secondary">
+                <div class="card-header">
+                    <h3 class="card-title">[1]Información capturada de la Sección @ViewBag.Seccion, casilla @ViewBag.Casilla de la elección de @ViewBag.Eleccion </h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                            <label for="est">Estatus en la que se recibió el acta:</label>
+                            @Html.DropDownListFor(m => m.Actas.Estatus, Model.LEstatusActa,
+               "-Estatus del acta-", new { @id = "est", @class = "form-control text-center", @disabled = "disabled" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label>[2] Boletas sobrantes de la elección</label>
+                            <input asp-for="Actas.Sobrantes" class="form-control" disabled />
+                        </div>
+                        <div class="col-md-3">
+                            <label class="control-label">[3] Personas que votaron:</label>
+                            <input asp-for="Actas.VotosCiudadanos" class="form-control" disabled />
+                        </div>
+                        <div class="col-md-3">
+                            <label class="control-label">[4] Votos Representantes politicos:</label>
+                            <input asp-for="Actas.VotosRepresentantes" class="form-control" disabled />
+                        </div>
+                        <div class="col-md-3">
+                            <label >[5] Suma de las cantidades de los apartados [3] y [4]:</label>
+                            <input asp-for="Actas.TotalVotos" class="form-control" disabled />
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                       
+                        <div class="col-md-3">
+                            <label> Votos de la elección sacados de la urna:</label>
+                            <input asp-for="Actas.VotosUrnas" class="form-control" disabled />
+                        </div>
+                        <div class="col-md-3">
+                            <label class="control-label">¿Se presentaron incidentes durante el escrutinio y cómputo de la elección? </label>
+                            <div class="row">
+                                <div class="col-md-6 text-center">
+                                    <input class="custom-control-input" name="Chein" type="radio" id="inci1" value="True" asp-for="Actas.Incidentes" disabled / />
+                                    <label for="inci1" class="custom-control-label">Si</label>
+                                </div>
+                                <div class="col-md-6 text-center">
+                                    <input class="custom-control-input" name="Chein" type="radio" id="inci2" value="False" asp-for="Actas.Incidentes" disabled / />
+                                    <label for="inci2" class="custom-control-label">No</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="control-label">Descripción breve:</label>
+                            <input type="text" id="Descri2" asp-for="Actas.DesIncidentes" class="form-control" disabled />
+                            <input type="hidden" asp-for="Actas.IdActa" id="idacta" class="form-control" disabled />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-8 offset-4">
+            <div class="text-right">
+                <button type="button" class="btn btn-danger btn-lg rounded" style="width:auto;" onClick="history.go(-1);"><a class="text-white">Volver</a></button>
+            </div>
+        </div>            
+    </div>

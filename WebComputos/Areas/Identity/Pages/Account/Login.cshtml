@@ -1,0 +1,48 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Iniciar sesión";
+}
+<br />
+<br />
+<section class="content">
+    <div class="container-fluid">
+        <div class="row justify-content-center align-self-center">
+            <div class="col-md-4">
+                <div class="card card-secondary ">
+                    <div class="card-header">
+                        <h3 class="card-title">Ingrese los datos de su cuenta para iniciar sesión</h3>
+                    </div>
+                    <form id="account" method="post">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label asp-for="Input.Usuario"></label>
+                                <input asp-for="Input.Usuario" class="form-control" placeholder="Ingrese Usuario" />
+                                <span asp-validation-for="Input.Usuario" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Input.Password"></label>
+                                <input asp-for="Input.Password" class="form-control" placeholder="Ingrese contraseña" />
+                                <span asp-validation-for="Input.Password" class="text-danger"></span>
+                            </div>
+                            <div class="form-group mb-0">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" name="terms" class="custom-control-input" id="exampleCheck1" asp-for="Input.RememberMe">
+                                    <label asp-for="Input.RememberMe" class="custom-control-label" for="exampleCheck1">
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-secondary">Iniciar sesión</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

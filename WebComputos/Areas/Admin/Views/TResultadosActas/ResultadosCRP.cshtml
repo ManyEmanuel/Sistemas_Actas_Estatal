@@ -1,0 +1,156 @@
+﻿@model WebComputos.Models.ViewModels.T_Votos_Actas_RP_VM
+@{
+    IEnumerable<T_Partido> Lpar = ViewBag.partido;
+    IEnumerable<T_Detalle_Votos_Acta_RP> Lres = ViewBag.Resact;
+    IEnumerable<T_Votos_Acta_RP> Lreg = ViewBag.Registro;
+    Layout = "";
+}
+<style>
+    .externo {
+
+        align-items: center;
+        display: flex;
+        justify-content: center;
+    }
+    #centrador {
+        position: relative;
+        width: 100px;
+        height: 80px;
+        background-color: white;
+    }
+
+    #imagen {
+        position: absolute;
+        width: 50px;
+        height: 50px;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+    }
+    #imagenx {
+        position: absolute;
+        width: 50px;
+        height: 25px;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+    }
+    #imagenc {
+        position: absolute;
+        width: 100px;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+    }
+</style>
+<br />
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-secondary">
+            <div class="card-header">
+                <h3 class="card-title"> Registro de votos</h3>
+            </div>
+            @if (Lpar.Count() > 0)
+            {
+                <form method="post" asp-action="CapturaVotosRP" onKeypress="if(event.keyCode == 13) event.returnValue = false;"  onsubmit="checkSubmit();">
+                    <div class="card-body">
+                        <div class="row">
+                            @{
+                                int contador = 0;
+                            }
+                            @foreach (var Resultado in Model.DetalleVotosActasRPList)
+                            {
+                                if (Resultado.IdPartido != 0)
+                                {
+                                    var partido = Lpar.FirstOrDefault(x => x.Id == Resultado.IdPartido && x.Independiente == false);
+                                    <div class="col-md-2">
+                                        <div class="card externo border">
+                                            <div id="centrador">                                             
+                                                <img src="@Url.Content(partido.LogoURL)" id="imagen" />                                              
+                                            </div>
+                                            <div class="card-body">
+                                                @Html.TextBoxFor(x => x.DetalleVotosActasRPList[contador].Votos, new { @type = "number", @class = "form-control text-center" })
+                                                @Html.HiddenFor(x => x.DetalleVotosActasRPList[contador].IdPartido)
+                                                @Html.HiddenFor(x => x.DetalleVotosActasRPList[contador].IdDetalleVotosActa)
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                contador++;
+                            }
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-2">
+                                <div class="card border">
+                                    <div class="card-body">
+                                        <p class="text-center">Candidatos no registrados</p>
+                                        @Html.HiddenFor(x => x.Votos_Acta.IdRegistroVotosRP)
+                                        @Html.HiddenFor(x => x.Votos_Acta.IdActaDetalle)
+                                        @Html.TextBoxFor(x => x.Votos_Acta.NoRegistrados, new { @type = "number", @class = "form-control text-center" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="card border">
+                                    <div class="card-body">
+                                        <p class="text-center">Votos Nulos</p>
+                                        @Html.HiddenFor(x => x.Votos_Acta.IdRegistroVotosRP)
+                                        @Html.TextBoxFor(x => x.Votos_Acta.Nulos, new { @type = "number", @class = "form-control text-center" })
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="card border">
+                                    <div class="card-body">
+                                        <p class="text-center">Total de Votos</p>
+                                        @Html.HiddenFor(x => x.Votos_Acta.IdRegistroVotosRP)
+                                        @Html.TextBoxFor(x => x.Votos_Acta.Total, new { @type = "number", @class = "form-control text-center" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="text-right">
+                            <input class="btn btn-success btn-lg rounded" type="submit" value="Guardar votos" id="GVotos" />
+                            
+                            @if (ViewBag.Eleccion == 3)
+                            {
+                                <input id="cancelar" class="btn btn-danger btn-lg rounded" type="button" value="Cancelar" style="width:auto;" onclick="location.href='@Url.Action("CreateDipRP", "TResultadosActas")'" />
+                            }
+                            @if (ViewBag.Eleccion == 4)
+                            {
+                                <input id="cancelar" class="btn btn-danger btn-lg rounded" type="button" value="Cancelar" style="width:auto;" onclick="location.href='@Url.Action("CreateRegRP", "TResultadosActas")'" />
+                            }
+
+                        </div>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>
+
+
+
+<style>
+    input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+</style>
+
+
+@section Scripts
+{
+    <script src="~/js/Resultados.js"></script>
+}

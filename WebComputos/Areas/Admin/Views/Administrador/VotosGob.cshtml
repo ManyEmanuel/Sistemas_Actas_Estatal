@@ -1,0 +1,144 @@
+﻿
+
+@{
+    ViewData["Title"] = "IndexGob";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<head>
+    <link rel="stylesheet" href="~/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+</head>
+<br />
+<style>
+    .centrar {
+        justify-content: center;
+        align-items: center;
+    }
+
+    table.dataTable tbody td {
+        vertical-align: middle;
+    }
+</style>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">              
+                <h3 class="card-title">Votos registrados de la elección de Gubernatura capturados en el Estado de Nayarit</h3>                    
+            </div>           
+            <div class="card-body">                           
+                <table id="tblActasReg" class="table table-hover table-bordered text-center">
+                    <thead>
+                        <tr>
+                            <th class="text-center">Sección</th>
+                            <th class="text-center">Casilla</th>
+                            <th class="text-center">Opciones</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            CargarDatatable();
+        });
+        function CargarDatatable() {
+            dataTable = $("#tblActasReg").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+                "ajax": {
+                    "url": "/admin/Administrador/CargaTabVotos",
+                    "type": "GET",
+                    "datatype": "json",
+                    "data": {Ele : 1}
+                },
+                "columns": [
+                    { "data": "seccion", "width": "10%" },
+                    { "data": "casilla", "width": "10%" },
+                    {
+                        "data": "idreg",
+                        "render": function (data) {
+
+                            return `<button type='button' class='btn btn-info text-white' style='cursor:pointer; width:120px;' onclick='Seleccionar(${data})'>
+                            Restablecer
+                            </button>`;
+                        }, "width": "30%"
+                    }
+                ],
+                "language": {
+                    "decimal": ",",
+                    "emptyTable": "No hay registros",
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                    "infoEmpty": "Mostrando 0 de 0 Entradas",
+                    "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                    "infoPostFix": "",
+                    "thousands": ",",
+                    "lengthMenu": "Mostrar _MENU_ Entradas",
+                    "loadingRecords": "Cargando...",
+                    "processing": "Procesando...",
+                    "search": "Buscar:",
+                    "zeroRecords": "Sin resultados encontrados",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Ultimo",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    },
+                    "width": "100%"
+                }
+            });
+        }
+
+        function Seleccionar(id) {
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'mr-2 btn btn-danger'
+                },
+                buttonsStyling: false,
+            })
+
+            swalWithBootstrapButtons.fire({
+                title: 'Esta seguro en restablecer los votos de esta casilla',
+                text: "Una vez aplicado, los cambios se perdera la informacion!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Si, Restablecer!',
+                cancelButtonText: 'No, Cancelar!',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.value) {
+                    $.ajax({
+                        type: 'POST',
+                        url: "/Admin/Administrador/RestablecerVotos",
+                        data: {
+                            id: id,
+                            Ele: 1
+                        },
+                        success: function (data) {
+                            if (data.success) {
+                                toastr.success(data.mensaje);
+                                window.setTimeout(Refresco, 2000);
+                            } else {
+                                toastr.error(data.mensaje);
+                            }
+                        }
+                    })
+                }
+            })
+        }
+
+        function Refresco() {
+            window.location.reload(true);
+        }
+    </script>
+    <script src="~/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+}

@@ -1,0 +1,63 @@
+﻿
+
+@{
+    ViewData["Title"] = "IndexDip";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<head>
+    <link rel="stylesheet" href="~/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+</head>
+<br />
+<style>
+    .centrar {
+        justify-content: center;
+        align-items: center;
+    }
+
+    table.dataTable tbody td {
+        vertical-align: middle;
+    }
+</style>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Casillas de la elección de Diputaciones RP capturadas en el municipio @ViewBag.Municipio</h3>
+            </div>
+            <div class="card-body">
+                @{
+                    if (@User.IsInRole("CapturaRes"))
+                    {
+                        <div class="col-md text-right">
+                            <a asp-action="CreateDipRP" class="btn btn-primary"><i class="fas fa-plus"></i> Capturar resultados</a>
+                        </div>
+                    }
+                }
+                <br />
+                <table id="tblActasReg" class="table table-hover table-bordered text-center">
+                    <thead>
+                        <tr>
+                            <th class="text-center">Sección</th>
+                            <th class="text-center">Casilla</th>
+                            <th>Id Acta</th>
+                            <th class="text-center">Opciones</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br />
+
+@section Scripts
+{
+    <script src="~/js/TablaDipRP.js"></script>
+    <script src="~/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+}

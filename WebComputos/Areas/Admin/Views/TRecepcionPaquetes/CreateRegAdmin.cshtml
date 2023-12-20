@@ -1,0 +1,66 @@
+﻿
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    IEnumerable<SelectListItem> Municipio = ViewBag.ListaMunicipio;
+
+}
+<br />
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-purple">
+            <div class="card-header">
+                <h3 class="card-title">Registro de las causales de la elección de Regidurías en el Estado de Nayarit</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-2">
+                        <label for="Municipios">Municipio</label>
+                        @Html.DropDownList("Municipio", Municipio, "-Seleccione un Municipio-", new { @class = "form-control", @id = "Municipios" })<br />
+                    </div>
+                    <div class="col-md-2">
+                        <label for="Demarcacion">Demarcación:</label>
+                        <select id="Demarcaciones" name="Demarcacion" asp-items='@(new SelectList(string.Empty,"value","text"))' class="form-control"></select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row" id="Prueba">
+    <div class="card card-purple">
+        <div class="card-header">
+            <h3 class="card-title">Lista de causales en la elección de Regidurías</h3>
+        </div>
+        <div class="card-body">
+            <table id="tblcaulectura" class="table table-hover table-bordered text-center">
+                <thead>
+                    <tr>
+                        <th class="text-center">Sección</th>
+                        <th class="text-center">Casilla</th>
+                        <th class="text-center">Causal No. 1</th>
+                        <th class="text-center">Causal No. 2</th>
+                        <th class="text-center">Causal No. 3</th>
+                        <th class="text-center">Causal No. 4</th>
+                        <th class="text-center">Causal No. 5</th>
+                        <th class="text-center">Causal No. 6</th>
+                        <th class="text-center">Causal No. 7</th>
+                        <th class="text-center">Causal No. 8</th>
+                        <th class="text-center">Causal No. 9</th>
+                        <th class="text-center">Causal No. 10</th>
+                        <th class="text-center">Causal No. 11</th>
+                        <th class="text-center">Número de Causales</th>
+                        <th class="text-center">Id</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+<div id="VistaParcial" class="col-md-12">
+
+</div>
+@section Scripts
+{
+<script src="~/js/AdminCausalesReg.js"></script>
+}

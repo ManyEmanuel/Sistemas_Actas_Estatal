@@ -1,0 +1,329 @@
+﻿@model WebComputos.Models.T_Acta
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    IEnumerable<SelectListItem> Diputacion = ViewBag.Diputacion;
+    IEnumerable<SelectListItem> Estatus = ViewBag.Estatus;
+
+}
+
+
+<style>
+    .prueba {
+        vertical-align: bottom;
+    }
+</style>
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+
+</head>
+<br />
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-secondary">
+            <div class="card-header">
+                <h3 class="card-title">Registro de información complementaria de Actas de Diputación</h3>
+            </div>
+            <form id="RegistroActaD">
+                <div class="card-body">
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label>[1] Datos de la Casilla,</label>
+                            <label for="Seccion3">Sección:</label>
+                            @Html.DropDownList("Diputacion", Diputacion, "-Seleccione una sección-", new { @class = "form-control", @id = "Seccion3", @data_live_search = "true" })
+                        </div>
+                        <div class="col-md-3">
+                            <label for="casid3">Casilla:</label>
+                            <select id="casid3" name="casid" asp-items='@(new SelectList(string.Empty,"value","text"))' class="form-control"></select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="est">Estatus en la que se recibió el acta:</label>
+                            @Html.DropDownList("Estatus", Estatus, "-Estatus del Acta-", new { @class = "form-control", @id = "est3" })
+                            <span asp-validation-for="Estatus" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label asp-for="Sobrantes" class="control-label">[2] Boletas sobrantes de la elección:</label>
+                            <input asp-for="Sobrantes" class="form-control" value="0" id="Sobrantes3" min="0" />
+                            <span asp-validation-for="Sobrantes" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-3">
+                            <label asp-for="VotosCiudadanos" class="control-label">[3] Personas que votaron:</label>
+                            <input asp-for="VotosCiudadanos" class="form-control" id="Ciudadanos3" value="0" min="0" />
+                            <span asp-validation-for="VotosCiudadanos" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-3">
+                            <label asp-for="VotosRepresentantes" id="textRepresentantes3" class="control-label text-justify">[4] Representantes de partidos políticos y de candidatos/as independientes que votaron en la casilla no incluidos/as en la lista nominal:</label>
+                            <input asp-for="VotosRepresentantes" class="form-control" id="Representantes3" value="0" min="0" />
+                            <span asp-validation-for="VotosRepresentantes" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-3">
+                            <label asp-for="TotalVotos" id="textTotal3" class="control-label">[5] Suma de las cantidades de los apartados [3] y [4]:</label>
+                            <input asp-for="TotalVotos" class="form-control" id="Total3" value="0" min="0" />
+                            <span asp-validation-for="TotalVotos" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+
+                        <div class="col-md-3">
+                            <label asp-for="VotosUrnas" class="control-label">Votos de la elección sacados de la urna:</label>
+                            <input asp-for="VotosUrnas" class="form-control" id="Urnas3" value="0" min="0" />
+                            <span asp-validation-for="VotosUrnas" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="control-label">¿Se presentaron incidentes durante el escrutinio y cómputo de la elección?</label>
+                            <div class="row">
+                                <div class="col-md-6 text-center">
+                                    <input class="custom-control-input" name="Chein3" type="radio" id="inci5" value="True" />
+                                    <label for="inci5" class="custom-control-label">Si</label>
+                                </div>
+                                <div class="col-md-6 text-center">
+                                    <input class="custom-control-input" name="Chein3" type="radio" id="inci6" value="False" />
+                                    <label for="inci6" class="custom-control-label">No</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="control-label">Describa brevemente</label>
+                            <input type="text" id="Descri3" asp-for="DesIncidentes" class="form-control" disabled />
+                        </div>
+                    </div>
+
+
+                    <input type="hidden" asp-for="Incidentes" class="form-control" id="incidente3" />
+                    <span asp-validation-for="Incidentes" class="text-danger"></span>
+
+                    <div class="text-right">
+                        <button type="button" onclick="RegistrarD()" class="btn btn-success btn-lg rounded">Guardar</button>
+                        <button type="button" class="btn btn-danger btn-lg rounded" style="width:auto;" onClick="history.go(-1);"><a class="text-white">Cancelar</a></button>
+                    </div>
+                    <div class="form-group">
+                        <input type="hidden" id="cmb3" class="form-control" value="3" placeholder="3" />
+                        <input type="hidden" id="idres3" asp-for="IdActaDetalle" />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts
+{
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            carg3();
+            idres3();
+            IncidenteD();
+            busqueda();
+        });
+
+        $(function busqueda() {
+            $("#Seccion3").selectpicker();
+        });
+
+        function Bloqueo() {
+            $('#RegistroActaD input').attr('disabled', 'disabled');
+            $('#RegistroActaD button').attr('disabled', 'disabled');
+            $('#RegistroActaD select').attr('disabled', 'disabled');
+        }
+
+        function Refresco() {
+            window.location.reload(true);
+        }
+
+        function Desbloqueo() {
+            $('#RegistroActaD input').removeAttr('disabled');
+            $('#RegistroActaD button').removeAttr('disabled');
+            $('#RegistroActaD select').removeAttr('disabled');
+        }
+
+        function IncidenteD() {
+            $("input[name=Chein3]").click(function () {
+                var res = $('input:radio[name=Chein3]:checked').val();
+                document.getElementById("incidente3").value = res;
+                if (res == "False") {
+                    document.getElementById("Descri3").disabled = true;
+                }
+                else {
+                    document.getElementById("Descri3").disabled = false;
+                }
+            });
+        }
+
+        function idres3() {
+            $("#casid3").focus(function () {
+                var b = document.getElementById("casid3").value;
+                document.getElementById("idres3").value = b;
+                var c = document.getElementById("casid3");
+                var ca = c.options[c.selectedIndex].text;
+                var casilla = ca.split(" ");
+                if (casilla[0] == "Especial") {
+                    document.getElementById("Representantes3").style.display = 'none';
+                    document.getElementById("textRepresentantes3").style.display = 'none';
+                    document.getElementById("Total3").style.display = 'none';
+                    document.getElementById("textTotal3").style.display = 'none';
+
+
+
+                } else {
+                    document.getElementById("Representantes3").style.display = 'block';
+                    document.getElementById("textRepresentantes3").style.display = 'block';
+                    document.getElementById("Total3").style.display = 'block';
+                    document.getElementById("textTotal3").style.display = 'block';
+
+                }
+            });
+            $("#casid3").change(function () {
+                var b = document.getElementById("casid3").value;
+                document.getElementById("idres3").value = b;
+                var c = document.getElementById("casid3");
+                var ca = c.options[c.selectedIndex].text;
+                var casilla = ca.split(" ");
+                if (casilla[0] == "Especial") {
+                    document.getElementById("Representantes3").style.display = 'none';
+                    document.getElementById("textRepresentantes3").style.display = 'none';
+                    document.getElementById("Total3").style.display = 'none';
+                    document.getElementById("textTotal3").style.display = 'none';
+
+
+
+                } else {
+                    document.getElementById("Representantes3").style.display = 'block';
+                    document.getElementById("textRepresentantes3").style.display = 'block';
+                    document.getElementById("Total3").style.display = 'block';
+                    document.getElementById("textTotal3").style.display = 'block';
+
+                }
+            });
+        }
+
+        function carg3() {
+            $("#Seccion3").change(function () {
+                var url = "/admin/TActas/CargarGob";
+                var a = document.getElementById("cmb3").value;
+                var b = document.getElementById("Seccion3").value;
+                $.getJSON(url, { ide: a, ids: b }, function (data) {
+                    var items = '';
+                    $("#casid3").empty();
+                    $.each(data, function (j, row) {
+                        items += "<option value='" + row.idActaDetalle + "'>" + row.lCasilla.nombre + "</option>";
+                    });
+                    $("#casid3").html(items);
+                    document.getElementById("casid3").focus();
+                })
+            });
+        }
+
+        function ValidarD() {
+            var form = $('#RegistroActaD');
+            $.validator.unobtrusive.parse(form);
+            var validate = form.validate().form();
+            var unobtrusiveValidation = form.data('unobtrusiveValidation');
+            return validate;
+        }
+
+        function RegistrarD() {
+            var c = document.getElementById("casid3");
+            var ca = c.options[c.selectedIndex].text;
+            var casilla = ca.split(" ");
+            if (casilla[0] == "Especial") {
+                Bloqueo();
+                if (ValidarD() == true) {
+
+                    var items = {};
+                    items["Sobrantes"] = $("#Sobrantes3").val();
+                    items["VotosCiudadanos"] = $("#Ciudadanos3").val();
+                    items["VotosRepresentantes"] = $("#Representantes3").val();
+                    items["TotalVotos"] = $("#Ciudadanos3").val();
+                    items["VotosUrnas"] = $("#Urnas3").val();
+                    items["Incidentes"] = $("#incidente3").val();
+                    items["DesIncidentes"] = $("#Descri3").val();
+                    items["Estatus"] = $("#est3").val();
+                    items["IdActaDetalle"] = $("#idres3").val();
+
+                    $.ajax({
+                        url: '/admin/TActas/Create',
+                        type: 'POST',
+                        data: {
+                            item: items
+                        },
+                        success: function (data) {
+                            if (data.success) {
+                                toastr.success(data.mensaje, {
+                                    closeButton: true,
+                                    progressBar: true,
+                                    showMethod: 'slideDown',
+                                    timeOut: 2000
+                                });
+                                $('#RegistroActaD input').attr('disabled', 'disabled');
+                                $('#RegistroActaD button').attr('disabled', 'disabled');
+                                $('#RegistroActaD select').attr('readonly', 'readonly');
+                                window.setTimeout(Refresco, 2000);
+
+                            }
+                            else {
+                                Desbloqueo();
+                                toastr.error(data.mensaje);
+                            }
+                        },
+
+                    })
+                }
+                else {
+
+                }
+            }
+            else {
+                Bloqueo();
+                if (ValidarD() == true) {
+                    var items = {};
+                    items["Sobrantes"] = $("#Sobrantes3").val();
+                    items["VotosCiudadanos"] = $("#Ciudadanos3").val();
+                    items["VotosRepresentantes"] = $("#Representantes3").val();
+                    items["TotalVotos"] = $("#Total3").val();
+                    items["VotosUrnas"] = $("#Urnas3").val();
+                    items["Incidentes"] = $("#incidente3").val();
+                    items["DesIncidentes"] = $("#Descri3").val();
+                    items["Estatus"] = $("#est3").val();
+                    items["IdActaDetalle"] = $("#idres3").val();
+
+                    $.ajax({
+                        url: '/admin/TActas/Create',
+                        type: 'POST',
+                        data: {
+                            item: items
+                        },
+                        success: function (data) {
+                            if (data.success) {
+                                toastr.success(data.mensaje, {
+                                    closeButton: true,
+                                    progressBar: true,
+                                    showMethod: 'slideDown',
+                                    timeOut: 2000
+                                });
+                                window.setTimeout(Refresco, 2000);
+
+                            }
+                            else {
+                                Desbloqueo();
+                                toastr.error(data.mensaje);
+                            }
+                        },
+
+                    })
+                }
+                else {
+
+                }
+            }
+
+        }
+    </script>
+}
+
+

@@ -1,0 +1,342 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    IEnumerable<SelectListItem> Municipio = ViewBag.ListaMunicipio;
+}
+<head>
+    <link rel="stylesheet" href="~/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+</head>
+<br />
+<style>
+    .centrar {
+        justify-content: center;
+        align-items: center;
+    }
+
+    .centrar {
+        justify-content: center;
+        align-items: center;
+    }
+
+    table.dataTable tbody td {
+        vertical-align: middle;
+    }
+</style>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Listado de solicitudes de restablecer registro de votos en el Estado de Nayarit</h3>
+            </div>
+            <div class="card-body">
+                <table id="tblRecepcion" class="table table-hover table-bordered text-center">
+                    <thead>
+                        <tr>
+                            <th class="text-center">Sección</th>
+                            <th class="text-center">Casilla</th>
+                            <th class="text-center">Elección</th>
+                            <th class="text-center">Municipio</th>
+                            <th class="text-center">Usuario Solicitante</th>
+                            <th class="text-center">Fecha Solicitud</th>
+                            <th class="text-center">Opciones</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Historial de solicitudes de restablecer registro de votos en el Estado de Nayarit</h3>
+            </div>
+            <div class="card-body">
+                <table id="tblhistorial" class="table table-hover table-bordered text-center">
+                    <thead>
+                        <tr>
+                            <th class="text-center">Sección</th>
+                            <th class="text-center">Casilla</th>
+                            <th class="text-center">Elección</th>
+                            <th class="text-center">Municipio</th>
+                            <th class="text-center">Usuario Solicitante</th>
+                            <th class="text-center">Fecha Solicitud</th>
+                            <th class="text-center">Fecha Resolución</th>
+                            <th class="text-center">Resolución</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            CargarDatatable();
+            CargarDatatable2();
+        });
+
+        function CargarDatatable() {
+            dataTable = $("#tblRecepcion").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+                "ajax": {
+                    "url": "/admin/Administrador/CargarVotosModificacion/",
+                    "type": "GET",
+                    "datatype": "json",
+                },
+                "columns": [
+                    { "data": "lCasilla.lSeccion.seccion", "width": "10%" },
+                    { "data": "lCasilla.nombre", "width": "10%" },  
+                    {
+                        "data": "tipoEleccion",
+                        "render": function (data, type, row) {
+                            if (row.tipoEleccion == 1) {
+                                return `
+                                <a>Gobernador</a>`;
+                            }
+                            else if (row.tipoEleccion == 2) {
+                                return `
+                                <a>Presidente y Sindico </a>`;
+                            }
+                            else if (row.tipoEleccion == 3) {
+                                return `
+                                <a>Diputaciones </a>`;
+                            }
+                            else if (row.tipoEleccion == 4) {
+                                return `
+                                <a>Regidurias </a>`;
+                            }
+
+
+                        }, "width": "10%"
+                    },
+                    { "data": "lCasilla.lSeccion.lMunicipio.municipio", "width": "10%" },
+                    {
+                        "data": null,
+                        "render": function (data, type, row) {
+                            return row.lUsuario.nombres + ' ' + row.lUsuario.apellido_Paterno + ' ' + row.lUsuario.apellido_Materno;
+                        }
+                    },
+                    {
+                        "data": "fechaSolicitud", "render": function (data) {
+                            return moment(data).format('DD/MM/YYYY HH:mm');
+                        }, "width": "20%"
+                    },
+                    {
+                        "data": "votos",
+                        "render": function (data,type,row) {
+                            return `
+                            <button type='button' class='btn btn-success text-white' style='cursor:pointer; width:120px;' onclick='Restablecer(${row.votos},${row.id})'>
+                            Aceptar
+                            </button>
+                            &nbsp
+                            <button type='button' class='btn btn-danger text-white' style='cursor:pointer; width:120px;' onclick='Cancelar(${row.votos},${row.id})'>
+                            Rechazar
+                            </button>
+                            `;
+                        }, "width": "30%"
+                    }
+                ],
+                "language": {
+                    "decimal": ",",
+                    "emptyTable": "No hay registros",
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                    "infoEmpty": "Mostrando 0 de 0 Entradas",
+                    "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                    "infoPostFix": "",
+                    "thousands": ",",
+                    "lengthMenu": "Mostrar _MENU_ Entradas",
+                    "loadingRecords": "Cargando...",
+                    "processing": "Procesando...",
+                    "search": "Buscar:",
+                    "zeroRecords": "Sin resultados encontrados",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Ultimo",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    },
+                    "width": "100%"
+                }
+            });
+        }
+
+        function CargarDatatable2() {
+            dataTable = $("#tblhistorial").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+                "ajax": {
+                    "url": "/admin/Administrador/CargarVotosHistorial/",
+                    "type": "GET",
+                    "datatype": "json",
+                },
+                "columns": [
+                    { "data": "lCasilla.lSeccion.seccion", "width": "10%" },
+                    { "data": "lCasilla.nombre", "width": "10%" },
+                    {
+                        "data": "tipoEleccion",
+                        "render": function (data, type, row) {
+                            if (row.tipoEleccion == 1) {
+                                return `
+                                <a>Gobernador</a>`;
+                            }
+                            else if (row.tipoEleccion == 2) {
+                                return `
+                                <a>Presidente y Sindico </a>`;
+                            }
+                            else if (row.tipoEleccion == 3) {
+                                return `
+                                <a>Diputaciones </a>`;
+                            }
+                            else if (row.tipoEleccion == 4) {
+                                return `
+                                <a>Regidurias </a>`;
+                            }
+
+                        }, "width": "10%"
+                    },
+                    { "data": "lCasilla.lSeccion.lMunicipio.municipio", "width": "10%" },
+                    {
+                        "data": null,
+                        "render": function (data, type, row) {
+                            return row.lUsuario.nombres + ' ' + row.lUsuario.apellido_Paterno + ' ' + row.lUsuario.apellido_Materno;
+                        }
+                    },
+                    {
+                        "data": "fechaSolicitud", "render": function (data) {
+                            return moment(data).format('DD/MM/YYYY HH:mm');
+                        }, "width": "15%"
+                    },
+                    {
+                        "data": "fechaAprobacion", "render": function (data) {
+                            return moment(data).format('DD/MM/YYYY HH:mm');
+                        }, "width": "15%"
+                    },
+                    {
+                        "data": "estatus",
+                        "render": function (data, type, row) {
+                            if (row.estatus == 1) {
+                                return `<button type='button' class='btn  btn-success btn-sm' <a><i class='fas fa-check'></i></a> Aceptada</button>`;
+                            } else if(row.estatus == 2) {
+                                return `<button type='button' class='btn  btn-danger btn-sm' <a><i class='fas fa-times'></i></a> Rechazada</button>`;
+                            };
+                        }, "width": "15%"
+                    }
+                ],
+                "language": {
+                    "decimal": ",",
+                    "emptyTable": "No hay registros",
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                    "infoEmpty": "Mostrando 0 de 0 Entradas",
+                    "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                    "infoPostFix": "",
+                    "thousands": ",",
+                    "lengthMenu": "Mostrar _MENU_ Entradas",
+                    "loadingRecords": "Cargando...",
+                    "processing": "Procesando...",
+                    "search": "Buscar:",
+                    "zeroRecords": "Sin resultados encontrados",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Ultimo",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    },
+                    "width": "100%"
+                }
+            });
+        }
+
+        function Restablecer(votos,historial) {
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'mr-2 btn btn-danger'
+                },
+                buttonsStyling: false,
+            })
+
+            swalWithBootstrapButtons.fire({
+                title: 'Esta seguro en restablecer el registro de votos de esta casilla',
+                text: "Una vez aplicado, los cambios se perdera la informacion!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Si, Restablecer!',
+                cancelButtonText: 'No, Cancelar!',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.value) {
+                    $.ajax({
+                        type: 'POST',
+                        url: "/Admin/Administrador/RestablecerVotos",
+                        data: {
+                            idVotos: votos,
+                            idHistorial: historial
+                        },
+                        success: function (data) {
+                            if (data.success) {
+                                toastr.success(data.mensaje);
+                                window.setTimeout(Refresco, 2000);
+                            } else {
+                                toastr.error(data.mensaje);
+                            }
+                        }
+                    })
+                }
+            })
+        }
+
+        function Cancelar(votos, historial) {
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'mr-2 btn btn-danger'
+                },
+                buttonsStyling: false,
+            })
+
+            swalWithBootstrapButtons.fire({
+                title: 'Esta seguro de cancelar la solicitud del Paquete Electoral',
+                text: "Una vez aplicado, el paquete seguira registrado!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Si, Cancelar!',
+                cancelButtonText: 'No',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.value) {
+                    $.ajax({
+                        type: 'POST',
+                        url: "/Admin/Administrador/CancelarSolicitudVotos",
+                        data: {
+                            idVotos: votos,
+                            idHistorial: historial
+                        },
+                        success: function (data) {
+                            if (data.success) {
+                                toastr.success(data.mensaje);
+                                window.setTimeout(Refresco, 2000);
+                            } else {
+                                toastr.error(data.mensaje);
+                            }
+                        }
+                    })
+                }
+            })
+        }
+
+        function Refresco() {
+            window.location.reload(true);
+        }
+    </script>
+    <script src="~/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+}

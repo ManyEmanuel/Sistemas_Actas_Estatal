@@ -1,0 +1,1050 @@
+﻿
+@{
+    ViewData["Title"] = "Causales";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    decimal PorCompletos = ViewBag.PorCompletos;
+}
+<head>
+    <link rel="stylesheet" href="~/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+</head>
+<input type="hidden" id="eleccion" value="2" />
+<style>
+    .btnguar {
+        width: 40%;
+        margin: 0 auto;
+        display: inline-block;
+    }
+
+    .centrar {
+        justify-content: center;
+        align-items: center;
+    }
+
+    table.dataTable tbody td {
+        vertical-align: middle;
+    }
+</style>
+<br />
+@* ------------------------------------------------------------------------------------------------------------------------------------------------------ *@
+
+<div class="row" id="ParaBloq">
+    <div class="col-md-12">
+        @if (User.IsInRole("Admin") || User.IsInRole("CapturaRes"))
+        {
+            <div class="card card-purple">
+                <div class="card-header">
+                    <h3 class="card-title"> Lista de causales en la elección de Presidencias y Sindicaturas del municipio de @ViewBag.Municipio</h3>
+                </div>
+                <div class="card-body">
+                    <table id="tblcau" class="table table-hover table-bordered text-center">
+                        <thead>
+                            <tr>
+                                <th class="text-center">Sección</th>
+                                <th class="text-center">Casilla</th>
+                                <th class="text-center">Causal No. 1</th>
+                                <th class="text-center">Causal No. 2</th>
+                                <th class="text-center">Causal No. 3</th>
+                                <th class="text-center">Causal No. 4</th>
+                                <th class="text-center">Causal No. 5</th>
+                                <th class="text-center">Causal No. 6</th>
+                                <th class="text-center">Causal No. 7</th>
+                                <th class="text-center">Causal No. 8</th>
+                                <th class="text-center">Causal No. 9</th>
+                                <th class="text-center">Causal No. 10</th>
+                                <th class="text-center">Causal No. 11</th>
+                                <th class="text-center">Número de Causales</th>
+                                <th class="text-center">Id</th>
+                                <th class="text-center">Opciones</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        }
+        @if (User.IsInRole("Lectura") || User.IsInRole("IEEN"))
+        {
+            <div class="card card-purple">
+                <div class="card-header">
+                    <h3 class="card-title">Lista de causales en la elección de Presidencias Municipales y Sindicaturas del municipio de @ViewBag.Municipio</h3>
+                </div>
+                <div class="card-body">
+                    <table id="tblcaulectura" class="table table-hover table-bordered text-center">
+                        <thead>
+                            <tr>
+                                <th class="text-center">Sección</th>
+                                <th class="text-center">Casilla</th>
+                                <th class="text-center">Causal No. 1</th>
+                                <th class="text-center">Causal No. 2</th>
+                                <th class="text-center">Causal No. 3</th>
+                                <th class="text-center">Causal No. 4</th>
+                                <th class="text-center">Causal No. 5</th>
+                                <th class="text-center">Causal No. 6</th>
+                                <th class="text-center">Causal No. 7</th>
+                                <th class="text-center">Causal No. 8</th>
+                                <th class="text-center">Causal No. 9</th>
+                                <th class="text-center">Causal No. 10</th>
+                                <th class="text-center">Causal No. 11</th>
+                                <th class="text-center">Número de Causales</th>
+                                <th class="text-center">Id</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        }
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card card-purple">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-tag"></i>
+                            Referencia de Causales
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <dl class="row">
+                            <dt class="col-md-2"> Causal No. 1</dt>
+                            <dd class="col-md-10"> El Paquete Electoral fue entregado sin el AECC</dd>
+                            <dt class="col-md-2"> Causal No. 2</dt>
+                            <dd class="col-md-10"> Votos Nulos mayor a la diferencia entre el 1er y 2do lugar</dd>
+                            <dt class="col-md-2"> Causal No. 3</dt>
+                            <dd class="col-md-10"> Total de votos del sistema mayor a boletas entregadas</dd>
+                            <dt class="col-md-2"> Causal No. 4</dt>
+                            <dd class="col-md-10"> Total de votos del sistema diferente al total de votos del AECC</dd>
+                            <dt class="col-md-2"> Causal No. 5</dt>
+                            <dd class="col-md-10"> Votos para un solo Partido Político, Coalición o Candidato Independiente</dd>
+                            <dt class="col-md-2"> Causal No. 6</dt>
+                            <dd class="col-md-10"> Acta ilegible</dd>
+                            <dt class="col-md-2"> Causal No. 7</dt>
+                            <dd class="col-md-10"> Acta con alteraciones</dd>
+                            <dt class="col-md-2"> Causal No. 8</dt>
+                            <dd class="col-md-10"> Paquete con muestras de alteraciones</dd>
+                            <dt class="col-md-2"> Causal No. 9</dt>
+                            <dd class="col-md-10"> Ciudadanos que votaron diferente al total de votos del sistema</dd>
+                            <dt class="col-md-2"> Causal No. 10</dt>
+                            <dd class="col-md-10"> Boletas sobrantes más ciudadanos que votaron mayor a boletas entregadas</dd>
+                            <dt class="col-md-2"> Causal No. 11</dt>
+                            <dd class="col-md-10"> Boletas sobrantes más total de votos del sistema mayor a boletas entregadas</dd>
+                        </dl>
+                    </div>
+                </div>
+                <div class="card card-purple">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-print"></i>
+                            Imprimir referencia de causales
+                        </h3>
+                    </div>
+                    <div class="card-body text-center">
+                        <a class="btn btn-success form-control btn-block btnguar" asp-area="Admin" asp-controller="TRecepcionPaquetes" asp-action="ImprimirCausal" target="_blank"><i class="fas fa-print"></i>  Imprimir</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                @{
+                    if (User.IsInRole("Admin") || User.IsInRole("CapturaRes") || User.IsInRole("IEEN"))
+                    {
+                        <div class="card card-purple">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <i class="fas fa-print"></i>
+                                    Reporte de Casillas con y sin causales de recuento
+                                </h3>
+                            </div>
+                            <div class="card-body text-center">
+                                <a class="btn btn-success btnguar form-control" asp-area="Admin" asp-controller="TRecepcionPaquetes" asp-action="ImprimirPys" asp-route-id="@ViewBag.IdMunicipio" target="_blank"><i class="fas fa-print"></i>  Imprimir</a>
+                            </div>
+                        </div>
+                    }
+                }
+                @if (PorCompletos >= 100)
+                {
+                    @if (ViewBag.PorcentajeDiferencia <= 1)
+                    {
+                        <div class="card card-red">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <i class="fas fa-balance-scale"></i>
+                                    Diferencia entre el 1er. y 2do. lugar
+                                </h3>
+                            </div>
+                            <div class="card-body">
+                                <h4 class="card-text text-center">En término del Artículo 214, Fracción III; de la Ley Electoral del Estado de Nayarit</h4>
+                                <br />
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="card  card-red text-center">
+                                            <div class="card-header text-center">
+                                                <h5 class="card-text text-center">
+                                                    <strong>Votos</strong>
+                                                </h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <h5 class="card-text text-center"> @ViewBag.VotosDiferencia </h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card text-center card-red">
+                                            <div class="card-header text-center">
+                                                <h5 class="card-text text-center">
+                                                    <strong>Porcentaje</strong>
+                                                </h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <h5 class="card-text text-center"> @ViewBag.PorcentajeDiferencia % </h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer text-muted">
+                                <i>Diferencia entre el 1er y el 2do lugar menor al 1%</i>
+                            </div>
+                        </div>
+                        @if (ViewBag.PorcentajeDiferencia <= 2 && ViewBag.Porcentaje > 20)
+                        {
+                            <div class="card card-red">
+                                <div class="card-header">
+                                    <h3 class="card-title">
+                                        <i class="fas fa-balance-scale"></i>
+                                        Casillas Objeto de Recuento
+                                    </h3>
+                                </div>
+                                <div class="card-body">
+                                    <h4 class="card-text text-center">En término del Artículo 213, de la Ley Electoral del Estado de Nayarit</h4>
+                                    <br />
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="card  card-red text-center">
+                                                <div class="card-header text-center">
+                                                    <h5 class="card-text text-center">
+                                                        <strong>Votos</strong>
+                                                    </h5>
+                                                </div>
+                                                <div class="card-body">
+                                                    <h5 class="card-text text-center"> @ViewBag.VotosDiferencia </h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="card text-center card-red">
+                                                <div class="card-header text-center">
+                                                    <h5 class="card-text text-center">
+                                                        <strong>Porcentaje</strong>
+                                                    </h5>
+                                                </div>
+                                                <div class="card-body">
+                                                    <h5 class="card-text text-center"> @ViewBag.PorcentajeDiferencia % </h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="card text-center card-red">
+                                                <div class="card-header text-center">
+                                                    <h5 class="card-text text-center">
+                                                        <strong>Cantidad</strong>
+                                                    </h5>
+                                                </div>
+                                                <div class="card-body">
+                                                    <h5 class="card-text text-center"> @ViewBag.Causal </h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="card text-center card-red">
+                                                <div class="card-header text-center">
+                                                    <h5 class="card-text text-center">
+                                                        <strong> Porcentaje</strong>
+                                                    </h5>
+                                                </div>
+                                                <div class="card-body">
+                                                    <h5 class="card-text text-center"> @ViewBag.Porcentaje % </h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer text-muted">
+                                    <i>Diferencia entre el 1er y el 2do lugar menor al 2% o porcentaje total de casillas a recuento mayor al 20%</i>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="card card-purple">
+                                <div class="card-header">
+                                    <h3 class="card-title">
+                                        <i class="fas fa-balance-scale"></i>
+                                        Casillas Objeto de Recuento
+                                    </h3>
+                                </div>
+                                <div class="card-body">
+                                    <h4 class="card-text text-center">En término del Artículo 213, de la Ley Electoral del Estado de Nayarit</h4>
+                                    <br />
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="card  card-purple text-center">
+                                                <div class="card-header text-center">
+                                                    <h5 class="card-text text-center">
+                                                        <strong>Votos</strong>
+                                                    </h5>
+                                                </div>
+                                                <div class="card-body">
+                                                    <h5 class="card-text text-center"> @ViewBag.VotosDiferencia </h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="card text-center card-purple">
+                                                <div class="card-header text-center">
+                                                    <h5 class="card-text text-center">
+                                                        <strong>Porcentaje</strong>
+                                                    </h5>
+                                                </div>
+                                                <div class="card-body">
+                                                    <h5 class="card-text text-center"> @ViewBag.PorcentajeDiferencia % </h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="card text-center card-purple">
+                                                <div class="card-header text-center">
+                                                    <h5 class="card-text text-center">
+                                                        <strong>Cantidad</strong>
+                                                    </h5>
+                                                </div>
+                                                <div class="card-body">
+                                                    <h5 class="card-text text-center"> @ViewBag.Causal </h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="card text-center card-purple">
+                                                <div class="card-header text-center">
+                                                    <h5 class="card-text text-center">
+                                                        <strong> Porcentaje</strong>
+                                                    </h5>
+                                                </div>
+                                                <div class="card-body">
+                                                    <h5 class="card-text text-center"> @ViewBag.Porcentaje % </h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer text-muted">
+                                    <i>Diferencia entre el 1er y el 2do lugar menor al 2% o porcentaje total de casillas a recuento mayor al 20%</i>
+                                </div>
+                            </div>
+                        }
+
+                    }
+                    else
+                    {
+                        <div class="card card-purple">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <i class="fas fa-balance-scale"></i>
+                                    Diferencia entre el 1er. y 2do. lugar
+                                </h3>
+                            </div>
+                            <div class="card-body">
+                                <h4 class="card-text text-center">En término del Artículo 214, Fracción III; de la Ley Electoral del Estado de Nayarit</h4>
+                                <br />
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="card  card-purple text-center">
+                                            <div class="card-header text-center">
+                                                <h5 class="card-text text-center">
+                                                    <strong>Votos</strong>
+                                                </h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <h5 class="card-text text-center"> @ViewBag.VotosDiferencia </h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card text-center card-purple">
+                                            <div class="card-header text-center">
+                                                <h5 class="card-text text-center">
+                                                    <strong>Porcentaje</strong>
+                                                </h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <h5 class="card-text text-center"> @ViewBag.PorcentajeDiferencia % </h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer text-muted">
+                                <i>Diferencia entre el 1er y el 2do lugar menor al 1%</i>
+                            </div>
+                        </div>
+                        @if (ViewBag.PorcentajeDiferencia <= 2 && ViewBag.Porcentaje > 20)
+                        {
+                            <div class="card card-red">
+                                <div class="card-header">
+                                    <h3 class="card-title">
+                                        <i class="fas fa-balance-scale"></i>
+                                        Casillas Objeto de Recuento
+                                    </h3>
+                                </div>
+                                <div class="card-body">
+                                    <h4 class="card-text text-center">En término del Artículo 213, de la Ley Electoral del Estado de Nayarit</h4>
+                                    <br />
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="card  card-red text-center">
+                                                <div class="card-header text-center">
+                                                    <h5 class="card-text text-center">
+                                                        <strong>Votos</strong>
+                                                    </h5>
+                                                </div>
+                                                <div class="card-body">
+                                                    <h5 class="card-text text-center"> @ViewBag.VotosDiferencia </h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="card text-center card-red">
+                                                <div class="card-header text-center">
+                                                    <h5 class="card-text text-center">
+                                                        <strong>Porcentaje</strong>
+                                                    </h5>
+                                                </div>
+                                                <div class="card-body">
+                                                    <h5 class="card-text text-center"> @ViewBag.PorcentajeDiferencia % </h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="card text-center card-red">
+                                                <div class="card-header text-center">
+                                                    <h5 class="card-text text-center">
+                                                        <strong>Cantidad</strong>
+                                                    </h5>
+                                                </div>
+                                                <div class="card-body">
+                                                    <h5 class="card-text text-center"> @ViewBag.Causal </h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="card text-center card-red">
+                                                <div class="card-header text-center">
+                                                    <h5 class="card-text text-center">
+                                                        <strong> Porcentaje</strong>
+                                                    </h5>
+                                                </div>
+                                                <div class="card-body">
+                                                    <h5 class="card-text text-center"> @ViewBag.Porcentaje % </h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer text-muted">
+                                    <i>Diferencia entre el 1er y el 2do lugar menor al 2% o porcentaje total de casillas a recuento mayor al 20%</i>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="card card-purple">
+                                <div class="card-header">
+                                    <h3 class="card-title">
+                                        <i class="fas fa-balance-scale"></i>
+                                        Casillas Objeto de Recuento
+                                    </h3>
+                                </div>
+                                <div class="card-body">
+                                    <h4 class="card-text text-center">En término del Artículo 213, de la Ley Electoral del Estado de Nayarit</h4>
+                                    <br />
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="card  card-purple text-center">
+                                                <div class="card-header text-center">
+                                                    <h5 class="card-text text-center">
+                                                        <strong>Votos</strong>
+                                                    </h5>
+                                                </div>
+                                                <div class="card-body">
+                                                    <h5 class="card-text text-center"> @ViewBag.VotosDiferencia </h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="card text-center card-purple">
+                                                <div class="card-header text-center">
+                                                    <h5 class="card-text text-center">
+                                                        <strong>Porcentaje</strong>
+                                                    </h5>
+                                                </div>
+                                                <div class="card-body">
+                                                    <h5 class="card-text text-center"> @ViewBag.PorcentajeDiferencia % </h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="card text-center card-purple">
+                                                <div class="card-header text-center">
+                                                    <h5 class="card-text text-center">
+                                                        <strong>Cantidad</strong>
+                                                    </h5>
+                                                </div>
+                                                <div class="card-body">
+                                                    <h5 class="card-text text-center"> @ViewBag.Causal </h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="card text-center card-purple">
+                                                <div class="card-header text-center">
+                                                    <h5 class="card-text text-center">
+                                                        <strong> Porcentaje</strong>
+                                                    </h5>
+                                                </div>
+                                                <div class="card-body">
+                                                    <h5 class="card-text text-center"> @ViewBag.Porcentaje % </h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer text-muted">
+                                    <i>Diferencia entre el 1er y el 2do lugar menor al 2% y porcentaje total de casillas a recuento mayor al 20%</i>
+                                </div>
+                            </div>
+                        }
+                    }
+                }
+                else
+                {
+                    <div class="card card-purple">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-balance-scale"></i>
+                                Diferencia entre el 1er. y 2do. lugar
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-text text-center">En término del Artículo 214, Fracción III; de la Ley Electoral del Estado de Nayarit</h4>
+                            <br />
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="card  card-purple text-center">
+                                        <div class="card-header text-center">
+                                            <h5 class="card-text text-center">
+                                                <strong>Votos</strong>
+                                            </h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <h5 class="card-text text-center"> @ViewBag.VotosDiferencia </h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card text-center card-purple">
+                                        <div class="card-header text-center">
+                                            <h5 class="card-text text-center">
+                                                <strong>Porcentaje</strong>
+                                            </h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <h5 class="card-text text-center"> @ViewBag.PorcentajeDiferencia % </h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer text-muted">
+                            <i>Diferencia entre el 1er y el 2do lugar menor al 1%</i>
+                        </div>
+                    </div>
+                    <div class="card card-purple">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-balance-scale"></i>
+                                Casillas Objeto de Recuento
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-text text-center">En término del Artículo 213, de la Ley Electoral del Estado de Nayarit</h4>
+                            <br />
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="card  card-purple text-center">
+                                        <div class="card-header text-center">
+                                            <h5 class="card-text text-center">
+                                                <strong>Votos</strong>
+                                            </h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <h5 class="card-text text-center"> @ViewBag.VotosDiferencia </h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card text-center card-purple">
+                                        <div class="card-header text-center">
+                                            <h5 class="card-text text-center">
+                                                <strong>Porcentaje</strong>
+                                            </h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <h5 class="card-text text-center"> @ViewBag.PorcentajeDiferencia % </h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="card text-center card-purple">
+                                        <div class="card-header text-center">
+                                            <h5 class="card-text text-center">
+                                                <strong>Cantidad</strong>
+                                            </h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <h5 class="card-text text-center"> @ViewBag.Causal </h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card text-center card-purple">
+                                        <div class="card-header text-center">
+                                            <h5 class="card-text text-center">
+                                                <strong> Porcentaje</strong>
+                                            </h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <h5 class="card-text text-center"> @ViewBag.Porcentaje % </h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer text-muted">
+                            <i>Diferencia entre el 1er y el 2do lugar menor al 2% y porcentaje total de casillas a recuento mayor al 20%</i>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="card card-purple">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fas fa-chart-bar"></i>
+                    Avance en el captura de actas
+                </h3>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-md-6"> <h5 class="card-text"> <strong>Avance en la captura de actas  completas (Resultados e información complementaria) </strong> </h5></dt>
+                    <dd class="col-md-1"><h5 class="card-text">@ViewBag.Completos de @ViewBag.Secciones </h5></dd>
+                    <dd class="col-md-1"> <h5 class="card-text">@ViewBag.PorCompletos % </h5></dd>
+                    <dd class="col-md-2"> <h5 class="card-text"><strong> Proyectadas para recuento </strong></h5> </dd>
+                    <dd class="col-md-2"> <h5 class="card-text">@ViewBag.Causal </h5></dd>
+
+                    <dt class="col-md-6"> <h5 class="card-text"> <strong>Avance en la captura de información complementaria de actas </strong> </h5></dt>
+                    <dd class="col-md-1"><h5 class="card-text"> @ViewBag.Complemento de @ViewBag.Secciones </h5></dd>
+                    <dd class="col-md-1"> <h5 class="card-text">@ViewBag.PorComplemento % </h5></dd>
+                    <dd class="col-md-2"> <h5 class="card-text"><strong> Proyectadas para cotejo</strong></h5> </dd>
+                    <dd class="col-md-2"> <h5 class="card-text">@ViewBag.Cotejo </h5></dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+        {
+
+    <script>
+        $(document).ready(function () {
+            CargarDatatable();
+            CargarDatatable2();
+
+        });
+
+        function Seleccionar(id) {
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'mr-2 btn btn-danger'
+                },
+                buttonsStyling: false,
+            })
+
+            swalWithBootstrapButtons.fire({
+                title: 'Esta seguro en subsanar las causales de esta casilla',
+                text: "Una vez aplicado, los cambios afectan a Computos!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Si, Subsanar!',
+                cancelButtonText: 'No, Cancelar!',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.value) {
+                    bloqueo();
+                    $.ajax({
+                        type: 'POST',
+                        url: "/Admin/TRecepcionPaquetes/SubsanarCausal",
+                        data: {
+                            id: id
+                        },
+                        success: function (data) {
+                            if (data.success) {
+                                toastr.success(data.mensaje);
+                                window.setTimeout(Refresco, 3000);
+                            } else {
+                                toastr.error(data.mensaje);
+                            }
+                        }
+                    })
+                }
+            })
+        }
+
+        function Refresco() {
+            window.location.reload(true);
+        }
+        function bloqueo() {
+            $('#ParaBloq button').attr('disabled', 'disabled');
+        }
+
+        function CargarDatatable() {
+            var a = document.getElementById("eleccion").value;
+            dataTable = $("#tblcau").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+                "ajax": {
+                    "url": `/admin/TRecepcionPaquetes/CargarCauPys`,
+                    "type": "GET",
+                    "datatype": "json"
+                },
+                "columns": [
+                    { "data": "seccion", "width": "15%" },
+                    { "data": "casilla", "width": "15%" },
+                    {
+                        "data": "cau1",
+                        "render": function (data, type, row) {
+                            if (row.cau1 == false) {
+                                return `<button type='button' class='btn  btn-success btn-sm' data-toggle="tooltip" data-placement="top" title="El paquete electoral fue entregado con el AEC" > <a><i class='fas fa-check'></i></a></button>`;
+                            } else {
+                                return `<button type='button' class='btn  btn-danger btn-sm' data-toggle="tooltip" data-placement="top" title="El paquete electoral fue entregado sin el AEC" ><a><i class='fas fa-times'></i></a></button>`;
+                            }
+                        }, "width": "5%"
+                    },
+                    {
+                        "data": "cau2",
+                        "render": function (data, type, row) {
+                            if (row.cau2 == false) {
+                                return `<button type='button' class='btn  btn-success btn-sm' data-toggle="tooltip" data-placement="top" title="Votos nulos menor a la diferencia entre el 1er y 2do lugar"> <a><i class='fas fa-check'></i></a></button>`;
+                            } else {
+                                return `<button type='button' class='btn  btn-danger btn-sm' data-toggle="tooltip" data-placement="top" title="Votos nulos mayor a la diferencia entre el 1er y 2do lugar"><a><i class='fas fa-times'></i></a></button>`;
+                            }
+                        }, "width": "5%"
+                    },
+                    {
+                        "data": "cau3",
+                        "render": function (data, type, row) {
+                            if (row.cau3 == false) {
+                                return `<button type='button' class='btn  btn-success btn-sm' data-toggle="tooltip" data-placement="top" title="Total de votos del sistema menor a las boletas entregadas"> <a><i class='fas fa-check'></i></a></button>`;
+                            } else {
+                                return `<button type='button' class='btn  btn-danger btn-sm' data-toggle="tooltip" data-placement="top" title="Total de votos del sistema mayor a las boletas entregadas"><a><i class='fas fa-times'></i></a></button>`;
+                            }
+                        }, "width": "5%"
+                    },
+                    {
+                        "data": "cau4",
+                        "render": function (data, type, row) {
+                            if (row.cau4 == false) {
+                                return `<button type='button' class='btn  btn-success btn-sm' data-toggle="tooltip" data-placement="top" title="Total de votos del sistema igual al total de votos del AEC"> <a><i class='fas fa-check'></i></a></button>`;
+                            } else {
+                                return `<button type='button' class='btn  btn-danger btn-sm' data-toggle="tooltip" data-placement="top" title="Total del votos del sistema diferente al total de votos del AEC"><a><i class='fas fa-times'></i></a></button>`;
+                            }
+                        }, "width": "5%"
+                    },
+                    {
+                        "data": "cau5",
+                        "render": function (data, type, row) {
+                            if (row.cau5 == false) {
+                                return `<button type='button' class='btn  btn-success btn-sm' data-toggle="tooltip" data-placement="top" title="Votos por mas de un partido politivo, coalición o candidato independiente"> <a><i class='fas fa-check'></i></a></button>`;
+                            } else {
+                                return `<button type='button' class='btn  btn-danger btn-sm' data-toggle="tooltip" data-placement="top" title="Votos por un solo partido politico, coalición o candidato independiente"><a><i class='fas fa-times'></i></a></button>`;
+                            }
+                        }, "width": "5%"
+                    },
+                    {
+                        "data": "cau6",
+                        "render": function (data, type, row) {
+                            if (row.cau6 == false) {
+                                return `<button type='button' class='btn  btn-success btn-sm' data-toggle="tooltip" data-placement="top" title="Acta legible"> <a><i class='fas fa-check'></i></a></button>`;
+                            } else {
+                                return `<button type='button' class='btn  btn-danger btn-sm' data-toggle="tooltip" data-placement="top" title="Acta Ilegible"><a><i class='fas fa-times'></i></a></button>`;
+                            }
+                        }, "width": "5%"
+                    },
+                    {
+                        "data": "cau7",
+                        "render": function (data, type, row) {
+                            if (row.cau7 == false) {
+                                return `<button type='button' class='btn  btn-success btn-sm' data-toggle="tooltip" data-placement="top" title="Acta sin alteraciones"> <a><i class='fas fa-check'></i></a></button>`;
+                            } else {
+                                return `<button type='button' class='btn  btn-danger btn-sm' data-toggle="tooltip" data-placement="top" title="Acta con alteraciones"><a><i class='fas fa-times'></i></a></button>`;
+                            }
+                        }, "width": "5%"
+                    },
+                    {
+                        "data": "cau8",
+                        "render": function (data, type, row) {
+                            if (row.cau8 == false) {
+                                return `<button type='button' class='btn  btn-success btn-sm' data-toggle="tooltip" data-placement="top" title="Paquete sin muestras de alteraciones"> <a><i class='fas fa-check'></i></a></button>`;
+                            } else {
+                                return `<button type='button' class='btn  btn-danger btn-sm' data-toggle="tooltip" data-placement="top" title="Paquete con muestras de alteraciones"><a><i class='fas fa-times'></i></a></button>`;
+                            }
+                        }, "width": "5%"
+                    },
+                    {
+                        "data": "cau9",
+                        "render": function (data, type, row) {
+                            if (row.cau9 == false) {
+                                return `<button type='button' class='btn  btn-success btn-sm' data-toggle="tooltip" data-placement="top" title="Ciudadanos que votaron igual al total de votos del sistema"> <a><i class='fas fa-check'></i></a></button>`;
+                            } else {
+                                return `<button type='button' class='btn  btn-danger btn-sm' data-toggle="tooltip" data-placement="top" title="Ciudadanos que votaron diferente al total de votos del sistema"><a><i class='fas fa-times'></i></a></button>`;
+                            }
+                        }, "width": "5%"
+                    },
+                    {
+                        "data": "cau10",
+                        "render": function (data, type, row) {
+                            if (row.cau10 == false) {
+                                return `<button type='button' class='btn  btn-success btn-sm' data-toggle="tooltip" data-placement="top" title="Boletas sobrantes mas ciudadanos que votaron menor a boletas entregadas"> <a><i class='fas fa-check'></i></a></button>`;
+                            } else {
+                                return `<button type='button' class='btn  btn-danger btn-sm' data-toggle="tooltip" data-placement="top" title="Boletas sobrantes mas ciudadanos que votaron mayor a boletas entregadas"><a><i class='fas fa-times'></i></a></button>`;
+                            }
+                        }, "width": "5%"
+                    },
+                    {
+                        "data": "cau11",
+                        "render": function (data, type, row) {
+                            if (row.cau11 == false) {
+                                return `<button type='button' class='btn  btn-success btn-sm' data-toggle="tooltip" data-placement="top" title="Boletas sobrantes mas total de votos del sistema menor a boletas entregadas"> <a><i class='fas fa-check'></i></a></button>`;
+                            } else {
+                                return `<button type='button' class='btn  btn-danger btn-sm' data-toggle="tooltip" data-placement="top" title="Boletas sobrantes mas total de votos del sistema mayor a boletas entregadas"><a><i class='fas fa-times'></i></a></button>`;
+                            }
+                        }, "width": "5%"
+                    },
+                    { "data": "numcau", "width": "10%", "name": "Numero" },
+                    { "data": "idcau", "width": "10%", "visible": false },
+                    {
+                        "data": "idcau",
+                        "render": function (data, type, row) {
+                            if (row.numcau != 0) {
+                                return `<div class="text-center">
+                            <button type='button' class='btn btn-info text-white' style='cursor:pointer; width:120px;' onclick='Seleccionar(${data})'>
+                            Subsanar
+                            </button>`;
+                            }
+                            else {
+                                return `<div class="text-center">
+                            <p class="text-center">Sin causales</p> </div>`;
+                            }
+                        },
+
+                    }
+
+                ],
+                "language": {
+                    "decimal": ",",
+                    "emptyTable": "No hay registros",
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                    "infoEmpty": "Mostrando 0 de 0 Entradas",
+                    "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                    "infoPostFix": "",
+                    "thousands": ",",
+                    "lengthMenu": "Mostrar _MENU_ Entradas",
+                    "loadingRecords": "Cargando...",
+                    "processing": "Procesando...",
+                    "search": "Buscar:",
+                    "zeroRecords": "Sin resultados encontrados",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Ultimo",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    },
+                    "width": "100%"
+                }
+            });
+        }
+
+        function CargarDatatable2() {
+            var a = document.getElementById("eleccion").value;
+            dataTable = $("#tblcaulectura").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+                "ajax": {
+                    "url": `/admin/TRecepcionPaquetes/CargarCauPys`,
+                    "type": "GET",
+                    "datatype": "json"
+                },
+                "columns": [
+                    { "data": "seccion", "width": "15%" },
+                    { "data": "casilla", "width": "15%" },
+                    {
+                        "data": "cau1",
+                        "render": function (data, type, row) {
+                            if (row.cau1 == false) {
+                                return `<button type='button' class='btn  btn-success btn-sm' data-toggle="tooltip" data-placement="top" title="El paquete electoral fue entregado con el AEC" > <a><i class='fas fa-check'></i></a></button>`;
+                            } else {
+                                return `<button type='button' class='btn  btn-danger btn-sm' data-toggle="tooltip" data-placement="top" title="El paquete electoral fue entregado sin el AEC" ><a><i class='fas fa-times'></i></a></button>`;
+                            }
+                        }, "width": "5%"
+                    },
+                    {
+                        "data": "cau2",
+                        "render": function (data, type, row) {
+                            if (row.cau2 == false) {
+                                return `<button type='button' class='btn  btn-success btn-sm' data-toggle="tooltip" data-placement="top" title="Votos nulos menor a la diferencia entre el 1er y 2do lugar"> <a><i class='fas fa-check'></i></a></button>`;
+                            } else {
+                                return `<button type='button' class='btn  btn-danger btn-sm' data-toggle="tooltip" data-placement="top" title="Votos nulos mayor a la diferencia entre el 1er y 2do lugar"><a><i class='fas fa-times'></i></a></button>`;
+                            }
+                        }, "width": "5%"
+                    },
+                    {
+                        "data": "cau3",
+                        "render": function (data, type, row) {
+                            if (row.cau3 == false) {
+                                return `<button type='button' class='btn  btn-success btn-sm' data-toggle="tooltip" data-placement="top" title="Total de votos del sistema menor a las boletas entregadas"> <a><i class='fas fa-check'></i></a></button>`;
+                            } else {
+                                return `<button type='button' class='btn  btn-danger btn-sm' data-toggle="tooltip" data-placement="top" title="Total de votos del sistema mayor a las boletas entregadas"><a><i class='fas fa-times'></i></a></button>`;
+                            }
+                        }, "width": "5%"
+                    },
+                    {
+                        "data": "cau4",
+                        "render": function (data, type, row) {
+                            if (row.cau4 == false) {
+                                return `<button type='button' class='btn  btn-success btn-sm' data-toggle="tooltip" data-placement="top" title="Total de votos del sistema igual al total de votos del AEC"> <a><i class='fas fa-check'></i></a></button>`;
+                            } else {
+                                return `<button type='button' class='btn  btn-danger btn-sm' data-toggle="tooltip" data-placement="top" title="Total del votos del sistema diferente al total de votos del AEC"><a><i class='fas fa-times'></i></a></button>`;
+                            }
+                        }, "width": "5%"
+                    },
+                    {
+                        "data": "cau5",
+                        "render": function (data, type, row) {
+                            if (row.cau5 == false) {
+                                return `<button type='button' class='btn  btn-success btn-sm' data-toggle="tooltip" data-placement="top" title="Votos por mas de un partido politivo, coalición o candidato independiente"> <a><i class='fas fa-check'></i></a></button>`;
+                            } else {
+                                return `<button type='button' class='btn  btn-danger btn-sm' data-toggle="tooltip" data-placement="top" title="Votos por un solo partido politico, coalición o candidato independiente"><a><i class='fas fa-times'></i></a></button>`;
+                            }
+                        }, "width": "5%"
+                    },
+                    {
+                        "data": "cau6",
+                        "render": function (data, type, row) {
+                            if (row.cau6 == false) {
+                                return `<button type='button' class='btn  btn-success btn-sm' data-toggle="tooltip" data-placement="top" title="Acta legible"> <a><i class='fas fa-check'></i></a></button>`;
+                            } else {
+                                return `<button type='button' class='btn  btn-danger btn-sm' data-toggle="tooltip" data-placement="top" title="Acta Ilegible"><a><i class='fas fa-times'></i></a></button>`;
+                            }
+                        }, "width": "5%"
+                    },
+                    {
+                        "data": "cau7",
+                        "render": function (data, type, row) {
+                            if (row.cau7 == false) {
+                                return `<button type='button' class='btn  btn-success btn-sm' data-toggle="tooltip" data-placement="top" title="Acta sin alteraciones"> <a><i class='fas fa-check'></i></a></button>`;
+                            } else {
+                                return `<button type='button' class='btn  btn-danger btn-sm' data-toggle="tooltip" data-placement="top" title="Acta con alteraciones"><a><i class='fas fa-times'></i></a></button>`;
+                            }
+                        }, "width": "5%"
+                    },
+                    {
+                        "data": "cau8",
+                        "render": function (data, type, row) {
+                            if (row.cau8 == false) {
+                                return `<button type='button' class='btn  btn-success btn-sm' data-toggle="tooltip" data-placement="top" title="Paquete sin muestras de alteraciones"> <a><i class='fas fa-check'></i></a></button>`;
+                            } else {
+                                return `<button type='button' class='btn  btn-danger btn-sm' data-toggle="tooltip" data-placement="top" title="Paquete con muestras de alteraciones"><a><i class='fas fa-times'></i></a></button>`;
+                            }
+                        }, "width": "5%"
+                    },
+                    {
+                        "data": "cau9",
+                        "render": function (data, type, row) {
+                            if (row.cau9 == false) {
+                                return `<button type='button' class='btn  btn-success btn-sm' data-toggle="tooltip" data-placement="top" title="Ciudadanos que votaron igual al total de votos del sistema"> <a><i class='fas fa-check'></i></a></button>`;
+                            } else {
+                                return `<button type='button' class='btn  btn-danger btn-sm' data-toggle="tooltip" data-placement="top" title="Ciudadanos que votaron diferente al total de votos del sistema"><a><i class='fas fa-times'></i></a></button>`;
+                            }
+                        }, "width": "5%"
+                    },
+                    {
+                        "data": "cau10",
+                        "render": function (data, type, row) {
+                            if (row.cau10 == false) {
+                                return `<button type='button' class='btn  btn-success btn-sm' data-toggle="tooltip" data-placement="top" title="Boletas sobrantes mas ciudadanos que votaron menor a boletas entregadas"> <a><i class='fas fa-check'></i></a></button>`;
+                            } else {
+                                return `<button type='button' class='btn  btn-danger btn-sm' data-toggle="tooltip" data-placement="top" title="Boletas sobrantes mas ciudadanos que votaron mayor a boletas entregadas"><a><i class='fas fa-times'></i></a></button>`;
+                            }
+                        }, "width": "5%"
+                    },
+                    {
+                        "data": "cau11",
+                        "render": function (data, type, row) {
+                            if (row.cau11 == false) {
+                                return `<button type='button' class='btn  btn-success btn-sm' data-toggle="tooltip" data-placement="top" title="Boletas sobrantes mas total de votos del sistema menor a boletas entregadas"> <a><i class='fas fa-check'></i></a></button>`;
+                            } else {
+                                return `<button type='button' class='btn  btn-danger btn-sm' data-toggle="tooltip" data-placement="top" title="Boletas sobrantes mas total de votos del sistema mayor a boletas entregadas"><a><i class='fas fa-times'></i></a></button>`;
+                            }
+                        }, "width": "5%"
+                    },
+                    { "data": "numcau", "width": "10%", "name": "Numero" },
+                    { "data": "idcau", "width": "10%", "visible": false }
+                   
+                ],
+                "language": {
+                    "decimal": ",",
+                    "emptyTable": "No hay registros",
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                    "infoEmpty": "Mostrando 0 de 0 Entradas",
+                    "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                    "infoPostFix": "",
+                    "thousands": ",",
+                    "lengthMenu": "Mostrar _MENU_ Entradas",
+                    "loadingRecords": "Cargando...",
+                    "processing": "Procesando...",
+                    "search": "Buscar:",
+                    "zeroRecords": "Sin resultados encontrados",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Ultimo",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    },
+                    "width": "100%"
+                }
+            });
+        }
+    </script>
+    <script src="~/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+}

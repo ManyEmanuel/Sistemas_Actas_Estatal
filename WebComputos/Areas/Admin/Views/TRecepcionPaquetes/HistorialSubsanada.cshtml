@@ -1,0 +1,273 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<head>
+    <link rel="stylesheet" href="~/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+</head>
+<br />
+<style>
+    .centrar {
+        justify-content: center;
+        align-items: center;
+    }
+
+    .centrar {
+        justify-content: center;
+        align-items: center;
+    }
+
+    table.dataTable tbody td {
+        vertical-align: middle;
+    }
+</style>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Listado de Casillas subsanadas</h3>
+            </div>
+            <div class="card-body">
+                <table id="tblHistorial" class="table table-hover table-bordered text-center">
+                    <thead>
+                        <tr>
+                            <th class="text-center">Sección</th>
+                            <th class="text-center">Casilla</th>
+                            <th class="text-center">Elección</th>
+                            <th class="text-center">Fecha de Solicitud</th>
+                            <th class="text-center">Opciones</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Listado Historico de casillas restablecidas</h3>
+            </div>
+            <div class="card-body">
+                <table id="tblhistorico" class="table table-hover table-bordered text-center">
+                    <thead>
+                        <tr>
+                            <th class="text-center">Sección</th>
+                            <th class="text-center">Casilla</th>
+                            <th class="text-center">Elección</th>
+                            <th class="text-center">Fecha Solicitud</th>
+                            <th class="text-center">Fecha Resolución</th>
+                            <th class="text-center">Resolución</th>
+
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<input type="hidden" />
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="ModalA" aria-hidden="true" id="ModalDetalle">
+    <div class="modal-dialog modal-lg" id="ModalA">
+        <div class="modal-content">
+            <div id="VistaParcial" class="col-md-12">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            CargarDatatable();
+            CargarDatatable2();
+        });
+
+        function Seleccionar(id) {
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'mr-2 btn btn-danger'
+                },
+                buttonsStyling: false,
+            })
+
+            swalWithBootstrapButtons.fire({
+                title: 'Esta seguro de restablecer las causales a esta casilla',
+                text: "Al seleccionar Si, se mandara una solicitud para que los administradores acepten o rechacen que las causales sean restablecidas",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Si, Solicitar!',
+                cancelButtonText: 'No, Cancelar!',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.value) {
+                    $.ajax({
+                        type: 'POST',
+                        url: "/Admin/TRecepcionPaquetes/SolicitaRestablecer",
+                        data: {
+                            id: id
+                        },
+                        success: function (data) {
+                            if (data.success) {
+                                toastr.success(data.mensaje);
+                                window.setTimeout(Refresco, 3000);
+                            } else {
+                                toastr.error(data.mensaje);
+                            }
+                        }
+                    })
+                }
+            })
+        }
+
+
+        function VerCausal() {
+            var a = arguments[0];
+            $("#VistaParcial").load('VistaHistorial/?id=' + a , function () {
+                $("#ModalDetalle").modal({ show: true, backdrop: 'static', keyboard: false })
+            });
+        }
+
+        function CargarDatatable2() {
+            dataTable = $("#tblhistorico").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+                "ajax": {
+                    "url": "/admin/TRecepcionPaquetes/CargarHistorico/",
+                    "type": "GET",
+                    "datatype": "json",
+                },
+                "columns": [
+                    { "data": "lCasilla.lSeccion.seccion", "width": "15%" },
+                    { "data": "lCasilla.nombre", "width": "15%" },
+                    { "data": "lTipo_Eleccion.nombre", "width": "15%" },
+                    { "data": "fechaHora",
+                        "render": function (data) {
+                            return moment(data).format('DD/MM/YYYY HH:mm');
+                        }, "width": "20%"
+                    },
+                    { "data": "fechaHoraRespuesta",
+                        "render": function (data) {
+                            return moment(data).format('DD/MM/YYYY HH:mm');
+                        }, "width": "20%"
+                    },
+                    {
+                        "data": "estatus",
+                        "render": function (data, type, row) {
+                            if (row.estatus == true) {
+                                return `<button type='button' class='btn  btn-success btn-sm' <a><i class='fas fa-check'></i></a> Aceptada</button>`;
+                            } else {
+                                return `<button type='button' class='btn  btn-danger btn-sm' <a><i class='fas fa-times'></i></a> Rechazada</button>`;
+                            };
+                        }, "width": "15%"
+                    }
+                ],
+                "language": {
+                    "decimal": ",",
+                    "emptyTable": "No hay registros",
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                    "infoEmpty": "Mostrando 0 de 0 Entradas",
+                    "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                    "infoPostFix": "",
+                    "thousands": ",",
+                    "lengthMenu": "Mostrar _MENU_ Entradas",
+                    "loadingRecords": "Cargando...",
+                    "processing": "Procesando...",
+                    "search": "Buscar:",
+                    "zeroRecords": "Sin resultados encontrados",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Ultimo",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    },
+                    "width": "100%"
+                }
+            });
+        }
+
+        function CargarDatatable() {
+            dataTable = $("#tblHistorial").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+                "ajax": {
+                    "url": "/admin/TRecepcionPaquetes/CargarHistorial/",
+                    "type": "GET",
+                    "datatype": "json",
+                },
+                "columns": [
+                    { "data": "lCasilla.lSeccion.seccion", "width": "20%" },
+                    { "data": "lCasilla.nombre", "width": "20%" },
+                    { "data": "lTipo_Eleccion.nombre", "width": "20%" },
+                    { "data": "fechaHora_Solicitud",
+                        "render": function (data) {
+                            return moment(data).format('DD/MM/YYYY HH:mm');
+                        }, "width": "20%"
+                    },
+                    {
+                        "data": "id",
+                        "render": function (data, type, row) {
+                            if (row.solicitud == 0) {
+                                return `
+                                <button type='button' class='btn btn-info text-white' style='cursor:pointer; width:120px;' onclick='Seleccionar(${data})'>
+                                Restablecer
+                                </button>
+                                &nbsp
+                                 <button type='button' class='btn btn-info text-white' style='cursor:pointer; width:120px;' onclick='VerCausal(${data})'>
+                            Ver Detalle
+                            </button> `;
+                            }
+                            else if(row.solicitud == 1)
+                            {
+                                return `
+                                <a>Solicitud en proceso</a>`;
+                            }
+                            
+
+                        }, "width": "40%"
+                    }
+                ],
+                "language": {
+                    "decimal": ",",
+                    "emptyTable": "No hay registros",
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                    "infoEmpty": "Mostrando 0 de 0 Entradas",
+                    "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                    "infoPostFix": "",
+                    "thousands": ",",
+                    "lengthMenu": "Mostrar _MENU_ Entradas",
+                    "loadingRecords": "Cargando...",
+                    "processing": "Procesando...",
+                    "search": "Buscar:",
+                    "zeroRecords": "Sin resultados encontrados",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Ultimo",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    },
+                    "width": "100%"
+                }
+            });
+        }
+
+
+
+        function Refresco() {
+            window.location.reload(true);
+        }
+
+    </script>
+    <script src="~/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+}

@@ -1,0 +1,494 @@
+﻿@{
+    Layout = "";
+}
+<head>
+    <link rel="stylesheet" href="~/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+</head>
+<style>
+    .centrar {
+        justify-content: center;
+        align-items: center;
+    }
+
+    table.dataTable tbody td {
+        vertical-align: middle;
+    }
+
+    .btnguar {
+        width: 40%;
+        margin: 0 auto;
+        display: inline-block;
+    }
+</style>
+<input type="hidden" id="eleccion" value="1" />
+@* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- *@
+
+<div class="row>">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card card-purple">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-tag"></i>
+                        Referencia de Causales
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-md-2"> Causal No. 1</dt>
+                        <dd class="col-md-10"> El Paquete Electoral fue entregado sin el AECC</dd>
+                        <dt class="col-md-2"> Causal No. 2</dt>
+                        <dd class="col-md-10"> Votos Nulos mayor a la diferencia entre el 1er y 2do lugar</dd>
+                        <dt class="col-md-2"> Causal No. 3</dt>
+                        <dd class="col-md-10"> Total de votos del sistema mayor a boletas entregadas</dd>
+                        <dt class="col-md-2"> Causal No. 4</dt>
+                        <dd class="col-md-10"> Total de votos del sistema diferente al total de votos del AECC</dd>
+                        <dt class="col-md-2"> Causal No. 5</dt>
+                        <dd class="col-md-10"> Votos para un solo Partido Político, Coalición o Candidato Independiente</dd>
+                        <dt class="col-md-2"> Causal No. 6</dt>
+                        <dd class="col-md-10"> Acta ilegible</dd>
+                        <dt class="col-md-2"> Causal No. 7</dt>
+                        <dd class="col-md-10"> Acta con alteraciones</dd>
+                        <dt class="col-md-2"> Causal No. 8</dt>
+                        <dd class="col-md-10"> Paquete con muestras de alteraciones</dd>
+                        <dt class="col-md-2"> Causal No. 9</dt>
+                        <dd class="col-md-10"> Ciudadanos que votaron diferente al total de votos del sistema</dd>
+                        <dt class="col-md-2"> Causal No. 10</dt>
+                        <dd class="col-md-10"> Boletas sobrantes más ciudadanos que votaron mayor a boletas entregadas</dd>
+                        <dt class="col-md-2"> Causal No. 11</dt>
+                        <dd class="col-md-10"> Boletas sobrantes más total de votos del sistema mayor a boletas entregadas</dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="card card-purple">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-print"></i>
+                        Imprimir referencia de causales
+                    </h3>
+                </div>
+                <div class="card-body text-center">
+                    <a class="btn btn-secondary form-control btn-block btnguar" asp-area="Admin" asp-controller="TRecepcionPaquetes" asp-action="ImprimirCausal" target="_blank"><i class="fas fa-print"></i>  Imprimir</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+
+            <div class="card card-purple">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-print"></i>
+                        Reporte de Casillas con y sin causales de recuento
+                    </h3>
+                </div>
+                <div class="card-body text-center">
+                    <a class="btn btn-success btnguar form-control" asp-area="Admin" asp-controller="TRecepcionPaquetes" asp-action="ImprimirGobAdmin" asp-route-id="@ViewBag.IdMunicipio" target="_blank"><i class="fas fa-print"></i>  Imprimir</a>
+                </div>
+            </div>
+            @*
+        @if (ViewBag.PorcentajeDiferencia <= 1)
+        {
+            <div class="card card-red">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-balance-scale"></i>
+                        Diferencia entre el 1er. y 2do. lugar
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <h4 class="card-text text-center">En término del Artículo 214, Fracción III; de la Ley Electoral del Estado de Nayarit</h4>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card  card-red text-center">
+                                <div class="card-header text-center">
+                                    <h5 class="card-text text-center">
+                                        <strong>Votos</strong>
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-text text-center"> @ViewBag.VotosDiferencia </h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card text-center card-red">
+                                <div class="card-header text-center">
+                                    <h5 class="card-text text-center">
+                                        <strong>Porcentaje</strong>
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-text text-center"> @ViewBag.PorcentajeDiferencia % </h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-muted">
+                    <i>Diferencia entre el 1er y el 2do lugar menor al 1%</i>
+                </div>
+            </div>
+            @if (ViewBag.PorcentajeDiferencia <= 2 && ViewBag.Porcentaje > 20)
+            {
+                <div class="card card-red">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-balance-scale"></i>
+                            Casillas Objeto de Recuento
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <h4 class="card-text text-center">En término del Artículo 213, de la Ley Electoral del Estado de Nayarit</h4>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card  card-red text-center">
+                                    <div class="card-header text-center">
+                                        <h5 class="card-text text-center">
+                                            <strong>Votos</strong>
+                                        </h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-text text-center"> @ViewBag.VotosDiferencia </h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card text-center card-red">
+                                    <div class="card-header text-center">
+                                        <h5 class="card-text text-center">
+                                            <strong>Porcentaje</strong>
+                                        </h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-text text-center"> @ViewBag.PorcentajeDiferencia % </h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card text-center card-red">
+                                    <div class="card-header text-center">
+                                        <h5 class="card-text text-center">
+                                            <strong>Cantidad</strong>
+                                        </h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-text text-center"> @ViewBag.Causal </h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card text-center card-red">
+                                    <div class="card-header text-center">
+                                        <h5 class="card-text text-center">
+                                            <strong> Porcentaje</strong>
+                                        </h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-text text-center"> @ViewBag.Porcentaje % </h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer text-muted">
+                        <i>Diferencia entre el 1er y el 2do lugar menor al 2% o porcentaje total de casillas a recuento mayor al 20%</i>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="card card-purple">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-balance-scale"></i>
+                            Casillas Objeto de Recuento
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <h4 class="card-text text-center">En término del Artículo 213, de la Ley Electoral del Estado de Nayarit</h4>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card  card-purple text-center">
+                                    <div class="card-header text-center">
+                                        <h5 class="card-text text-center">
+                                            <strong>Votos</strong>
+                                        </h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-text text-center"> @ViewBag.VotosDiferencia </h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card text-center card-purple">
+                                    <div class="card-header text-center">
+                                        <h5 class="card-text text-center">
+                                            <strong>Porcentaje</strong>
+                                        </h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-text text-center"> @ViewBag.PorcentajeDiferencia % </h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card text-center card-purple">
+                                    <div class="card-header text-center">
+                                        <h5 class="card-text text-center">
+                                            <strong>Cantidad</strong>
+                                        </h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-text text-center"> @ViewBag.Causal </h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card text-center card-purple">
+                                    <div class="card-header text-center">
+                                        <h5 class="card-text text-center">
+                                            <strong> Porcentaje</strong>
+                                        </h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-text text-center"> @ViewBag.Porcentaje % </h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer text-muted">
+                        <i>Diferencia entre el 1er y el 2do lugar menor al 2% o porcentaje total de casillas a recuento mayor al 20%</i>
+                    </div>
+                </div>
+            }
+
+        }
+        else
+        {
+            <div class="card card-purple">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-balance-scale"></i>
+                        Diferencia entre el 1er. y 2do. lugar
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <h4 class="card-text text-center">En término del Artículo 214, Fracción III; de la Ley Electoral del Estado de Nayarit</h4>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card  card-purple text-center">
+                                <div class="card-header text-center">
+                                    <h5 class="card-text text-center">
+                                        <strong>Votos</strong>
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-text text-center"> @ViewBag.VotosDiferencia </h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card text-center card-purple">
+                                <div class="card-header text-center">
+                                    <h5 class="card-text text-center">
+                                        <strong>Porcentaje</strong>
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-text text-center"> @ViewBag.PorcentajeDiferencia % </h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-muted">
+                    <i>Diferencia entre el 1er y el 2do lugar menor al 1%</i>
+                </div>
+            </div>
+            @if (ViewBag.PorcentajeDiferencia <= 2 && ViewBag.Porcentaje > 20)
+            {
+                <div class="card card-red">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-balance-scale"></i>
+                            Casillas Objeto de Recuento
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <h4 class="card-text text-center">En término del Artículo 213, de la Ley Electoral del Estado de Nayarit</h4>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card  card-red text-center">
+                                    <div class="card-header text-center">
+                                        <h5 class="card-text text-center">
+                                            <strong>Votos</strong>
+                                        </h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-text text-center"> @ViewBag.VotosDiferencia </h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card text-center card-red">
+                                    <div class="card-header text-center">
+                                        <h5 class="card-text text-center">
+                                            <strong>Porcentaje</strong>
+                                        </h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-text text-center"> @ViewBag.PorcentajeDiferencia % </h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card text-center card-red">
+                                    <div class="card-header text-center">
+                                        <h5 class="card-text text-center">
+                                            <strong>Cantidad</strong>
+                                        </h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-text text-center"> @ViewBag.Causal </h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card text-center card-red">
+                                    <div class="card-header text-center">
+                                        <h5 class="card-text text-center">
+                                            <strong> Porcentaje</strong>
+                                        </h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-text text-center"> @ViewBag.Porcentaje % </h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer text-muted">
+                        <i>Diferencia entre el 1er y el 2do lugar menor al 2% o porcentaje total de casillas a recuento mayor al 20%</i>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="card card-purple">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-balance-scale"></i>
+                            Casillas Objeto de Recuento
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <h4 class="card-text text-center">En término del Artículo 213, de la Ley Electoral del Estado de Nayarit</h4>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card  card-purple text-center">
+                                    <div class="card-header text-center">
+                                        <h5 class="card-text text-center">
+                                            <strong>Votos</strong>
+                                        </h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-text text-center"> @ViewBag.VotosDiferencia </h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card text-center card-purple">
+                                    <div class="card-header text-center">
+                                        <h5 class="card-text text-center">
+                                            <strong>Porcentaje</strong>
+                                        </h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-text text-center"> @ViewBag.PorcentajeDiferencia % </h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card text-center card-purple">
+                                    <div class="card-header text-center">
+                                        <h5 class="card-text text-center">
+                                            <strong>Cantidad</strong>
+                                        </h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-text text-center"> @ViewBag.Causal </h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card text-center card-purple">
+                                    <div class="card-header text-center">
+                                        <h5 class="card-text text-center">
+                                            <strong> Porcentaje</strong>
+                                        </h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-text text-center"> @ViewBag.Porcentaje % </h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer text-muted">
+                        <i>Diferencia entre el 1er y el 2do lugar menor al 2% y porcentaje total de casillas a recuento mayor al 20%</i>
+                    </div>
+                </div>
+            }
+        }
+            *@
+        </div>
+    </div>
+    <div class="card card-purple">
+        <div class="card-header">
+            <h3 class="card-title">
+                <i class="fas fa-chart-bar"></i>
+                Avance en el captura de actas
+            </h3>
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-md-6"> <h5 class="card-text"> <strong>Avance en la captura de actas  completas (Resultados e información complementaria) </strong> </h5></dt>
+                <dd class="col-md-1"><h5 class="card-text">@ViewBag.Completos de @ViewBag.Secciones </h5></dd>
+                <dd class="col-md-1"> <h5 class="card-text">@ViewBag.PorCompletos % </h5></dd>
+                <dd class="col-md-2"> <h5 class="card-text"><strong> Proyectadas para recuento </strong></h5> </dd>
+                <dd class="col-md-2"> <h5 class="card-text">@ViewBag.Causal </h5></dd>
+
+                <dt class="col-md-6"> <h5 class="card-text"> <strong>Avance en la captura de información complementaria de actas </strong> </h5></dt>
+                <dd class="col-md-1"><h5 class="card-text"> @ViewBag.Complemento de @ViewBag.Secciones </h5></dd>
+                <dd class="col-md-1"> <h5 class="card-text">@ViewBag.PorComplemento % </h5></dd>
+                <dd class="col-md-2"> <h5 class="card-text"><strong> Proyectadas para cotejo</strong></h5> </dd>
+                <dd class="col-md-2"> <h5 class="card-text">@ViewBag.Cotejo </h5></dd>
+            </dl>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+
+    <script src="~/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+}

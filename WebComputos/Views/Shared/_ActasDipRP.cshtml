@@ -1,0 +1,91 @@
+﻿@model WebComputos.Models.T_Acta_RP
+@{
+    IEnumerable<SelectListItem> Estatus = ViewBag.Estatus;
+    IEnumerable<SelectListItem> DiputacionRP = ViewBag.DiputacionRP;
+}
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-secondary">
+                <div class="card-header">
+                    <h3 class="card-title">Actas de Diputado RP</h3>
+                </div>
+                <form id="RegistroActaDRP">
+                    <div class="card-body">
+                        <div class="text-danger"></div>
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <label>[1] Datos de la Casilla,</label>
+                                <label for="Seccion5">Sección:</label>
+                                @Html.DropDownList("DiputadoRP", DiputacionRP, "-Seleccione una sección-", new { @class = "form-control", @id = "Seccion5" })
+                            </div>
+                            <div class="col-md-3">
+                                <label for="casid5">Casilla:</label>
+                                <select id="casid5" name="casid" asp-items='@(new SelectList(string.Empty,"value","text"))' class="form-control"></select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="est">Estatus en la que se recibió el acta:</label>
+                                @Html.DropDownList("Estatus", Estatus, "-Estatus del Acta-", new { @class = "form-control", @id = "est5" })
+                                <span asp-validation-for="Estatus" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <label asp-for="Sobrantes" class="control-label">[2] Boletas sobrantes de la elección:</label>
+                                <input asp-for="Sobrantes" class="form-control" value="0" id="Sobrantes5" min="0"/>
+                                <span asp-validation-for="Sobrantes" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-3">
+                                <label asp-for="VotosCiudadanos" class="control-label">[3] Personas que votaron:</label>
+                                <input asp-for="VotosCiudadanos" class="form-control" id="Ciudadanos5" value="0" min="0"/>
+                                <span asp-validation-for="VotosCiudadanos" class="text-danger"></span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group row">
+                           
+                            <div class="col-md-3">
+                                <label asp-for="VotosUrnas" class="control-label">Votos de la elección sacados de la urna:</label>
+                                <input asp-for="VotosUrnas" class="form-control" id="Urnas5" value="0" min="0"/>
+                                <span asp-validation-for="VotosUrnas" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-3">
+                                
+                                <label class="control-label">¿Se presentaron incidentes durante el escrutinio y cómputo de la elección?</label>
+                                <div class="row">
+                                    <div class="col-md-6 text-center">
+                                        <input class="custom-control-input" name="Chein5" type="radio" id="inci9" value="True" />
+                                        <label for="inci9" class="custom-control-label">Si</label>
+                                    </div>
+                                    <div class="col-md-6 text-center">
+                                        <input class="custom-control-input" name="Chein5" type="radio" id="inci10" value="False" />
+                                        <label for="inci10" class="custom-control-label">No</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="control-label">Describa brevemente</label>
+                                <input type="text" id="Descri5" asp-for="DesIncidentes" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <input type="hidden" asp-for="Incidentes" class="form-control" id="incidente5" />
+                            <span asp-validation-for="Incidentes" class="text-danger"></span>
+                        </div>
+                        <div class="text-right">
+                            <button type="button" onclick="RegistrarDRP()" class="btn btn-success btn-lg rounded">Guardar</button>
+                            <button type="button" class="btn btn-danger btn-lg rounded" style="width:auto;"><a asp-action="Index" class="text-white">Cancelar</a></button>
+                        </div>
+                        <div class="form-group">
+                            <input type="hidden" id="cmb5" class="form-control" value="3" placeholder="3" />
+                            <input type="hidden" id="idres5" asp-for="IdActaDetalle" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+

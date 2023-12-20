@@ -1,0 +1,310 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<head>
+    <link rel="stylesheet" href="~/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+</head>
+<br />
+<style>
+    .centrar {
+        justify-content: center;
+        align-items: center;
+    }
+
+    .centrar {
+        justify-content: center;
+        align-items: center;
+    }
+
+    table.dataTable tbody td {
+        vertical-align: middle;
+    }
+
+</style>
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Listado de ejercicios realizados para la elección de Presidencia y Sindicatura </h3>
+            </div>
+            <div class="card-body">
+                <table id="tblOpcion" class="table table-hover table-bordered text-center">
+                    <thead>
+                        <tr>
+                            <th class="text-center">#</th>
+                            <th class="text-center">Total de Grupos</th>
+                            <th class="text-center">Puntos de recuento</th>
+                            <th class="text-center">Casillas a recuento</th>
+                            <th class="text-center">Opciones</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Listado del ejercicio seleccionado para la elección de Presidencia y Sindicatura</h3>
+            </div>
+            <div class="card-body">
+                <table id="tblFinal" class="table table-hover table-bordered text-center">
+                    <thead>
+                        <tr>
+                            <th class="text-center">#</th>
+                            <th class="text-center">Total de Grupos</th>
+                            <th class="text-center">Puntos de recuento</th>
+                            <th class="text-center">Casillas a recuento</th>
+                            <th class="text-center">Opciones</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" value="@ViewBag.Comprobar" id="comprobacion" />
+</div>
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="ModalA" aria-hidden="true" id="ModalDetalle">
+    <div class="modal-dialog modal-lg" id="ModalA">
+        <div class="modal-content">
+            <div id="VistaParcial" class="col-md-12">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+
+            CargarDatatable();
+            CargarDatatable2();
+            //setTimeout(ContarReg, 500)
+
+        });
+
+        function VerCuadro() {
+            var a = arguments[0];
+            $("#VistaParcial").load('VistaEjercicio/?id=' + a + '&ele=' + 2 + '&dd=' + 0, function () {
+                $("#ModalDetalle").modal({ show: true, backdrop: 'static', keyboard: false })
+                
+            });
+        }
+
+        function Seleccionar(id) {
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'mr-2 btn btn-danger'
+                },
+                buttonsStyling: false,
+            })
+
+            swalWithBootstrapButtons.fire({
+                title: 'Esta seguro de aplicar este ejercicio',
+                text: "Una vez aplicado no se podra generar cambios!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Si, Aplicar!',
+                cancelButtonText: 'No, Cancelar!',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.value) {
+                    $.ajax({
+                        type: 'POST',
+                        url: "/Admin/TRecepcionPaquetes/SeleccionarEjercicio",
+                        data: {
+                            id: id,
+                            ele: 2,
+                            dd: 0
+                        },
+                        success: function (data) {
+                            if (data.success) {
+                                toastr.success(data.descripcion);
+
+                            } else {
+                                toastr.error(data.descripcion);
+                            }
+                        }
+                    })
+                }
+            })
+        }
+        
+
+        function CargarDatatable() {
+            var a = document.getElementById("comprobacion").value;
+            if (a != 0) {
+                dataTable = $("#tblOpcion").DataTable({
+                    "responsive": true,
+                    "autoWidth": false,
+                    "ajax": {
+                        "url": `/admin/TRecepcionPaquetes/EnsayosPRPys`,
+                        "type": "GET",
+                        "datatype": "json"
+                    },
+
+                    "columns": [
+                        { "data": "noEjercicio", "width": "5%" },
+                        { "data": "noGrupos", "width": "10%" },
+                        { "data": "puntosRecuento", "width": "10%" },
+                        { "data": "totalCasillas", "width": "10%" },
+                        {
+                            "data": "noEjercicio", "render": function (data) {
+                                return `<div class="text-center">
+                            <button type='button' class='btn btn-info text-white' style='cursor:pointer; width:120px;' onclick='VerCuadro(${data})'>
+                            Ver Detalle
+                            </button>
+                            
+                             </div>`;
+                            }, "width": "65%"
+                        }
+
+                    ],
+                    "language": {
+                        "decimal": ",",
+                        "emptyTable": "No hay registros",
+                        "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                        "infoEmpty": "Mostrando 0 de 0 Entradas",
+                        "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                        "infoPostFix": "",
+                        "thousands": ",",
+                        "lengthMenu": "Mostrar _MENU_ Entradas",
+                        "loadingRecords": "Cargando...",
+                        "processing": "Procesando...",
+                        "search": "Buscar:",
+                        "zeroRecords": "Sin resultados encontrados",
+                        "paginate": {
+                            "first": "Primero",
+                            "last": "Ultimo",
+                            "next": "Siguiente",
+                            "previous": "Anterior"
+                        },
+                        "width": "100%"
+                    }
+                });
+            }
+            else {
+                dataTable = $("#tblOpcion").DataTable({
+                    "responsive": true,
+                    "autoWidth": false,
+                    "ajax": {
+                        "url": `/admin/TRecepcionPaquetes/EnsayosPRPys`,
+                        "type": "GET",
+                        "datatype": "json"
+                    },                
+                    "columns": [
+                        { "data": "noEjercicio", "width": "5%" },
+                        { "data": "noGrupos", "width": "10%" },
+                        { "data": "puntosRecuento", "width": "10%" },
+                        { "data": "totalCasillas", "width": "10%" },
+                        {
+                            "data": "noEjercicio", "render": function (data) {
+                                return `<div class="text-center">
+                            <button type='button' class='btn btn-info text-white' style='cursor:pointer; width:120px;' onclick='VerCuadro(${data})'>
+                            Ver Detalle
+                            </button>   
+                            &nbsp;
+                            <button type='button' class='btn btn-info text-white' style='cursor:pointer; width:120px;' onclick='Seleccionar(${data})'>
+                            Seleccionar
+                            </button>
+                             </div>`;
+                            }, "width": "65%"
+                        }
+
+                    ],
+
+
+                    "language": {
+                        "decimal": ",",
+                        "emptyTable": "No hay registros",
+                        "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                        "infoEmpty": "Mostrando 0 de 0 Entradas",
+                        "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                        "infoPostFix": "",
+                        "thousands": ",",
+                        "lengthMenu": "Mostrar _MENU_ Entradas",
+                        "loadingRecords": "Cargando...",
+                        "processing": "Procesando...",
+                        "search": "Buscar:",
+                        "zeroRecords": "Sin resultados encontrados",
+                        "paginate": {
+                            "first": "Primero",
+                            "last": "Ultimo",
+                            "next": "Siguiente",
+                            "previous": "Anterior"
+                        },
+                        "width": "100%"
+                    }
+                });
+            }
+           
+        }
+
+        function CargarDatatable2() {
+            dataTable = $("#tblFinal").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+                "ajax": {
+                    "url": `/admin/TRecepcionPaquetes/FinalPRPys`,
+                    "type": "GET",
+                    "datatype": "json"
+                },
+                "columns": [
+                    { "data": "noEjercicio", "width": "5%" },
+                    { "data": "noGrupos", "width": "10%" },
+                    { "data": "puntosRecuento", "width": "10%" },
+                    { "data": "totalCasillas", "width": "10%" },
+                    {
+                        "data": "noEjercicio", "render": function (data) {
+                            return `<div class="text-center">
+                            <button type='button' class='btn btn-info text-white' style='cursor:pointer; width:120px;' onclick='VerCuadro(${data})'>
+                            Ver Detalle
+                            </button>   
+                            &nbsp;
+                             <a href='/admin/TRecepcionPaquetes/ImprimirCasillas/?id=${data}&ele=2&dd=0' target='_blank' class='btn btn-info text-white' style='cursor:pointer; width:120px;' >
+                             Generar
+                            </a>
+           
+                             </div>`;
+                        }, "width": "65%"
+                    }
+
+                ],
+                "language": {
+                    "decimal": ",",
+                    "emptyTable": "No hay registros",
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                    "infoEmpty": "Mostrando 0 de 0 Entradas",
+                    "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                    "infoPostFix": "",
+                    "thousands": ",",
+                    "lengthMenu": "Mostrar _MENU_ Entradas",
+                    "loadingRecords": "Cargando...",
+                    "processing": "Procesando...",
+                    "search": "Buscar:",
+                    "zeroRecords": "Sin resultados encontrados",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Ultimo",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    },
+                    "width": "100%"
+                }
+            });
+        }
+
+    </script>
+
+    <script src="~/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+}

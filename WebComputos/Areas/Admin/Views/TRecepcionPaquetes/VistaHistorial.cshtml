@@ -1,0 +1,239 @@
+﻿
+@{    
+    Layout = "";
+    T_HistorialSubsanar Ejercicio = ViewBag.Causal;
+}
+<head>
+    <link rel="stylesheet" href="~/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+</head>
+<br />
+<style>
+    .centrar {
+        justify-content: center;
+        align-items: center;
+    }
+
+    .centrar {
+        justify-content: center;
+        align-items: center;
+    }
+
+    table.dataTable tbody td {
+        vertical-align: middle;
+    }
+</style>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Causales subsanadas en la elección de @ViewBag.Ele en la casilla @ViewBag.Casilla de la sección @ViewBag.Seccion </h3>
+            </div>
+            <div class="card-body">
+                <table id="tblvista" class="table table-hover table-bordered text-center">
+                    <thead>
+                        <tr>
+                            <th class="text-center">Causal</th>
+                            <th class="text-center">Estatus</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>El Paquete Electoral fue entregado sin el AECC</td>
+                            @{
+                                if (Ejercicio.Causal1 == false)
+                                {
+                                    <td><a><i class='fas fa-check'></i></a> </td>
+                                }
+                                else
+                                {
+                                    <td><a><i class='fas fa-times'></i></a></td>
+                                }
+                            }
+
+                        </tr>
+                        <tr>
+                            <td>Votos Nulos mayor a la diferencia entre el 1er y 2do lugar</td>
+                            @{
+                                if (Ejercicio.Causal2 == false)
+                                {
+                                    <td><a><i class='fas fa-check'></i></a> </td>
+                                }
+                                else
+                                {
+                                    <td><a><i class='fas fa-times'></i></a></td>
+                                }
+                            }
+
+                        </tr>
+                        <tr>
+                            <td>Total de votos del sistema mayor a boletas entregadas</td>
+                            @{
+                                if (Ejercicio.Causal3 == false)
+                                {
+                                    <td><a><i class='fas fa-check'></i></a> </td>
+                                }
+                                else
+                                {
+                                    <td><a><i class='fas fa-times'></i></a></td>
+                                }
+                            }
+
+                        </tr>
+                        <tr>
+                            <td>Total de votos del sistema diferente al total de votos del AECC</td>
+                            @{
+                                if (Ejercicio.Causal4 == false)
+                                {
+                                    <td><a><i class='fas fa-check'></i></a> </td>
+                                }
+                                else
+                                {
+                                    <td><a><i class='fas fa-times'></i></a></td>
+                                }
+                            }
+
+                        </tr>
+                        <tr>
+                            <td>Votos para un solo Partido Político, Coalición o Candidato Independiente</td>
+                            @{
+                                if (Ejercicio.Causal5 == false)
+                                {
+                                    <td><a><i class='fas fa-check'></i></a> </td>
+                                }
+                                else
+                                {
+                                    <td><a><i class='fas fa-times'></i></a></td>
+                                }
+                            }
+
+                        </tr>
+                        <tr>
+                            <td>Acta ilegible</td>
+                            @{
+                                if (Ejercicio.Causal6 == false)
+                                {
+                                    <td><a><i class='fas fa-check'></i></a> </td>
+                                }
+                                else
+                                {
+                                    <td><a><i class='fas fa-times'></i></a></td>
+                                }
+                            }
+
+                        </tr>
+                        <tr>
+                            <td>Acta con alteraciones</td>
+                            @{
+                                if (Ejercicio.Causal7 == false)
+                                {
+                                    <td><a><i class='fas fa-check'></i></a> </td>
+                                }
+                                else
+                                {
+                                    <td><a><i class='fas fa-times'></i></a></td>
+                                }
+                            }
+
+                        </tr>
+                        <tr>
+                            <td>Paquete con muestras de alteraciones</td>
+                            @{
+                                if (Ejercicio.Causal8 == false)
+                                {
+                                    <td><a><i class='fas fa-check'></i></a> </td>
+                                }
+                                else
+                                {
+                                    <td><a><i class='fas fa-times'></i></a></td>
+                                }
+                            }
+
+                        </tr>
+                        <tr>
+                            <td>Ciudadanos que votaron diferente al total de votos del sistema</td>
+                            @{
+                                if (Ejercicio.Causal9 == false)
+                                {
+                                    <td><a><i class='fas fa-check'></i></a> </td>
+                                }
+                                else
+                                {
+                                    <td><a><i class='fas fa-times'></i></a></td>
+                                }
+                            }
+
+                        </tr>
+                        <tr>
+                            <td>Boletas sobrantes más ciudadanos que votaron mayor a boletas entregadas</td>
+                            @{
+                                if (Ejercicio.Causal10 == false)
+                                {
+                                    <td><a><i class='fas fa-check'></i></a> </td>
+                                }
+                                else
+                                {
+                                    <td><a><i class='fas fa-times'></i></a></td>
+                                }
+                            }
+
+                        </tr>
+                        <tr>
+                            <td> Boletas sobrantes más total de votos del sistema mayor a boletas entregadas</td>
+                            @{
+                                if (Ejercicio.Causal11 == false)
+                                {
+                                    <td><a><i class='fas fa-check'></i></a> </td>
+                                }
+                                else
+                                {
+                                    <td><a><i class='fas fa-times'></i></a></td>
+                                }
+                            }
+
+                        </tr>
+                        <tr>
+                            <td> Total de causales</td>
+                            <td>@Ejercicio.Total_Causales </td>
+                        </tr>
+                        <tr>
+                            <td> Tipo de recuento</td>
+                            @{
+                                if (Ejercicio.Recuento_Total == false)
+                                {
+                                    <td>Recuento Parcial </td>
+                                }
+                                else
+                                {
+                                    <td>Recuento Total </td>
+                                }
+                            }
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer">               
+                <div class="col-8 offset-4">
+                    <div class="text-right">
+                        <button type="button" class="btn btn-danger"
+                                data-dismiss="modal">
+                            Cerrar
+                        </button>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+    </script>
+
+    <script src="~/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+}

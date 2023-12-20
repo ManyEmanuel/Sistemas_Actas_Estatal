@@ -1,0 +1,43 @@
+﻿@model WebComputos.Models.ViewModels.T_Actas_RP_VM
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<br />
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-secondary">
+            <div class="card-header text-center">
+                <h3 class="card-title">Registro de los resultados de la elección de Diputaciones RP del municipio de @ViewBag.Create</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-2">
+                        <label for="Seccion1">Sección:</label>
+                        @Html.DropDownListFor(m => m.LSeccionDip, Model.LSeccionDip,
+                         "-Seleccione una sección-", new { @class = "form-control", @id = "SeccionDipRP" })
+                    </div>
+                    <div class="col-md-2">
+                        <label for="casid">Casilla:</label>
+                        <select id="DiputadoRP" name="casid" asp-items='@(new SelectList(string.Empty,"value","text"))' class="form-control"></select>
+
+                    </div>
+                    <div class="col-md-1">
+                        <label for="llamar" class="text-white">.</label>
+                        <button type="button" id="llamar" class="btn btn-success form-control">Capturar</button>
+                        <input type="hidden" id="IdDip" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<div id="VistaParcial" class="col-md-12">
+</div>
+@section Scripts
+{
+   
+    <script src="~/js/ResultadosDipRP.js"></script>
+}

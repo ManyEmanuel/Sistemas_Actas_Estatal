@@ -1,0 +1,192 @@
+﻿@model WebComputos.Models.T_Acta_Extranjero
+@{
+    ViewData["Title"] = "Voto en el Extranjero";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<br />
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-secondary">
+            <div class="card-header">
+                Registro de información complementaria del Acta del Voto en el Extranjero
+            </div>
+            <div class="card-body">
+                <form id="ActaExtranjero">
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label asp-for="NumMesa">[1] Número de Mesa </label>
+                            <input asp-for="NumMesa" class="form-control" id="Mesa" />
+                            <span asp-validation-for="NumMesa" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-3">
+                            <label asp-for="Instalacion">[2] Hora de instalación de la mesa</label>
+                            <input type="time" asp-for="Instalacion" class="form-control" id="HoraInst" />
+                            <span asp-validation-for="Instalacion" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="control-label text-center">[3]¿Comprobó que la urna estaba vacía?</label>
+                            <div class="row">
+                                <div class="col-md-6 text-center">
+                                    <input class="custom-control-input" name="urna" type="radio" id="UrnaSi" value="True" />
+                                    <label for="UrnaSi" class="custom-control-label">Si</label>
+                                    <span asp-validation-for="UrnaVacia" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6 text-center">
+                                    <input class="custom-control-input" name="urna" type="radio" id="UrnaNo" value="False" />
+                                    <label for="UrnaNo" class="custom-control-label">No</label>
+                                    <span asp-validation-for="UrnaVacia" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="control-label text-center">¿La urna se colocó a la vista de todos?</label>
+                            <div class="row">
+                                <div class="col-md-6 text-center">
+                                    <input class="custom-control-input" name="vista" type="radio" id="VistaSi" value="True" />
+                                    <label for="VistaSi" class="custom-control-label">Si</label>
+                                    <span asp-validation-for="UrnaVista" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6 text-center">
+                                    <input class="custom-control-input" name="vista" type="radio" id="VistaNo" value="False" />
+                                    <label for="VistaNo" class="custom-control-label">No</label>
+                                    <span asp-validation-for="UrnaVista" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label asp-for="PersonasVotaron">[4] Personas que votaron </label>
+                            <input asp-for="PersonasVotaron" class="form-control" id="Personas" />
+                            <span asp-validation-for="PersonasVotaron" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-3">
+                            <label asp-for="SobreVotos">[5] Sobres con los votos </label>
+                            <input asp-for="SobreVotos" class="form-control" id="Sobres" />
+                            <span asp-validation-for="SobreVotos" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-3">
+                            <label asp-for="Deposito">[6] Hora de depósito de boletas en la urna</label>
+                            <input type="time" asp-for="Deposito" class="form-control" id="HoraDep" />
+                            <span asp-validation-for="Deposito" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-3">
+                            <label asp-for="VotosUrnas">[7] Votos de la elección sacados de la urna</label>
+                            <input asp-for="VotosUrnas" class="form-control" id="Boletas" />
+                            <span asp-validation-for="VotosUrnas" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label class="control-label">¿Se presentaron incidentes durante el escrutinio y cómputo de la elección?</label>
+                            <div class="row">
+                                <div class="col-md-6 text-center">
+                                    <input class="custom-control-input" name="Incidente" type="radio" id="Inci1" value="True" />
+                                    <label for="Inci1" class="custom-control-label">Si</label>
+                                </div>
+                                <div class="col-md-6 text-center">
+                                    <input class="custom-control-input" name="Incidente" type="radio" id="Inci2" value="False" />
+                                    <label for="Inci2" class="custom-control-label">No</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="control-label">Describa brevemente</label>
+                            <input type="text" id="Descripcion" asp-for="DesIncidentes" class="form-control" />
+                        </div>
+                    </div>
+                    <br />
+                    <div class="form-group row">
+                        <div class="col-8 offset-4">
+                            <div class="text-right">
+                                <button type="button" onclick="RegistrarActa()" class="btn btn-success btn-lg rounded">Guardar</button>
+                                <button type="button" class="btn btn-danger btn-lg rounded" style="width:auto;"><a asp-action="IndexExt" class="text-white">Cancelar</a></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            Incidente();
+            document.getElementById("Descripcion").disabled = true;
+           
+        });
+
+        function Incidente() {
+            $("input[name=Incidente]").click(function () {
+                var res = $('input:radio[name=Incidente]:checked').val();
+                if (res == "False") {
+                    document.getElementById("Descripcion").disabled = true;
+                }
+                else {
+                    document.getElementById("Descripcion").disabled = false;
+                }
+            });
+        }
+
+        function Validar() {
+            var form = $('#ActaExtranjero');
+            $.validator.unobtrusive.parse(form);
+            var validate = form.validate().form();
+            var unobtrusiveValidation = form.data('unobtrusiveValidation');
+            return validate;
+        }
+
+        function Refresco() {
+            window.location.reload(true);
+        }
+
+        function RegistrarActa() {
+            if (Validar() == true) {
+                var items = {};
+                items["NumMesa"] = $("#Mesa").val();
+                items["Instalacion"] = $("#HoraInst").val();
+                items["UrnaVacia"] = $('input:radio[name=urna]:checked').val();
+                items["UrnaVista"] = $('input:radio[name=vista]:checked').val();
+                items["PersonasVotaron"] = $("#Personas").val();
+                items["SobreVotos"] = $("#Sobres").val();
+                items["Deposito"] = $("#HoraDep").val();
+                items["VotosUrnas"] = $("#Boletas").val();
+                items["Incidentes"] = $('input:radio[name=Incidente]:checked').val();
+                items["DesIncidentes"] = $("#Descripcion").val();
+
+                $.ajax({
+                    url: '/admin/VotoExtranjero/Create',
+                    type: 'POST',
+                    data: {
+                        item: items
+                    },
+                    success: function (data) {
+                        if (data.success) {
+
+                            toastr.success(data.mensaje, {
+                                closeButton: true,
+                                progressBar: true,
+                                showMethod: 'slideDown',
+                                timeOut: 2000
+                            });
+                            $('#ActaExtranjero input').attr('disabled', 'disabled');
+                            $('#ActaExtranjero button').attr('disabled', 'disabled');
+                            $('#ActaExtranjero select').attr('readonly', 'readonly');
+                            window.setTimeout(Refresco, 2000);
+
+                        }
+                        else {
+
+                            toastr.error(data.mensaje);
+                        }
+                    },
+
+                })
+            }
+        }
+
+    </script>
+}

@@ -1,0 +1,175 @@
+﻿@model WebComputos.Models.ViewModels.ReporteCausalesVM
+
+@{
+    ViewData["Title"] = "Reporte";
+    Layout = "";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/css/site.css" />
+
+        <!--Css todos-->
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
+    </head>
+    <body>
+        <style>
+            header {
+                width: auto;
+                clear: both;
+            }
+
+            .Texto {
+                width: auto;
+                height: 25px;
+                background: #656464;
+            }
+
+            .Texto1 {
+                text-align: center;
+                font-size: 140%;
+                font-weight: bold;
+                color: white;
+            }
+
+            .Texto2 {
+                text-align: center;
+                font-size: 140%;
+                font-weight: bold;
+                color: black;
+            }
+
+            .TextoCuerpo {
+                text-align: center;
+                font-size: 160%;
+            }
+
+            .TextoFirma {
+                text-align: center;
+                font-size: 120%;
+            }
+
+            .TextoCabecera {
+                text-align: center;
+                font-size: 120%;
+                font-weight: bold;
+                margin-bottom: 0px;
+                padding-bottom: 0em;
+            }
+
+            .color {
+                background-color: #F9B9EE;
+            }
+
+            .linea {
+                color: black;
+                font-size: 2;
+            }
+
+            .saltopagina {
+                display: none;
+            }
+
+            .saltopagina {
+                display: block;
+                page-break-before: always;
+            }
+
+            .Derecha {
+                text-align: right;
+            }
+
+            table td:first-child {
+                width: 20%;
+            }
+
+            table td:nth-child(2) {
+                width: 80%;
+            }
+
+        </style>
+        <header>
+            <div class="form-group row">
+                <div class="col-4">
+                    <img src="/Imagenes/Logos/IEEN200.png" />
+                </div>
+                <div class="col-4">
+                    <p class="Texto2">INSTITUTO ESTATAL ELECTORAL DE NAYARIT</p>
+                </div>
+            </div>
+        </header>
+        <div class=" Texto">
+            <p class="Texto1">
+                LISTADO DE LAS REFERENCIAS DE CAUSALES DEL SISTEMA DE ACTAS
+            </p>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-12">
+                <table class="table table-bordered">
+                    <thead class="thead-light">
+                        <tr>                            
+                            <th class="text-center" scope="col">Referencia de causal</th>
+                            <th class="text-center" scope="col">Descripción de la causal</th>
+                        </tr>
+                    </thead> 
+                    <tbody>
+                        <tr>
+                            <th class="text-center" scope="col">Causal 1</th>
+                            <td class="text-left">El Paquete Electoral fue entregado sin el AECC</td>
+                        </tr>
+                        <tr>
+                            <th class="text-center" scope="col">Causal 2</th>
+                            <td class="text-left">Votos Nulos mayor a la diferencia entre el 1er y 2do lugar</td>
+                        </tr>
+                        <tr>
+                            <th class="text-center" scope="col">Causal 3</th>
+                            <td class="text-left">Total de votos del sistema mayor a boletas entregadas</td>
+                        </tr>
+                        <tr>
+                            <th class="text-center" scope="col">Causal 4</th>
+                            <td class="text-left">Total de votos del sistema diferente al total de votos del AECC</td>
+                        </tr>
+                        <tr>
+                            <th class="text-center" scope="col">Causal 5</th>
+                            <td class="text-left">Votos para un solo Partido Político, Coalición o Candidato Independiente</td>
+                        </tr>
+                        <tr>
+                            <th class="text-center" scope="col">Causal 6</th>
+                            <td class="text-left">Acta ilegible</td>
+                        </tr>
+                        <tr>
+                            <th class="text-center" scope="col">Causal 7</th>
+                            <td class="text-left">Acta con alteraciones</td>
+                        </tr>
+                        <tr>
+                            <th class="text-center" scope="col">Causal 8</th>
+                            <td class="text-left"> Paquete con muestras de alteraciones</td>
+                        </tr>
+                        <tr>
+                            <th class="text-center" scope="col">Causal 9</th>
+                            <td class="text-left">Ciudadanos que votaron diferente al total de votos del sistema</td>
+                        </tr>
+                        <tr>
+                            <th class="text-center" scope="col">Causal 10</th>
+                            <td class="text-left">Boletas sobrantes más ciudadanos que votaron mayor a boletas entregadas</td>
+                        </tr>
+                        <tr>
+                            <th class="text-center" scope="col">Causal 11</th>
+                            <td class="text-left">Boletas sobrantes más total de votos del sistema mayor a boletas entregadas</td>
+                        </tr>
+                    </tbody>
+                                      
+                </table>
+            </div>
+        </div>
+       
+    </body>
+</html>

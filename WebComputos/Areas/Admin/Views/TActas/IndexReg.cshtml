@@ -1,0 +1,165 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    IEnumerable<SelectListItem> Municipio = ViewBag.ListaMunicipio;
+}
+<br />
+<head>
+    <link rel="stylesheet" href="~/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+</head>
+<br />
+<style>
+    .centrar {
+        justify-content: center;
+        align-items: center;
+    }
+
+    table.dataTable tbody td {
+        vertical-align: middle;
+    }
+</style>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                
+                    <h3 class="card-title">Información Complementaria de la elección de Regidurías del municipio de @ViewBag.Municipio</h3>
+               
+            </div>
+
+            <div class="card-body">
+                @{
+                    if (@User.IsInRole("CapturaRes"))
+                    {
+                        
+                        <div class="col-md text-right">
+                            <a asp-action="CreateReg"  class="btn btn-secondary"><i class="fas fa-plus"></i> Registrar Información Complementaria</a>
+                        </div>
+                    }
+                }
+
+                <br />
+                <table id="tblActasReg" class="table table-hover table-bordered text-center">
+                    <thead>
+                        <tr>
+                            <th class="text-center">Sección</th>
+                            <th class="text-center">Casilla</th>
+                            <th class="text-center">Opciones</th>
+
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    @*<script src="~/js/Actas.js"></script>*@
+    <script>
+        $(document).ready(function () {
+            CargarDatatable2();
+        });
+
+        function CargarDatatable2() {
+            dataTable = $("#tblActasReg").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+                "ajax": {
+                    "url": "/admin/TActas/CargarReg",
+                    "type": "GET",
+                    "datatype": "json",
+                    "data": { Ele : 4, DD:0}
+                },
+                "columns": [
+                    { "data": "lActaDetalle.lCasilla.lSeccion.seccion" },
+                    { "data": "lActaDetalle.lCasilla.nombre" },
+                    {
+                        "data": "idActa",
+                        "render": function (data) {
+                            return `<div class="text-center">
+                            <a href='/Admin/TActas/Detalle/${data}' class='btn btn-info text-white' style='cursor:pointer; width:120px;' >
+                            <i class='fas fa-list'></i> Ver detalle
+                            </a>
+                            &nbsp
+                            <button type='button' class='btn btn-danger text-white' style='cursor:pointer; width:120px;' onclick='Modificar(${data})'>
+                            Modificar
+                            </button>`;
+                        },
+                    }
+                ],
+                "language": {
+                    "decimal": ",",
+                    "emptyTable": "No hay registros",
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                    "infoEmpty": "Mostrando 0 de 0 Entradas",
+                    "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                    "infoPostFix": "",
+                    "thousands": ",",
+                    "lengthMenu": "Mostrar _MENU_ Entradas",
+                    "loadingRecords": "Cargando...",
+                    "processing": "Procesando...",
+                    "search": "Buscar:",
+                    "zeroRecords": "Sin resultados encontrados",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Ultimo",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    },
+                    "width": "100%"
+                }
+
+            });
+        }
+
+        function Modificar(id) {
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'mr-2 btn btn-danger'
+                },
+                buttonsStyling: false,
+            })
+
+            swalWithBootstrapButtons.fire({
+                title: 'Esta seguro de solicitar la restauración del registro de esta casilla',
+                text: "Los administradores recibiran la solicitud y aceptaran o rechazaran la misma",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Si!',
+                cancelButtonText: 'No!',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.value) {
+                    $.ajax({
+                        type: 'POST',
+                        url: "/Admin/TActas/SolicitaModificacion",
+                        data: {
+                            id: id
+                        },
+                        success: function (data) {
+                            if (data.success) {
+                                toastr.success(data.mensaje);
+                                window.setTimeout(Refresco, 1500);
+                            } else {
+                                toastr.error(data.mensaje);
+                            }
+                        }
+                    })
+                }
+            })
+        }
+
+        function Refresco() {
+            window.location.reload(true);
+        }
+
+    </script>
+    <script src="~/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+}

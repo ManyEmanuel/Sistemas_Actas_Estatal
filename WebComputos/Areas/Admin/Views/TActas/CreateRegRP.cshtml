@@ -1,0 +1,216 @@
+﻿@model WebComputos.Models.T_Acta_RP
+@{
+    IEnumerable<SelectListItem> Estatus = ViewBag.Estatus;
+    IEnumerable<SelectListItem> RegiduriaRP = ViewBag.RegiduriaRP;
+}
+
+<style>
+    .prueba {
+        vertical-align: bottom;
+    }
+</style>
+<br />
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-secondary">
+            <div class="card-header">
+                <h3 class="card-title">Actas de Regidor RP</h3>
+            </div>
+            <form id="RegistroActaRRP">
+                <div class="card-body">
+                    <div class="text-danger"></div>
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label>[1] Datos de la Casilla,</label>
+                            <label for="Seccion1">Sección:</label>
+                            @Html.DropDownList("RegiduriaRP", RegiduriaRP, "-Seleccione una sección-", new { @class = "form-control", @id = "Seccion6" })
+                        </div>
+                        <div class="col-md-3">
+                            <label for="casid6">Casilla:</label>
+                            <select id="casid6" name="casid" asp-items='@(new SelectList(string.Empty,"value","text"))' class="form-control"></select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="est">Estatus en la que se recibió el acta:</label>
+                            @Html.DropDownList("Estatus", Estatus, "-Estatus del Acta-", new { @class = "form-control", @id = "est6" })
+                            <span asp-validation-for="Estatus" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label asp-for="Sobrantes" class="control-label">[2] Boletas sobrantes de la elección:</label>
+                            <input asp-for="Sobrantes" class="form-control" value="0" id="Sobrantes6" min="0" />
+                            <span asp-validation-for="Sobrantes" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-3">
+                            <label asp-for="VotosCiudadanos" class="control-label">[3] Personas que votaron:</label>
+                            <input asp-for="VotosCiudadanos" class="form-control" id="Ciudadanos6" value="0" min="0" />
+                            <span asp-validation-for="VotosCiudadanos" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="col-md-3">
+                            <label asp-for="VotosUrnas" class="control-label">[3] Votos de la elección sacados de la urna:</label>
+                            <input asp-for="VotosUrnas" class="form-control" id="Urnas6" value="0" min="0" />
+                            <span asp-validation-for="VotosUrnas" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-3">
+
+                            <label class="control-label">¿Se presentaron incidentes durante el escrutinio y cómputo de la elección?</label>
+                            <div class="row">
+                                <div class="col-md-6 text-center">
+                                    <input class="custom-control-input" name="Chein6" type="radio" id="inci11" value="True" />
+                                    <label for="inci11" class="custom-control-label">Si</label>
+                                </div>
+                                <div class="col-md-6 text-center">
+                                    <input class="custom-control-input" name="Chein6" type="radio" id="inci12" value="False" />
+                                    <label for="inci12" class="custom-control-label">No</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="control-label">Describa brevemente</label>
+                            <input type="text" id="Descri6" asp-for="DesIncidentes" class="form-control" disabled/>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <input type="hidden" asp-for="Incidentes" class="form-control" id="incidente6" />
+                        <span asp-validation-for="Incidentes" class="text-danger"></span>
+                    </div>
+                    <div class="text-right">
+                        <button type="button" onclick="RegistrarRRP()" class="btn btn-success btn-lg rounded">Guardar</button>
+                        <button type="button" class="btn btn-danger btn-lg rounded" style="width:auto;" onClick="history.go(-1);"><a class="text-white">Cancelar</a></button>
+                    </div>
+                    <div class="form-group">
+                        <input type="hidden" id="cmb6" class="form-control" value="4" placeholder="4" />
+                        <input type="hidden" id="idres6" asp-for="IdActaDetalle" />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            carg6();
+            idres6();
+            IncidenteRRP();
+        });
+
+        function Bloqueo() {
+            $('#RegistroActaRRP input').attr('disabled', 'disabled');
+            $('#RegistroActaRRP button').attr('disabled', 'disabled');
+            $('#RegistroActaRRP select').attr('disabled', 'disabled');
+        }
+
+        function Desbloqueo() {
+            $('#RegistroActaRRP input').removeAttr('disabled');
+            $('#RegistroActaRRP button').removeAttr('disabled');
+            $('#RegistroActaRRP select').removeAttr('disabled');
+        }
+
+        function Refresco() {
+            window.location.reload(true);
+        }
+
+        function RegistrarRRP() {
+            Bloqueo();
+            if (ValidarRRP() == true) {
+                var items = {};
+                items["Sobrantes"] = $("#Sobrantes6").val();
+                items["VotosCiudadanos"] = $("#Ciudadanos6").val();
+                items["VotosUrnas"] = $("#Urnas6").val();
+                items["Incidentes"] = $("#incidente6").val();
+                items["DesIncidentes"] = $("#Descri6").val();
+                items["Estatus"] = $("#est6").val();
+                items["IdActaDetalle"] = $("#idres6").val();
+
+                $.ajax({
+                    url: '/admin/TActas/CreateRP',
+                    type: 'POST',
+                    data: {
+                        item: items
+                    },
+                    success: function (data) {
+                        if (data.success) {
+                            toastr.success(data.mensaje, {
+                                closeButton: true,
+                                progressBar: true,
+                                showMethod: 'slideDown',
+                                timeOut: 2000
+                            });
+                            window.setTimeout(Refresco, 2000);
+
+
+                        }
+                        else {
+                            Desbloqueo();
+                            toastr.error(data.mensaje);
+                        }
+                    },
+
+                })
+            }
+            else {
+
+            }
+        }
+
+        function ValidarRRP() {
+            var form = $('#RegistroActaRRP');
+            $.validator.unobtrusive.parse(form);
+            var validate = form.validate().form();
+            var unobtrusiveValidation = form.data('unobtrusiveValidation');
+            return validate;
+        }
+
+        function IncidenteRRP() {
+            $("input[name=Chein6]").click(function () {
+                var res = $('input:radio[name=Chein6]:checked').val();
+                document.getElementById("incidente6").value = res;
+                if (res == "False") {
+                    document.getElementById("Descri6").disabled = true;
+                }
+                else {
+                    document.getElementById("Descri6").disabled = false;
+                }
+            });
+        }
+
+        function idres6() {
+            $("#casid6").focus(function () {
+                var b = document.getElementById("casid6").value;
+                document.getElementById("idres6").value = b;
+            });
+            $("#casid6").change(function () {
+                var b = document.getElementById("casid6").value;
+                document.getElementById("idres6").value = b;
+            });
+        }
+
+        function carg6() {
+            $("#Seccion6").change(function () {
+                var url = "/admin/TActas/CargarRP";
+                var a = document.getElementById("cmb6").value;
+                var b = document.getElementById("Seccion6").value;
+                $.getJSON(url, { ide: a, ids: b }, function (data) {
+                    var items = '';
+                    $("#casid6").empty();
+                    $.each(data, function (j, row) {
+                        items += "<option value='" + row.idActaDetalle + "'>" + row.lCasilla.nombre + "</option>";
+                    });
+                    $("#casid6").html(items);
+                    document.getElementById("casid6").focus();
+                })
+            });
+
+        }
+    </script>
+}

@@ -1,0 +1,153 @@
+﻿@model WebComputos.Models.ViewModels.T_Votos_Actas_RP_VM
+@{
+    IEnumerable<T_Partido> Lpar = ViewBag.partido;
+    IEnumerable<T_Detalle_Votos_Acta_RP> Lres = ViewBag.votos;
+    IEnumerable<T_Votos_Acta_RP> Lreg = ViewBag.resultado;
+
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .externo {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+    }
+
+    #centrador {
+        position: relative;
+        width: 100px;
+        height: 80px;
+        background-color: white;
+    }
+
+    #imagen {
+        position: absolute;
+        width: 50px;
+        height: 50px;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+    }
+
+    #imagenx {
+        position: absolute;
+        width: 50px;
+        height: 25px;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+    }
+
+    #imagenc {
+        position: absolute;
+        width: 100px;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+    }
+</style>
+<br />
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-secondary">
+            <div class="card-header">
+                <h3 class="card-title">Votos registrados en la elección de @ViewBag.Eleccion en la casilla @ViewBag.Casilla de la sección @ViewBag.Seccion</h3>
+            </div>
+            <div class="card-body">
+                @if (Lpar.Count() > 0)
+                {
+                    <div class="card bg-gradient-gray">
+                        <div class="card-body">
+                            <h5 class="card-text text-center">Partidos</h5>
+                        </div>
+                    </div>
+                    <div class="row">
+                        @{
+                            int contador = 0;
+                        }
+                        @foreach (var Resultado in Model.DetalleVotosActasRPList)
+                        {
+                            if (Resultado.IdPartido != 0)
+                            {
+                                var partido = Lpar.FirstOrDefault(x => x.Id == Resultado.IdPartido && x.Independiente == false);
+                                <div class="col-md-2">
+                                    <div class="card externo border">
+                                        <div id="centrador">
+                                            @if (partido.Siglas == "MORENA")
+                                            {
+                                                <img src="@Url.Content(partido.LogoURL)" id="imagenx" />
+                                            }
+                                            else
+                                            {
+                                                <img src="@Url.Content(partido.LogoURL)" id="imagen" />
+                                            }
+                                        </div>
+                                        <div class="card-body">
+                                            @Html.TextBoxFor(x => x.DetalleVotosActasRPList[contador].Votos, new { @type = "number", @style = "text-align:center; form-control", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            }
+                            contador++;
+                        }
+                    </div>                   
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="card border">
+                                <div class="card-body text-center">
+                                    <p class="text-center"><strong>Candidatos no registrados</strong></p>
+                                    <br />
+                                    @Html.TextBoxFor(x => x.Votos_Acta.NoRegistrados, new { @type = "number", @style = "text-align:center; form-control", @readonly = "readonly" })
+                                    @Html.HiddenFor(x => x.Votos_Acta.IdRegistroVotosRP)
+                                    @Html.HiddenFor(x => x.Votos_Acta.IdActaDetalle)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="card border">
+                                <div class="card-body text-center">
+                                    <p class="text-center"><strong>Votos nulos</strong></p>
+                                    <br />
+                                    @Html.TextBoxFor(x => x.Votos_Acta.Nulos, new { @type = "number", @style = "text-align:center; form-control", @readonly = "readonly" })
+                                    @Html.HiddenFor(x => x.Votos_Acta.IdRegistroVotosRP)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="card border">
+                                <div class="card-body text-center">
+                                    <p class="text-center"><strong>Total de Votos</strong></p>
+                                    <br />
+                                    @Html.TextBoxFor(x => x.Votos_Acta.Total, new { @type = "number", @style = "text-align:center; form-control", @readonly = "readonly" })
+                                    @Html.HiddenFor(x => x.Votos_Acta.IdRegistroVotosRP)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                <div class="text-right">
+                    <button type="button" class="btn btn-danger btn-lg rounded" style="width:auto;">
+                        <a asp-action=@ViewBag.Index class="text-white">Volver al listado</a>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+        
+
+
+
+    

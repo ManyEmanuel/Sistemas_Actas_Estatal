@@ -1,0 +1,1865 @@
+﻿@model WebComputos.Models.ViewModels.T_Detalle_Votos_Actas_VM
+
+@{
+    IEnumerable<T_Partido> Lpar = Model.Partidos;
+    IEnumerable<T_Combinacion> LCom = Model.Combinaciones;
+    ViewData["Title"] = "Reporte";
+    Layout = "";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/css/site.css" />
+
+        <!--Css todos-->
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
+    </head>
+    <body>
+        <style>
+            header {
+                width: auto;
+                clear: both;
+                text-align: center;
+            }
+
+            .Texto {
+                width: auto;
+                height: 25px;
+                background: #656464;
+            }
+
+            .Texto1 {
+                text-align: center;
+                font-size: 140%;
+                font-weight: bold;
+                color: white;
+            }
+
+            .Texto2 {
+                text-align: center;
+                font-size: 140%;
+                font-weight: bold;
+                color: black;
+            }
+
+            .TextoCuerpo {
+                text-align: center;
+                font-size: 160%;
+            }
+
+            .TextoFirma {
+                text-align: center;
+                font-size: 120%;
+            }
+
+            .TextoCabecera {
+                text-align: center;
+                font-size: 120%;
+                font-weight: bold;
+                margin-bottom: 0px;
+                padding-bottom: 0em;
+            }
+
+            .color {
+                background-color: #F9B9EE;
+            }
+
+            .linea {
+                color: black;
+                font-size: 2;
+            }
+
+            .saltopagina {
+                display: none;
+            }
+
+            .saltopagina {
+                display: block;
+                page-break-before: always;
+            }
+
+            .Derecha {
+                text-align: right;
+            }
+
+            table {
+                border-collapse: collapse;
+                border: black 3px solid;
+            }
+
+
+
+            strong {
+                font-weight: bold;
+                font-size: 14px;
+            }
+
+            p {
+                font-size: 15px;
+            }
+
+            table tbody tr td {
+                font-size: 14px;
+            }
+
+            .Gobernador {
+                background-color: rgb(192,175,168);
+            }
+
+            .Diputaciones {
+                background-color: rgb(203,160,153);
+            }
+
+            .Regidurias {
+                background-color: rgb(178,152,67);
+            }
+
+            .Ayuntamiento {
+                background-color: rgb(116,117,99);
+            }
+
+            #imagen {
+                width: 20px;
+                height: 20px;
+            }
+
+            #imagenc {
+                width: 29px;
+                height: 29px;
+            }
+
+            .espacio {
+                height: 10px;
+            }
+
+            .bordepin {
+                border-bottom: 2px black solid;
+            }
+
+            p strong {
+                border-bottom: 0px white solid;
+            }
+
+            table td:first-child {
+                width: 25%;
+            }
+
+            table td:nth-child(2) {
+                width: 25%;
+            }
+
+            table td:nth-child(3) {
+                width: 25%;
+            }
+
+            table td:last-child {
+                width: 25%;
+            }
+        </style>
+        <header>
+
+            <img src="~/Logos/Cabecera.png" />
+
+        </header>
+        <div class="form-group row">
+            <div class="col-12">
+                <p><strong>ENTIDAD FEDERATIVA (ESTADO):</strong> &nbsp; &nbsp; &nbsp; <u>NAYARIT</u></p>
+            </div>
+
+        </div>
+        <div class="form-group row">
+            <div class="col-6">
+                <p> <strong>MUNICIPIO:</strong> &nbsp;&nbsp;&nbsp; <u>@Model.Municipio.ToUpper()</u></p>
+            </div>
+            <div class="col-6">
+                <p> <strong>DISTRITO ELECTORAL LOCAL:</strong> &nbsp;&nbsp;&nbsp; <u>@Model.Distrito</u></p>
+            </div>
+
+        </div>
+        <div class="form-group row">
+            <div class="col-5">
+                <p> <strong>ESTOS RESULTADOS CORRESPONDEN A:</strong> &nbsp;&nbsp;<u> @Model.CasillasCapturadas </u></p>
+            </div>
+            <div class="col-3">
+                <p> <strong>CASILLAS DEL TOTAL DE:</strong> &nbsp;&nbsp; <u>@Model.CasillasTotales </u></p>
+            </div>
+            <div class="col-4">
+                <p> <strong>QUE COMPRENDEN EL MUNICIPIO,</strong></p>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-3">
+                <p> <strong>HASTA LAS:</strong> &nbsp;&nbsp;<u> @Model.HoraFin </u></p>
+            </div>
+            <div class="col-3">
+                <p> <strong>HORAS DEL DIA</strong> &nbsp;&nbsp; <u>@Model.DiaFin </u></p>
+            </div>
+            <div class="col-3">
+                <p> <strong>DE JUNIO DE 2021.</strong></p>
+            </div>
+        </div>
+
+        @*------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*@
+        <div class="form-group row">
+            <div class="col-3">
+                <table style="width: 100%" border="" class="default">
+                    <thead>
+
+                        <tr style="text-align:center">
+                            <th rowspan="2" colspan="2" style="width:50%"><strong> Partido, Coalicion o Candidato </strong></th>
+                            <th colspan="2" style="width:50%; height:50px;"><strong> Resultado (con número)</strong></th>
+                        </tr>
+                        <tr style="text-align:center" class="Gobernador">
+                            <th colspan="2" style="height:50px"> <strong>Gubernatura</strong></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var Resultado in Model.Gobernador)
+                        {
+                            <tr style="text-align:center">
+                                @{
+                                    if (Resultado.Partido != 0)
+                                    {
+                                        var partido = Lpar.FirstOrDefault(x => x.Id == Resultado.Partido && x.Independiente == false);
+                                        <td colspan="2"> <img src="@Url.Content(partido.LogoURL)" id="imagen" />    </td>
+
+                                        <td colspan="2">@Resultado.Votos</td>
+                                    }
+                                }
+                            </tr>
+                        }
+
+                        @foreach (var Resultado in Model.Gobernador)
+                        {
+                            <tr style="text-align:center">
+                                @{
+                                    if (Resultado.Combinacion != 0)
+                                    {
+                                        var Combina = LCom.FirstOrDefault(x => x.Id == Resultado.Combinacion);
+                                        <td colspan="2" style="height:30px"> <img src="@Url.Content(Combina.LogoURL)" id="imagenc" />    </td>
+
+                                        <td colspan="2">@Resultado.Votos</td>
+                                    }
+                                }
+                            </tr>
+                        }
+
+                        <tr style="text-align:center">
+                            <td colspan="2"> NO REGISTRADOS  </td>
+                            <td colspan="2">@Model.VotosActaGob.Sum(x => x.NoRegistrados)</td>
+                        </tr>
+                        <tr class="espacio"></tr>
+                        <tr style="text-align:center">
+                            @{int validos = @Model.VotosActaGob.Sum(x => x.Total) - @Model.VotosActaGob.Sum(x => x.Nulos); }
+                            <td colspan="2" style=" width:50%"> VOTOS VALIDOS  </td>
+                            <td colspan="2" style=" width:50%"> @validos</td>
+                        </tr>
+                        <tr class="espacio"></tr>
+                        <tr style="text-align:center">
+                            <td colspan="2" style=" width:50%"> VOTOS  NULOS  </td>
+                            <td colspan="2" style=" width:50%">@Model.VotosActaGob.Sum(x => x.Nulos)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            @*-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*@
+            <div class="col-3">
+                <table style="width:100%" border="" class="default">
+                    <thead>
+
+                        <tr style="text-align:center">
+                            <th rowspan="2" colspan="2" style="width:40%"><strong> Partido, Coalicion o Candidato </strong></th>
+                            <th colspan="2" style="width:60%; height:50px;"><strong> Resultado (con número)</strong></th>
+                        </tr>
+                        <tr style="text-align:center" class="Diputaciones">
+                            <th style="height:50px" width="50px"> <strong>Diputado MR</strong></th>
+                            <th style="height:50px" width="50px"> <strong>Diputado RP</strong></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+
+                        @foreach (var Resultado in Model.Diputado)
+                        {
+                            <tr style="text-align:center">
+                                @{
+                                    if (Resultado.Partido != 0)
+                                    {
+                                        var partido = Lpar.FirstOrDefault(x => x.Id == Resultado.Partido && x.Independiente == false);
+                                        //var PartidoRP = Model.DiputadosRP.Where(x => x.Partido == Resultado.Partido).ToList();
+                                        <td colspan="2"> <img src="@Url.Content(partido.LogoURL)" id="imagen" />    </td>
+
+                                        <td>@Resultado.Votos</td>
+                                        <td>N/A</td>
+                                    }
+                                }
+                            </tr>
+                        }
+
+                        @foreach (var Resultado in Model.Diputado)
+                        {
+                            <tr style="text-align:center">
+                                @{
+                                    if (Resultado.Combinacion != 0)
+                                    {
+                                        var Combina = LCom.FirstOrDefault(x => x.Id == Resultado.Combinacion);
+                                        <td colspan="2" style="height:30px"> <img src="@Url.Content(Combina.LogoURL)" id="imagenc" />    </td>
+                                        <td>@Resultado.Votos</td>
+                                        <td style="background-color:gray"></td>
+                                    }
+                                }
+                            </tr>
+                        }
+
+                        <tr style="text-align:center">
+                            <td colspan="2"> NO REGISTRADOS  </td>
+                            <td>@Model.VotosActaDip.Sum(x => x.NoRegistrados)</td>
+                            <td>N/A</td>
+                        </tr>
+                        <tr class="espacio"></tr>
+                        <tr style="text-align:center">
+                            @{int validosDIP = @Model.VotosActaDip.Sum(x => x.Total) - @Model.VotosActaDip.Sum(x => x.Nulos); }
+
+                            <td colspan="2" style=" width:50%"> VOTOS VALIDOS  </td>
+                            <td style=" width:50%"> @validosDIP</td>
+                            <td style=" width:50%"> N/A</td>
+                        </tr>
+                        <tr class="espacio"></tr>
+                        <tr style="text-align:center">
+                            <td colspan="2" style=" width:50%"> VOTOS  NULOS  </td>
+                            <td style=" width:50%">@Model.VotosActaDip.Sum(x => x.Nulos)</td>
+                            <td style=" width:50%">N/A</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            @*------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*@
+            <div class="col-3">
+                <table style="width:100%" border="" class="default">
+                    <thead>
+
+                        <tr style="text-align:center">
+                            <th rowspan="2" colspan="2" style="width:50%"><strong> Partido, Coalicion o Candidato </strong></th>
+                            <th colspan="2" style="width:50%; height:50%;"><strong> Resultado (con número)</strong></th>
+                        </tr>
+                        <tr style="text-align:center" class="Ayuntamiento">
+                            <th colspan="2" style="height:50px"> <strong>Presidencia y Sindicatura</strong></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var Resultado in Model.Ayuntamiento)
+                        {
+                            <tr style="text-align:center">
+                                @{
+                                    if (Resultado.Partido != 0)
+                                    {
+                                        var partido = Lpar.FirstOrDefault(x => x.Id == Resultado.Partido && x.Independiente == false);
+                                        <td colspan="2"> <img src="@Url.Content(partido.LogoURL)" id="imagen" />    </td>
+
+                                        <td colspan="2">@Resultado.Votos</td>
+                                    }
+                                    else if (Resultado.Independiente != 0)
+                                    {
+                                        var partido = Lpar.FirstOrDefault(x => x.Id == Resultado.Independiente && x.Independiente == true);
+                                        <td colspan="2"> <img src="@Url.Content(partido.LogoURL)" id="imagen" />    </td>
+
+                                        <td colspan="2">@Resultado.Votos</td>
+                                    }
+
+                                }
+                            </tr>
+                        }
+
+                        @foreach (var Resultado in Model.Ayuntamiento)
+                        {
+                            <tr style="text-align:center">
+                                @{
+                                    if (Resultado.Combinacion != 0)
+                                    {
+                                        var Combina = LCom.FirstOrDefault(x => x.Id == Resultado.Combinacion);
+                                        <td colspan="2" style="height:30px"> <img src="@Url.Content(Combina.LogoURL)" id="imagenc" />    </td>
+
+                                        <td colspan="2">@Resultado.Votos</td>
+                                    }
+                                }
+                            </tr>
+                        }
+
+                        <tr style="text-align:center">
+                            <td colspan="2"> NO REGISTRADOS  </td>
+                            <td colspan="2">@Model.VotosActaAyu.Sum(x => x.NoRegistrados)</td>
+                        </tr>
+                        <tr class="espacio"></tr>
+                        <tr style="text-align:center">
+                            @{int validos2 = @Model.VotosActaAyu.Sum(x => x.Total) - @Model.VotosActaAyu.Sum(x => x.Nulos); }
+                            <td colspan="2" style=" width:50%"> VOTOS VALIDOS  </td>
+                            <td colspan="2" style=" width:50%"> @validos2</td>
+                        </tr>
+                        <tr class="espacio"></tr>
+                        <tr style="text-align:center">
+                            <td colspan="2" style=" width:50%"> VOTOS  NULOS  </td>
+                            <td colspan="2" style=" width:50%">@Model.VotosActaAyu.Sum(x => x.Nulos)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            @*-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*@
+
+            <div class="col-3">
+                <table style="width:100%" border="" class="default">
+                    <thead>
+
+                        <tr style="text-align:center">
+                            <th rowspan="2" colspan="2" style="width:50%"><strong> Partido, Coalicion o Candidato </strong></th>
+                            <th colspan="2" style="width:50%; height:50%;"><strong> Resultado (con número)</strong></th>
+                        </tr>
+                        <tr style="text-align:center" class="Regidurias">
+
+                            <th colspan="2" style="height:50px"> <strong>Regidurias Locales RP</strong></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var Resultado in Model.Gobernador)
+                        {
+                            <tr style="text-align:center">
+                                @{
+                                    if (Resultado.Partido != 0)
+                                    {
+                                        var partido = Lpar.FirstOrDefault(x => x.Id == Resultado.Partido && x.Independiente == false);
+                                        <td colspan="2"> <img src="@Url.Content(partido.LogoURL)" id="imagen" />    </td>
+
+                                        <td colspan="2">N/A</td>
+                                    }
+                                }
+                            </tr>
+                        }
+
+                        @foreach (var Resultado in Model.Gobernador)
+                        {
+                            <tr style="text-align:center">
+                                @{
+                                    if (Resultado.Combinacion != 0)
+                                    {
+                                        var Combina = LCom.FirstOrDefault(x => x.Id == Resultado.Combinacion);
+                                        <td colspan="2" style="height:30px"> <img src="@Url.Content(Combina.LogoURL)" id="imagenc" />    </td>
+
+                                        <td colspan="2" style="background-color:gray"></td>
+                                    }
+                                }
+                            </tr>
+                        }
+
+                        <tr style="text-align:center">
+                            <td colspan="2"> NO REGISTRADOS  </td>
+                            <td colspan="2">N/A</td>
+                        </tr>
+                        <tr class="espacio"></tr>
+                        <tr style="text-align:center">
+                            <td colspan="2" style=" width:50%"> VOTOS VALIDOS  </td>
+                            <td colspan="2" style=" width:50%"> N/A</td>
+                        </tr>
+                        <tr class="espacio"></tr>
+                        <tr style="text-align:center">
+                            <td colspan="2" style=" width:50%"> VOTOS  NULOS  </td>
+                            <td colspan="2" style=" width:50%">N/A</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="saltopagina"></div>
+        <header>
+            <img src="~/Logos/CabeceraReg.png" />
+
+        </header>
+        <br />
+        <div class="form-group row">
+            <div class="col-12">
+                <p><strong>ENTIDAD FEDERATIVA (ESTADO):</strong> &nbsp; &nbsp; &nbsp; <u>NAYARIT</u></p>
+            </div>
+
+        </div>
+        <div class="form-group row">
+            <div class="col-6">
+                <p> <strong>MUNICIPIO:</strong> &nbsp;&nbsp;&nbsp; <u>@Model.Municipio.ToUpper()</u></p>
+            </div>
+            <div class="col-6">
+                <p> <strong>DISTRITO ELECTORAL LOCAL:</strong> &nbsp;&nbsp;&nbsp; <u>@Model.Distrito</u></p>
+            </div>
+
+        </div>
+        <div class="form-group row">
+            <div class="col-5">
+                <p> <strong>ESTOS RESULTADOS CORRESPONDEN A:</strong> &nbsp;&nbsp;<u> @Model.CasillasCapturadas </u></p>
+            </div>
+            <div class="col-3">
+                <p> <strong>CASILLAS DEL TOTAL DE:</strong> &nbsp;&nbsp; <u>@Model.CasillasTotales </u></p>
+            </div>
+            <div class="col-4">
+                <p> <strong>QUE COMPRENDEN EL MUNICIPIO,</strong></p>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-3">
+                <p> <strong>HASTA LAS:</strong> &nbsp;&nbsp;<u> @Model.HoraFin </u></p>
+            </div>
+            <div class="col-3">
+                <p> <strong>HORAS DEL DIA</strong> &nbsp;&nbsp; <u>@Model.DiaFin </u></p>
+            </div>
+            <div class="col-3">
+                <p> <strong>DE JUNIO DE 2021.</strong></p>
+            </div>
+        </div>
+        <br />
+        @if (Model.TotalDemarcaciones <= 5)
+        {
+            <div class="form-group row">
+                <div class="col-4">
+                    @{
+                        var ResultadoReg = Model.RegidorLista.Where(x => x.LVotosActa.LActaDetalle.LCasilla.LSeccion.DemarcacionId == Model.ListaDemarcacion.Select(x => x.Id).ElementAt(0));
+                        var CabeceraReg = Model.VotosActaReg.Where(x => x.LActaDetalle.LCasilla.LSeccion.DemarcacionId == Model.ListaDemarcacion.Select(x => x.Id).ElementAt(0));
+                        var PartidosReg = ResultadoReg.Where(x => x.IdPartido != 0).ToList();
+                        var CoalicionesReg = ResultadoReg.Where(x => x.IdCoalicion != 0).ToList();
+
+                        var PartidoVotos = PartidosReg.GroupBy(x => x.IdPartido).Select(g => new ElementosCartel
+                        {
+                            Partido = g.Key,
+                            Coalicion = g.First().IdCoalicion,
+                            Combinacion = g.First().IdCombinacion,
+                            Independiente = g.First().IdIndependiente,
+                            Votos = g.Sum(x => x.Votos)
+                        }).ToList();
+                        var CoalicionVotos = CoalicionesReg.GroupBy(x => x.IdCombinacion).Select(g => new ElementosCartel
+                        {
+                            Partido = g.First().IdPartido,
+                            Coalicion = g.First().IdCoalicion,
+                            Combinacion = g.Key,
+                            Independiente = g.First().IdIndependiente,
+                            Votos = g.Sum(x => x.Votos)
+
+                        }).ToList();
+                        var ResultadoFinal = PartidoVotos.Concat(CoalicionVotos).ToList();
+
+                        <table style="width:100%" border="" class="default">
+                            <thead>
+
+                                <tr style="text-align:center">
+                                    <th rowspan="2" colspan="2" style="width:50%"><strong> Partido, Coalicion o Candidato </strong></th>
+                                    <th colspan="2" style="width:50%; height:50%;"><strong> Resultado (con número)</strong></th>
+                                </tr>
+                                <tr style="text-align:center" class="Regidurias">
+                                    <th colspan="2" style="height:50px"> <strong>Regidurias @Model.ListaDemarcacion.Select(x => x.Nombre).ElementAt(0)</strong></th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                @foreach (var Resultado in ResultadoFinal)
+                                {
+                                    <tr style="text-align:center">
+                                        @{
+                                            if (Resultado.Partido != 0)
+                                            {
+                                                var partido = Lpar.FirstOrDefault(x => x.Id == Resultado.Partido);
+                                                <td colspan="2"> <img src="@Url.Content(partido.LogoURL)" id="imagen" />    </td>
+
+                                                <td colspan="2">@Resultado.Votos</td>
+                                            }
+                                            else if (Resultado.Independiente != 0)
+                                            {
+                                                var partido = Lpar.FirstOrDefault(x => x.Id == Resultado.Independiente && x.Independiente == true);
+                                                <td colspan="2"> <img src="@Url.Content(partido.LogoURL)" id="imagen" />    </td>
+
+                                                <td colspan="2">@Resultado.Votos</td>
+                                            }
+
+                                        }
+                                    </tr>
+                                }
+
+                                @foreach (var Resultado in ResultadoFinal)
+                                {
+                                    <tr style="text-align:center">
+                                        @{
+                                            if (Resultado.Combinacion != 0)
+                                            {
+                                                var Combina = LCom.FirstOrDefault(x => x.Id == Resultado.Combinacion);
+                                                <td colspan="2" style="height:30px"> <img src="@Url.Content(Combina.LogoURL)" id="imagenc" />    </td>
+
+                                                <td colspan="2">@Resultado.Votos</td>
+                                            }
+                                        }
+                                    </tr>
+                                }
+
+                                <tr style="text-align:center">
+                                    <td colspan="2"> NO REGISTRADOS  </td>
+                                    <td colspan="2">@CabeceraReg.Sum(x => x.NoRegistrados)</td>
+                                </tr>
+                                <tr class="espacio"></tr>
+                                <tr style="text-align:center">
+                                    <td colspan="2" style=" width:50%"> VOTOS VALIDOS  </td>
+                                    @{int ValidosReg = CabeceraReg.Sum(x => x.Total) - CabeceraReg.Sum(x => x.Nulos);
+                                        <td colspan="2" style=" width:50%"> @ValidosReg </td>
+                                    }
+                                </tr>
+                                <tr class="espacio"></tr>
+                                <tr style="text-align:center">
+                                    <td colspan="2" style=" width:50%"> VOTOS  NULOS  </td>
+                                    <td colspan="2" style=" width:50%">@CabeceraReg.Sum(x => x.Nulos)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    }
+                </div>
+                <div class="col-4">
+                    @{
+                        var ResultadoReg1 = Model.RegidorLista.Where(x => x.LVotosActa.LActaDetalle.LCasilla.LSeccion.DemarcacionId == Model.ListaDemarcacion.Select(x => x.Id).ElementAt(1));
+                        var CabeceraReg1 = Model.VotosActaReg.Where(x => x.LActaDetalle.LCasilla.LSeccion.DemarcacionId == Model.ListaDemarcacion.Select(x => x.Id).ElementAt(1));
+                        var PartidosReg1 = ResultadoReg1.Where(x => x.IdPartido != 0).ToList();
+                        var CoalicionesReg1 = ResultadoReg1.Where(x => x.IdCoalicion != 0).ToList();
+
+                        var PartidoVotos1 = PartidosReg1.GroupBy(x => x.IdPartido).Select(g => new ElementosCartel
+                        {
+                            Partido = g.Key,
+                            Coalicion = g.First().IdCoalicion,
+                            Combinacion = g.First().IdCombinacion,
+                            Independiente = g.First().IdIndependiente,
+                            Votos = g.Sum(x => x.Votos)
+                        }).ToList();
+                        var CoalicionVotos1 = CoalicionesReg1.GroupBy(x => x.IdCombinacion).Select(g => new ElementosCartel
+                        {
+                            Partido = g.First().IdPartido,
+                            Coalicion = g.First().IdCoalicion,
+                            Combinacion = g.Key,
+                            Independiente = g.First().IdIndependiente,
+                            Votos = g.Sum(x => x.Votos)
+
+                        }).ToList();
+                        var ResultadoFinal1 = PartidoVotos1.Concat(CoalicionVotos1).ToList();
+
+                        <table style="width:100%" border="" class="default">
+                            <thead>
+
+                                <tr style="text-align:center">
+                                    <th rowspan="2" colspan="2" style="width:50%"><strong> Partido, Coalicion o Candidato </strong></th>
+                                    <th colspan="2" style="width:50%; height:50%;"><strong> Resultado (con número)</strong></th>
+                                </tr>
+                                <tr style="text-align:center" class="Regidurias">
+                                    <th colspan="2" style="height:50px"> <strong>Regidurias @Model.ListaDemarcacion.Select(x => x.Nombre).ElementAt(1)</strong></th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                @foreach (var Resultado in ResultadoFinal1)
+                                {
+                                    <tr style="text-align:center">
+                                        @{
+                                            if (Resultado.Partido != 0)
+                                            {
+                                                var partido = Lpar.FirstOrDefault(x => x.Id == Resultado.Partido);
+                                                <td colspan="2"> <img src="@Url.Content(partido.LogoURL)" id="imagen" />    </td>
+
+                                                <td colspan="2">@Resultado.Votos</td>
+                                            }
+                                            else if (Resultado.Independiente != 0)
+                                            {
+                                                var partido = Lpar.FirstOrDefault(x => x.Id == Resultado.Independiente && x.Independiente == true);
+                                                <td colspan="2"> <img src="@Url.Content(partido.LogoURL)" id="imagen" />    </td>
+
+                                                <td colspan="2">@Resultado.Votos</td>
+                                            }
+
+                                        }
+                                    </tr>
+                                }
+
+                                @foreach (var Resultado in ResultadoFinal1)
+                                {
+                                    <tr style="text-align:center">
+                                        @{
+                                            if (Resultado.Combinacion != 0)
+                                            {
+                                                var Combina = LCom.FirstOrDefault(x => x.Id == Resultado.Combinacion);
+                                                <td colspan="2" style="height:30px"> <img src="@Url.Content(Combina.LogoURL)" id="imagenc" />    </td>
+
+                                                <td colspan="2">@Resultado.Votos</td>
+                                            }
+                                        }
+                                    </tr>
+                                }
+
+                                <tr style="text-align:center">
+                                    <td colspan="2"> NO REGISTRADOS  </td>
+                                    <td colspan="2">@CabeceraReg1.Sum(x => x.NoRegistrados)</td>
+                                </tr>
+                                <tr class="espacio"></tr>
+                                <tr style="text-align:center">
+                                    <td colspan="2" style=" width:50%"> VOTOS VALIDOS  </td>
+                                    @{int ValidosReg1 = CabeceraReg1.Sum(x => x.Total) - CabeceraReg1.Sum(x => x.Nulos);
+                                        <td colspan="2" style=" width:50%"> @ValidosReg1 </td>
+                                    }
+                                </tr>
+                                <tr class="espacio"></tr>
+                                <tr style="text-align:center">
+                                    <td colspan="2" style=" width:50%"> VOTOS  NULOS  </td>
+                                    <td colspan="2" style=" width:50%">@CabeceraReg1.Sum(x => x.Nulos)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    }
+                </div>
+                <div class="col-4">
+                    @{
+                        var ResultadoReg2 = Model.RegidorLista.Where(x => x.LVotosActa.LActaDetalle.LCasilla.LSeccion.DemarcacionId == Model.ListaDemarcacion.Select(x => x.Id).ElementAt(2));
+                        var CabeceraReg2 = Model.VotosActaReg.Where(x => x.LActaDetalle.LCasilla.LSeccion.DemarcacionId == Model.ListaDemarcacion.Select(x => x.Id).ElementAt(2));
+                        var PartidosReg2 = ResultadoReg2.Where(x => x.IdPartido != 0).ToList();
+                        var CoalicionesReg2 = ResultadoReg2.Where(x => x.IdCoalicion != 0).ToList();
+
+                        var PartidoVotos2 = PartidosReg2.GroupBy(x => x.IdPartido).Select(g => new ElementosCartel
+                        {
+                            Partido = g.Key,
+                            Coalicion = g.First().IdCoalicion,
+                            Combinacion = g.First().IdCombinacion,
+                            Independiente = g.First().IdIndependiente,
+                            Votos = g.Sum(x => x.Votos)
+                        }).ToList();
+                        var CoalicionVotos2 = CoalicionesReg2.GroupBy(x => x.IdCombinacion).Select(g => new ElementosCartel
+                        {
+                            Partido = g.First().IdPartido,
+                            Coalicion = g.First().IdCoalicion,
+                            Combinacion = g.Key,
+                            Independiente = g.First().IdIndependiente,
+                            Votos = g.Sum(x => x.Votos)
+
+                        }).ToList();
+                        var ResultadoFinal2 = PartidoVotos2.Concat(CoalicionVotos2).ToList();
+
+                        <table style="width:100%" border="" class="default">
+                            <thead>
+
+                                <tr style="text-align:center">
+                                    <th rowspan="2" colspan="2" style="width:50%"><strong> Partido, Coalicion o Candidato </strong></th>
+                                    <th colspan="2" style="width:50%; height:50%;"><strong> Resultado (con número)</strong></th>
+                                </tr>
+                                <tr style="text-align:center" class="Regidurias">
+                                    <th colspan="2" style="height:50px"> <strong>Regidurias @Model.ListaDemarcacion.Select(x => x.Nombre).ElementAt(2)</strong></th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                @foreach (var Resultado in ResultadoFinal2)
+                                {
+                                    <tr style="text-align:center">
+                                        @{
+                                            if (Resultado.Partido != 0)
+                                            {
+                                                var partido = Lpar.FirstOrDefault(x => x.Id == Resultado.Partido);
+                                                <td colspan="2"> <img src="@Url.Content(partido.LogoURL)" id="imagen" />    </td>
+
+                                                <td colspan="2">@Resultado.Votos</td>
+                                            }
+                                            else if (Resultado.Independiente != 0)
+                                            {
+                                                var partido = Lpar.FirstOrDefault(x => x.Id == Resultado.Independiente && x.Independiente == true);
+                                                <td colspan="2"> <img src="@Url.Content(partido.LogoURL)" id="imagen" />    </td>
+
+                                                <td colspan="2">@Resultado.Votos</td>
+                                            }
+
+                                        }
+                                    </tr>
+                                }
+
+                                @foreach (var Resultado in ResultadoFinal2)
+                                {
+                                    <tr style="text-align:center">
+                                        @{
+                                            if (Resultado.Combinacion != 0)
+                                            {
+                                                var Combina = LCom.FirstOrDefault(x => x.Id == Resultado.Combinacion);
+                                                <td colspan="2" style="height:30px"> <img src="@Url.Content(Combina.LogoURL)" id="imagenc" />    </td>
+
+                                                <td colspan="2">@Resultado.Votos</td>
+                                            }
+                                        }
+                                    </tr>
+                                }
+
+                                <tr style="text-align:center">
+                                    <td colspan="2"> NO REGISTRADOS  </td>
+                                    <td colspan="2">@CabeceraReg2.Sum(x => x.NoRegistrados)</td>
+                                </tr>
+                                <tr class="espacio"></tr>
+                                <tr style="text-align:center">
+                                    <td colspan="2" style=" width:50%"> VOTOS VALIDOS  </td>
+                                    @{int ValidosReg2 = CabeceraReg2.Sum(x => x.Total) - CabeceraReg2.Sum(x => x.Nulos);
+                                        <td colspan="2" style=" width:50%"> @ValidosReg2 </td>
+                                    }
+                                </tr>
+                                <tr class="espacio"></tr>
+                                <tr style="text-align:center">
+                                    <td colspan="2" style=" width:50%"> VOTOS  NULOS  </td>
+                                    <td colspan="2" style=" width:50%">@CabeceraReg2.Sum(x => x.Nulos)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    }
+                </div>
+            </div>
+
+
+            <div class="saltopagina"></div>
+            <header>
+
+                <img src="~/Logos/CabeceraReg.png" />
+
+            </header>
+            <br />
+            <div class="form-group row">
+                <div class="col-12">
+                    <p><strong>ENTIDAD FEDERATIVA (ESTADO):</strong> &nbsp; &nbsp; &nbsp; <u>NAYARIT</u></p>
+                </div>
+
+            </div>
+            <div class="form-group row">
+                <div class="col-6">
+                    <p> <strong>MUNICIPIO:</strong> &nbsp;&nbsp;&nbsp; <u>@Model.Municipio.ToUpper()</u></p>
+                </div>
+                <div class="col-6">
+                    <p> <strong>DISTRITO ELECTORAL LOCAL:</strong> &nbsp;&nbsp;&nbsp; <u>@Model.Distrito</u></p>
+                </div>
+
+            </div>
+            <div class="form-group row">
+                <div class="col-5">
+                    <p> <strong>ESTOS RESULTADOS CORRESPONDEN A:</strong> &nbsp;&nbsp;<u> @Model.CasillasCapturadas </u></p>
+                </div>
+                <div class="col-3">
+                    <p> <strong>CASILLAS DEL TOTAL DE:</strong> &nbsp;&nbsp; <u>@Model.CasillasTotales </u></p>
+                </div>
+                <div class="col-4">
+                    <p> <strong>QUE COMPRENDEN EL MUNICIPIO,</strong></p>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-3">
+                    <p> <strong>HASTA LAS:</strong> &nbsp;&nbsp;<u> @Model.HoraFin </u></p>
+                </div>
+                <div class="col-3">
+                    <p> <strong>HORAS DEL DIA</strong> &nbsp;&nbsp; <u>@Model.DiaFin </u></p>
+                </div>
+                <div class="col-3">
+                    <p> <strong>DE JUNIO DE 2021.</strong></p>
+                </div>
+            </div>
+            <br />
+            <div class="form-group row">
+                <div class="col-4">
+                    @{
+                        var ResultadoReg3 = Model.RegidorLista.Where(x => x.LVotosActa.LActaDetalle.LCasilla.LSeccion.DemarcacionId == Model.ListaDemarcacion.Select(x => x.Id).ElementAt(3));
+                        var CabeceraReg3 = Model.VotosActaReg.Where(x => x.LActaDetalle.LCasilla.LSeccion.DemarcacionId == Model.ListaDemarcacion.Select(x => x.Id).ElementAt(3));
+                        var PartidosReg3 = ResultadoReg3.Where(x => x.IdPartido != 0).ToList();
+                        var CoalicionesReg3 = ResultadoReg3.Where(x => x.IdCoalicion != 0).ToList();
+
+                        var PartidoVotos3 = PartidosReg3.GroupBy(x => x.IdPartido).Select(g => new ElementosCartel
+                        {
+                            Partido = g.Key,
+                            Coalicion = g.First().IdCoalicion,
+                            Combinacion = g.First().IdCombinacion,
+                            Independiente = g.First().IdIndependiente,
+                            Votos = g.Sum(x => x.Votos)
+                        }).ToList();
+                        var CoalicionVotos3 = CoalicionesReg3.GroupBy(x => x.IdCombinacion).Select(g => new ElementosCartel
+                        {
+                            Partido = g.First().IdPartido,
+                            Coalicion = g.First().IdCoalicion,
+                            Combinacion = g.Key,
+                            Independiente = g.First().IdIndependiente,
+                            Votos = g.Sum(x => x.Votos)
+
+                        }).ToList();
+                        var ResultadoFinal3 = PartidoVotos3.Concat(CoalicionVotos3).ToList();
+
+                        <table style="width:100%" border="" class="default">
+                            <thead>
+
+                                <tr style="text-align:center">
+                                    <th rowspan="2" colspan="2" style="width:50%"><strong> Partido, Coalicion o Candidato </strong></th>
+                                    <th colspan="2" style="width:50%; height:50%;"><strong> Resultado (con número)</strong></th>
+                                </tr>
+                                <tr style="text-align:center" class="Regidurias">
+                                    <th colspan="2" style="height:50px"> <strong>Regidurias @Model.ListaDemarcacion.Select(x => x.Nombre).ElementAt(3)</strong></th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                @foreach (var Resultado in ResultadoFinal3)
+                                {
+                                    <tr style="text-align:center">
+                                        @{
+                                            if (Resultado.Partido != 0)
+                                            {
+                                                var partido = Lpar.FirstOrDefault(x => x.Id == Resultado.Partido);
+                                                <td colspan="2"> <img src="@Url.Content(partido.LogoURL)" id="imagen" />    </td>
+
+                                                <td colspan="2">@Resultado.Votos</td>
+                                            }
+                                            else if (Resultado.Independiente != 0)
+                                            {
+                                                var partido = Lpar.FirstOrDefault(x => x.Id == Resultado.Independiente && x.Independiente == true);
+                                                <td colspan="2"> <img src="@Url.Content(partido.LogoURL)" id="imagen" />    </td>
+
+                                                <td colspan="2">@Resultado.Votos</td>
+                                            }
+
+                                        }
+                                    </tr>
+                                }
+
+                                @foreach (var Resultado in ResultadoFinal3)
+                                {
+                                    <tr style="text-align:center">
+                                        @{
+                                            if (Resultado.Combinacion != 0)
+                                            {
+                                                var Combina = LCom.FirstOrDefault(x => x.Id == Resultado.Combinacion);
+                                                <td colspan="2" style="height:30px"> <img src="@Url.Content(Combina.LogoURL)" id="imagenc" />    </td>
+
+                                                <td colspan="2">@Resultado.Votos</td>
+                                            }
+                                        }
+                                    </tr>
+                                }
+
+                                <tr style="text-align:center">
+                                    <td colspan="2"> NO REGISTRADOS  </td>
+                                    <td colspan="2">@CabeceraReg3.Sum(x => x.NoRegistrados)</td>
+                                </tr>
+                                <tr class="espacio"></tr>
+                                <tr style="text-align:center">
+                                    <td colspan="2" style=" width:50%"> VOTOS VALIDOS  </td>
+                                    @{int ValidosReg3 = CabeceraReg3.Sum(x => x.Total) - CabeceraReg3.Sum(x => x.Nulos);
+                                        <td colspan="2" style=" width:50%"> @ValidosReg3 </td>
+                                    }
+                                </tr>
+                                <tr class="espacio"></tr>
+                                <tr style="text-align:center">
+                                    <td colspan="2" style=" width:50%"> VOTOS  NULOS  </td>
+                                    <td colspan="2" style=" width:50%">@CabeceraReg3.Sum(x => x.Nulos)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    }
+                </div>
+                <div class="col-4">
+                    @{
+                        var ResultadoReg4 = Model.RegidorLista.Where(x => x.LVotosActa.LActaDetalle.LCasilla.LSeccion.DemarcacionId == Model.ListaDemarcacion.Select(x => x.Id).ElementAt(4));
+                        var CabeceraReg4 = Model.VotosActaReg.Where(x => x.LActaDetalle.LCasilla.LSeccion.DemarcacionId == Model.ListaDemarcacion.Select(x => x.Id).ElementAt(4));
+                        var PartidosReg4 = ResultadoReg4.Where(x => x.IdPartido != 0).ToList();
+                        var CoalicionesReg4 = ResultadoReg4.Where(x => x.IdCoalicion != 0).ToList();
+
+                        var PartidoVotos4 = PartidosReg4.GroupBy(x => x.IdPartido).Select(g => new ElementosCartel
+                        {
+                            Partido = g.Key,
+                            Coalicion = g.First().IdCoalicion,
+                            Combinacion = g.First().IdCombinacion,
+                            Independiente = g.First().IdIndependiente,
+                            Votos = g.Sum(x => x.Votos)
+                        }).ToList();
+                        var CoalicionVotos4 = CoalicionesReg4.GroupBy(x => x.IdCombinacion).Select(g => new ElementosCartel
+                        {
+                            Partido = g.First().IdPartido,
+                            Coalicion = g.First().IdCoalicion,
+                            Combinacion = g.Key,
+                            Independiente = g.First().IdIndependiente,
+                            Votos = g.Sum(x => x.Votos)
+
+                        }).ToList();
+                        var ResultadoFinal4 = PartidoVotos4.Concat(CoalicionVotos4).ToList();
+
+                        <table style="width:100%" border="" class="default">
+                            <thead>
+
+                                <tr style="text-align:center">
+                                    <th rowspan="2" colspan="2" style="width:50%"><strong> Partido, Coalicion o Candidato </strong></th>
+                                    <th colspan="2" style="width:50%; height:50%;"><strong> Resultado (con número)</strong></th>
+                                </tr>
+                                <tr style="text-align:center" class="Regidurias">
+                                    <th colspan="2" style="height:50px"> <strong>Regidurias @Model.ListaDemarcacion.Select(x => x.Nombre).ElementAt(4)</strong></th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                @foreach (var Resultado in ResultadoFinal4)
+                                {
+                                    <tr style="text-align:center">
+                                        @{
+                                            if (Resultado.Partido != 0)
+                                            {
+                                                var partido = Lpar.FirstOrDefault(x => x.Id == Resultado.Partido);
+                                                <td colspan="2"> <img src="@Url.Content(partido.LogoURL)" id="imagen" />    </td>
+
+                                                <td colspan="2">@Resultado.Votos</td>
+                                            }
+                                            else if (Resultado.Independiente != 0)
+                                            {
+                                                var partido = Lpar.FirstOrDefault(x => x.Id == Resultado.Independiente && x.Independiente == true);
+                                                <td colspan="2"> <img src="@Url.Content(partido.LogoURL)" id="imagen" />    </td>
+
+                                                <td colspan="2">@Resultado.Votos</td>
+                                            }
+
+                                        }
+                                    </tr>
+                                }
+
+                                @foreach (var Resultado in ResultadoFinal4)
+                                {
+                                    <tr style="text-align:center">
+                                        @{
+                                            if (Resultado.Combinacion != 0)
+                                            {
+                                                var Combina = LCom.FirstOrDefault(x => x.Id == Resultado.Combinacion);
+                                                <td colspan="2" style="height:30px"> <img src="@Url.Content(Combina.LogoURL)" id="imagenc" />    </td>
+
+                                                <td colspan="2">@Resultado.Votos</td>
+                                            }
+                                        }
+                                    </tr>
+                                }
+
+                                <tr style="text-align:center">
+                                    <td colspan="2"> NO REGISTRADOS  </td>
+                                    <td colspan="2">@CabeceraReg4.Sum(x => x.NoRegistrados)</td>
+                                </tr>
+                                <tr class="espacio"></tr>
+                                <tr style="text-align:center">
+                                    <td colspan="2" style=" width:50%"> VOTOS VALIDOS  </td>
+                                    @{int ValidosReg4 = CabeceraReg4.Sum(x => x.Total) - CabeceraReg4.Sum(x => x.Nulos);
+                                        <td colspan="2" style=" width:50%"> @ValidosReg4 </td>
+                                    }
+                                </tr>
+                                <tr class="espacio"></tr>
+                                <tr style="text-align:center">
+                                    <td colspan="2" style=" width:50%"> VOTOS  NULOS  </td>
+                                    <td colspan="2" style=" width:50%">@CabeceraReg4.Sum(x => x.Nulos)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    }
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="form-group row">
+                <div class="col-4">
+                    @{
+                        var ResultadoReg = Model.RegidorLista.Where(x => x.LVotosActa.LActaDetalle.LCasilla.LSeccion.DemarcacionId == Model.ListaDemarcacion.Select(x => x.Id).ElementAt(0));
+                        var CabeceraReg = Model.VotosActaReg.Where(x => x.LActaDetalle.LCasilla.LSeccion.DemarcacionId == Model.ListaDemarcacion.Select(x => x.Id).ElementAt(0));
+                        var PartidosReg = ResultadoReg.Where(x => x.IdPartido != 0).ToList();
+                        var CoalicionesReg = ResultadoReg.Where(x => x.IdCoalicion != 0).ToList();
+
+                        var PartidoVotos = PartidosReg.GroupBy(x => x.IdPartido).Select(g => new ElementosCartel
+                        {
+                            Partido = g.Key,
+                            Coalicion = g.First().IdCoalicion,
+                            Combinacion = g.First().IdCombinacion,
+                            Independiente = g.First().IdIndependiente,
+                            Votos = g.Sum(x => x.Votos)
+                        }).ToList();
+                        var CoalicionVotos = CoalicionesReg.GroupBy(x => x.IdCombinacion).Select(g => new ElementosCartel
+                        {
+                            Partido = g.First().IdPartido,
+                            Coalicion = g.First().IdCoalicion,
+                            Combinacion = g.Key,
+                            Independiente = g.First().IdIndependiente,
+                            Votos = g.Sum(x => x.Votos)
+
+                        }).ToList();
+                        var ResultadoFinal = PartidoVotos.Concat(CoalicionVotos).ToList();
+
+                        <table style="width:100%" border="" class="default">
+                            <thead>
+
+                                <tr style="text-align:center">
+                                    <th rowspan="2" colspan="2" style="width:50%"><strong> Partido, Coalicion o Candidato </strong></th>
+                                    <th colspan="2" style="width:50%; height:50%;"><strong> Resultado (con número)</strong></th>
+                                </tr>
+                                <tr style="text-align:center" class="Regidurias">
+                                    <th colspan="2" style="height:50px"> <strong>Regidurias @Model.ListaDemarcacion.Select(x => x.Nombre).ElementAt(0)</strong></th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                @foreach (var Resultado in ResultadoFinal)
+                                {
+                                    <tr style="text-align:center">
+                                        @{
+                                            if (Resultado.Partido != 0)
+                                            {
+                                                var partido = Lpar.FirstOrDefault(x => x.Id == Resultado.Partido);
+                                                <td colspan="2"> <img src="@Url.Content(partido.LogoURL)" id="imagen" />    </td>
+
+                                                <td colspan="2">@Resultado.Votos</td>
+                                            }
+                                            else if (Resultado.Independiente != 0)
+                                            {
+                                                var partido = Lpar.FirstOrDefault(x => x.Id == Resultado.Independiente && x.Independiente == true);
+                                                <td colspan="2"> <img src="@Url.Content(partido.LogoURL)" id="imagen" />    </td>
+
+                                                <td colspan="2">@Resultado.Votos</td>
+                                            }
+
+                                        }
+                                    </tr>
+                                }
+
+                                @foreach (var Resultado in ResultadoFinal)
+                                {
+                                    <tr style="text-align:center">
+                                        @{
+                                            if (Resultado.Combinacion != 0)
+                                            {
+                                                var Combina = LCom.FirstOrDefault(x => x.Id == Resultado.Combinacion);
+                                                <td colspan="2" style="height:30px"> <img src="@Url.Content(Combina.LogoURL)" id="imagenc" />    </td>
+
+                                                <td colspan="2">@Resultado.Votos</td>
+                                            }
+                                        }
+                                    </tr>
+                                }
+
+                                <tr style="text-align:center">
+                                    <td colspan="2"> NO REGISTRADOS  </td>
+                                    <td colspan="2">@CabeceraReg.Sum(x => x.NoRegistrados)</td>
+                                </tr>
+                                <tr class="espacio"></tr>
+                                <tr style="text-align:center">
+                                    <td colspan="2" style=" width:50%"> VOTOS VALIDOS  </td>
+                                    @{int ValidosReg = CabeceraReg.Sum(x => x.Total) - CabeceraReg.Sum(x => x.Nulos);
+                                        <td colspan="2" style=" width:50%"> @ValidosReg </td>
+                                    }
+                                </tr>
+                                <tr class="espacio"></tr>
+                                <tr style="text-align:center">
+                                    <td colspan="2" style=" width:50%"> VOTOS  NULOS  </td>
+                                    <td colspan="2" style=" width:50%">@CabeceraReg.Sum(x => x.Nulos)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    }
+                </div>
+                <div class="col-4">
+                    @{
+                        var ResultadoReg1 = Model.RegidorLista.Where(x => x.LVotosActa.LActaDetalle.LCasilla.LSeccion.DemarcacionId == Model.ListaDemarcacion.Select(x => x.Id).ElementAt(1));
+                        var CabeceraReg1 = Model.VotosActaReg.Where(x => x.LActaDetalle.LCasilla.LSeccion.DemarcacionId == Model.ListaDemarcacion.Select(x => x.Id).ElementAt(1));
+                        var PartidosReg1 = ResultadoReg1.Where(x => x.IdPartido != 0).ToList();
+                        var CoalicionesReg1 = ResultadoReg1.Where(x => x.IdCoalicion != 0).ToList();
+
+                        var PartidoVotos1 = PartidosReg1.GroupBy(x => x.IdPartido).Select(g => new ElementosCartel
+                        {
+                            Partido = g.Key,
+                            Coalicion = g.First().IdCoalicion,
+                            Combinacion = g.First().IdCombinacion,
+                            Independiente = g.First().IdIndependiente,
+                            Votos = g.Sum(x => x.Votos)
+                        }).ToList();
+                        var CoalicionVotos1 = CoalicionesReg1.GroupBy(x => x.IdCombinacion).Select(g => new ElementosCartel
+                        {
+                            Partido = g.First().IdPartido,
+                            Coalicion = g.First().IdCoalicion,
+                            Combinacion = g.Key,
+                            Independiente = g.First().IdIndependiente,
+                            Votos = g.Sum(x => x.Votos)
+
+                        }).ToList();
+                        var ResultadoFinal1 = PartidoVotos1.Concat(CoalicionVotos1).ToList();
+
+                        <table style="width:100%" border="" class="default">
+                            <thead>
+
+                                <tr style="text-align:center">
+                                    <th rowspan="2" colspan="2" style="width:50%"><strong> Partido, Coalicion o Candidato </strong></th>
+                                    <th colspan="2" style="width:50%; height:50%;"><strong> Resultado (con número)</strong></th>
+                                </tr>
+                                <tr style="text-align:center" class="Regidurias">
+                                    <th colspan="2" style="height:50px"> <strong>Regidurias @Model.ListaDemarcacion.Select(x => x.Nombre).ElementAt(1)</strong></th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                @foreach (var Resultado in ResultadoFinal1)
+                                {
+                                    <tr style="text-align:center">
+                                        @{
+                                            if (Resultado.Partido != 0)
+                                            {
+                                                var partido = Lpar.FirstOrDefault(x => x.Id == Resultado.Partido);
+                                                <td colspan="2"> <img src="@Url.Content(partido.LogoURL)" id="imagen" />    </td>
+
+                                                <td colspan="2">@Resultado.Votos</td>
+                                            }
+                                            else if (Resultado.Independiente != 0)
+                                            {
+                                                var partido = Lpar.FirstOrDefault(x => x.Id == Resultado.Independiente && x.Independiente == true);
+                                                <td colspan="2"> <img src="@Url.Content(partido.LogoURL)" id="imagen" />    </td>
+
+                                                <td colspan="2">@Resultado.Votos</td>
+                                            }
+
+                                        }
+                                    </tr>
+                                }
+
+                                @foreach (var Resultado in ResultadoFinal1)
+                                {
+                                    <tr style="text-align:center">
+                                        @{
+                                            if (Resultado.Combinacion != 0)
+                                            {
+                                                var Combina = LCom.FirstOrDefault(x => x.Id == Resultado.Combinacion);
+                                                <td colspan="2" style="height:30px"> <img src="@Url.Content(Combina.LogoURL)" id="imagenc" />    </td>
+
+                                                <td colspan="2">@Resultado.Votos</td>
+                                            }
+                                        }
+                                    </tr>
+                                }
+
+                                <tr style="text-align:center">
+                                    <td colspan="2"> NO REGISTRADOS  </td>
+                                    <td colspan="2">@CabeceraReg1.Sum(x => x.NoRegistrados)</td>
+                                </tr>
+                                <tr class="espacio"></tr>
+                                <tr style="text-align:center">
+                                    <td colspan="2" style=" width:50%"> VOTOS VALIDOS  </td>
+                                    @{int ValidosReg1 = CabeceraReg1.Sum(x => x.Total) - CabeceraReg1.Sum(x => x.Nulos);
+                                        <td colspan="2" style=" width:50%"> @ValidosReg1 </td>
+                                    }
+                                </tr>
+                                <tr class="espacio"></tr>
+                                <tr style="text-align:center">
+                                    <td colspan="2" style=" width:50%"> VOTOS  NULOS  </td>
+                                    <td colspan="2" style=" width:50%">@CabeceraReg1.Sum(x => x.Nulos)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    }
+                </div>
+                <div class="col-4">
+                    @{
+                        var ResultadoReg2 = Model.RegidorLista.Where(x => x.LVotosActa.LActaDetalle.LCasilla.LSeccion.DemarcacionId == Model.ListaDemarcacion.Select(x => x.Id).ElementAt(2));
+                        var CabeceraReg2 = Model.VotosActaReg.Where(x => x.LActaDetalle.LCasilla.LSeccion.DemarcacionId == Model.ListaDemarcacion.Select(x => x.Id).ElementAt(2));
+                        var PartidosReg2 = ResultadoReg2.Where(x => x.IdPartido != 0).ToList();
+                        var CoalicionesReg2 = ResultadoReg2.Where(x => x.IdCoalicion != 0).ToList();
+
+                        var PartidoVotos2 = PartidosReg2.GroupBy(x => x.IdPartido).Select(g => new ElementosCartel
+                        {
+                            Partido = g.Key,
+                            Coalicion = g.First().IdCoalicion,
+                            Combinacion = g.First().IdCombinacion,
+                            Independiente = g.First().IdIndependiente,
+                            Votos = g.Sum(x => x.Votos)
+                        }).ToList();
+                        var CoalicionVotos2 = CoalicionesReg2.GroupBy(x => x.IdCombinacion).Select(g => new ElementosCartel
+                        {
+                            Partido = g.First().IdPartido,
+                            Coalicion = g.First().IdCoalicion,
+                            Combinacion = g.Key,
+                            Independiente = g.First().IdIndependiente,
+                            Votos = g.Sum(x => x.Votos)
+
+                        }).ToList();
+                        var ResultadoFinal2 = PartidoVotos2.Concat(CoalicionVotos2).ToList();
+
+                        <table style="width:100%" border="" class="default">
+                            <thead>
+
+                                <tr style="text-align:center">
+                                    <th rowspan="2" colspan="2" style="width:50%"><strong> Partido, Coalicion o Candidato </strong></th>
+                                    <th colspan="2" style="width:50%; height:50%;"><strong> Resultado (con número)</strong></th>
+                                </tr>
+                                <tr style="text-align:center" class="Regidurias">
+                                    <th colspan="2" style="height:50px"> <strong>Regidurias @Model.ListaDemarcacion.Select(x => x.Nombre).ElementAt(2)</strong></th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                @foreach (var Resultado in ResultadoFinal2)
+                                {
+                                    <tr style="text-align:center">
+                                        @{
+                                            if (Resultado.Partido != 0)
+                                            {
+                                                var partido = Lpar.FirstOrDefault(x => x.Id == Resultado.Partido);
+                                                <td colspan="2"> <img src="@Url.Content(partido.LogoURL)" id="imagen" />    </td>
+
+                                                <td colspan="2">@Resultado.Votos</td>
+                                            }
+                                            else if (Resultado.Independiente != 0)
+                                            {
+                                                var partido = Lpar.FirstOrDefault(x => x.Id == Resultado.Independiente && x.Independiente == true);
+                                                <td colspan="2"> <img src="@Url.Content(partido.LogoURL)" id="imagen" />    </td>
+
+                                                <td colspan="2">@Resultado.Votos</td>
+                                            }
+
+                                        }
+                                    </tr>
+                                }
+
+                                @foreach (var Resultado in ResultadoFinal2)
+                                {
+                                    <tr style="text-align:center">
+                                        @{
+                                            if (Resultado.Combinacion != 0)
+                                            {
+                                                var Combina = LCom.FirstOrDefault(x => x.Id == Resultado.Combinacion);
+                                                <td colspan="2" style="height:30px"> <img src="@Url.Content(Combina.LogoURL)" id="imagenc" />    </td>
+
+                                                <td colspan="2">@Resultado.Votos</td>
+                                            }
+                                        }
+                                    </tr>
+                                }
+
+                                <tr style="text-align:center">
+                                    <td colspan="2"> NO REGISTRADOS  </td>
+                                    <td colspan="2">@CabeceraReg2.Sum(x => x.NoRegistrados)</td>
+                                </tr>
+                                <tr class="espacio"></tr>
+                                <tr style="text-align:center">
+                                    <td colspan="2" style=" width:50%"> VOTOS VALIDOS  </td>
+                                    @{int ValidosReg2 = CabeceraReg2.Sum(x => x.Total) - CabeceraReg2.Sum(x => x.Nulos);
+                                        <td colspan="2" style=" width:50%"> @ValidosReg2 </td>
+                                    }
+                                </tr>
+                                <tr class="espacio"></tr>
+                                <tr style="text-align:center">
+                                    <td colspan="2" style=" width:50%"> VOTOS  NULOS  </td>
+                                    <td colspan="2" style=" width:50%">@CabeceraReg2.Sum(x => x.Nulos)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    }
+                </div>
+            </div>
+
+
+            <div class="saltopagina"></div>
+            <header>
+
+                <img src="~/Logos/CabeceraReg.png" />
+
+            </header>
+            <br />
+            <div class="form-group row">
+                <div class="col-12">
+                    <p><strong>ENTIDAD FEDERATIVA (ESTADO):</strong> &nbsp; &nbsp; &nbsp; <u>NAYARIT</u></p>
+                </div>
+
+            </div>
+            <div class="form-group row">
+                <div class="col-6">
+                    <p> <strong>MUNICIPIO:</strong> &nbsp;&nbsp;&nbsp; <u>@Model.Municipio.ToUpper()</u></p>
+                </div>
+                <div class="col-6">
+                    <p> <strong>DISTRITO ELECTORAL LOCAL:</strong> &nbsp;&nbsp;&nbsp; <u>@Model.Distrito</u></p>
+                </div>
+
+            </div>
+            <div class="form-group row">
+                <div class="col-5">
+                    <p> <strong>ESTOS RESULTADOS CORRESPONDEN A:</strong> &nbsp;&nbsp;<u> @Model.CasillasCapturadas </u></p>
+                </div>
+                <div class="col-3">
+                    <p> <strong>CASILLAS DEL TOTAL DE:</strong> &nbsp;&nbsp; <u>@Model.CasillasTotales </u></p>
+                </div>
+                <div class="col-4">
+                    <p> <strong>QUE COMPRENDEN EL MUNICIPIO,</strong></p>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-3">
+                    <p> <strong>HASTA LAS:</strong> &nbsp;&nbsp;<u> @Model.HoraFin </u></p>
+                </div>
+                <div class="col-3">
+                    <p> <strong>HORAS DEL DIA</strong> &nbsp;&nbsp; <u>@Model.DiaFin </u></p>
+                </div>
+                <div class="col-3">
+                    <p> <strong>DE JUNIO DE 2021.</strong></p>
+                </div>
+            </div>
+            <br />
+            <div class="form-group row">
+                <div class="col-4">
+                    @{
+                        var ResultadoReg3 = Model.RegidorLista.Where(x => x.LVotosActa.LActaDetalle.LCasilla.LSeccion.DemarcacionId == Model.ListaDemarcacion.Select(x => x.Id).ElementAt(3));
+                        var CabeceraReg3 = Model.VotosActaReg.Where(x => x.LActaDetalle.LCasilla.LSeccion.DemarcacionId == Model.ListaDemarcacion.Select(x => x.Id).ElementAt(3));
+                        var PartidosReg3 = ResultadoReg3.Where(x => x.IdPartido != 0).ToList();
+                        var CoalicionesReg3 = ResultadoReg3.Where(x => x.IdCoalicion != 0).ToList();
+
+                        var PartidoVotos3 = PartidosReg3.GroupBy(x => x.IdPartido).Select(g => new ElementosCartel
+                        {
+                            Partido = g.Key,
+                            Coalicion = g.First().IdCoalicion,
+                            Combinacion = g.First().IdCombinacion,
+                            Independiente = g.First().IdIndependiente,
+                            Votos = g.Sum(x => x.Votos)
+                        }).ToList();
+                        var CoalicionVotos3 = CoalicionesReg3.GroupBy(x => x.IdCombinacion).Select(g => new ElementosCartel
+                        {
+                            Partido = g.First().IdPartido,
+                            Coalicion = g.First().IdCoalicion,
+                            Combinacion = g.Key,
+                            Independiente = g.First().IdIndependiente,
+                            Votos = g.Sum(x => x.Votos)
+
+                        }).ToList();
+                        var ResultadoFinal3 = PartidoVotos3.Concat(CoalicionVotos3).ToList();
+
+                        <table style="width:100%" border="" class="default">
+                            <thead>
+
+                                <tr style="text-align:center">
+                                    <th rowspan="2" colspan="2" style="width:50%"><strong> Partido, Coalicion o Candidato </strong></th>
+                                    <th colspan="2" style="width:50%; height:50%;"><strong> Resultado (con número)</strong></th>
+                                </tr>
+                                <tr style="text-align:center" class="Regidurias">
+                                    <th colspan="2" style="height:50px"> <strong>Regidurias @Model.ListaDemarcacion.Select(x => x.Nombre).ElementAt(3)</strong></th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                @foreach (var Resultado in ResultadoFinal3)
+                                {
+                                    <tr style="text-align:center">
+                                        @{
+                                            if (Resultado.Partido != 0)
+                                            {
+                                                var partido = Lpar.FirstOrDefault(x => x.Id == Resultado.Partido);
+                                                <td colspan="2"> <img src="@Url.Content(partido.LogoURL)" id="imagen" />    </td>
+
+                                                <td colspan="2">@Resultado.Votos</td>
+                                            }
+                                            else if (Resultado.Independiente != 0)
+                                            {
+                                                var partido = Lpar.FirstOrDefault(x => x.Id == Resultado.Independiente && x.Independiente == true);
+                                                <td colspan="2"> <img src="@Url.Content(partido.LogoURL)" id="imagen" />    </td>
+
+                                                <td colspan="2">@Resultado.Votos</td>
+                                            }
+
+                                        }
+                                    </tr>
+                                }
+
+                                @foreach (var Resultado in ResultadoFinal3)
+                                {
+                                    <tr style="text-align:center">
+                                        @{
+                                            if (Resultado.Combinacion != 0)
+                                            {
+                                                var Combina = LCom.FirstOrDefault(x => x.Id == Resultado.Combinacion);
+                                                <td colspan="2" style="height:30px"> <img src="@Url.Content(Combina.LogoURL)" id="imagenc" />    </td>
+
+                                                <td colspan="2">@Resultado.Votos</td>
+                                            }
+                                        }
+                                    </tr>
+                                }
+
+                                <tr style="text-align:center">
+                                    <td colspan="2"> NO REGISTRADOS  </td>
+                                    <td colspan="2">@CabeceraReg3.Sum(x => x.NoRegistrados)</td>
+                                </tr>
+                                <tr class="espacio"></tr>
+                                <tr style="text-align:center">
+                                    <td colspan="2" style=" width:50%"> VOTOS VALIDOS  </td>
+                                    @{int ValidosReg3 = CabeceraReg3.Sum(x => x.Total) - CabeceraReg3.Sum(x => x.Nulos);
+                                        <td colspan="2" style=" width:50%"> @ValidosReg3 </td>
+                                    }
+                                </tr>
+                                <tr class="espacio"></tr>
+                                <tr style="text-align:center">
+                                    <td colspan="2" style=" width:50%"> VOTOS  NULOS  </td>
+                                    <td colspan="2" style=" width:50%">@CabeceraReg3.Sum(x => x.Nulos)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    }
+                </div>
+                <div class="col-4">
+                    @{
+                        var ResultadoReg4 = Model.RegidorLista.Where(x => x.LVotosActa.LActaDetalle.LCasilla.LSeccion.DemarcacionId == Model.ListaDemarcacion.Select(x => x.Id).ElementAt(4));
+                        var CabeceraReg4 = Model.VotosActaReg.Where(x => x.LActaDetalle.LCasilla.LSeccion.DemarcacionId == Model.ListaDemarcacion.Select(x => x.Id).ElementAt(4));
+                        var PartidosReg4 = ResultadoReg4.Where(x => x.IdPartido != 0).ToList();
+                        var CoalicionesReg4 = ResultadoReg4.Where(x => x.IdCoalicion != 0).ToList();
+
+                        var PartidoVotos4 = PartidosReg4.GroupBy(x => x.IdPartido).Select(g => new ElementosCartel
+                        {
+                            Partido = g.Key,
+                            Coalicion = g.First().IdCoalicion,
+                            Combinacion = g.First().IdCombinacion,
+                            Independiente = g.First().IdIndependiente,
+                            Votos = g.Sum(x => x.Votos)
+                        }).ToList();
+                        var CoalicionVotos4 = CoalicionesReg4.GroupBy(x => x.IdCombinacion).Select(g => new ElementosCartel
+                        {
+                            Partido = g.First().IdPartido,
+                            Coalicion = g.First().IdCoalicion,
+                            Combinacion = g.Key,
+                            Independiente = g.First().IdIndependiente,
+                            Votos = g.Sum(x => x.Votos)
+
+                        }).ToList();
+                        var ResultadoFinal4 = PartidoVotos4.Concat(CoalicionVotos4).ToList();
+
+                        <table style="width:100%" border="" class="default">
+                            <thead>
+
+                                <tr style="text-align:center">
+                                    <th rowspan="2" colspan="2" style="width:50%"><strong> Partido, Coalicion o Candidato </strong></th>
+                                    <th colspan="2" style="width:50%; height:50%;"><strong> Resultado (con número)</strong></th>
+                                </tr>
+                                <tr style="text-align:center" class="Regidurias">
+                                    <th colspan="2" style="height:50px"> <strong>Regidurias @Model.ListaDemarcacion.Select(x => x.Nombre).ElementAt(4)</strong></th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                @foreach (var Resultado in ResultadoFinal4)
+                                {
+                                    <tr style="text-align:center">
+                                        @{
+                                            if (Resultado.Partido != 0)
+                                            {
+                                                var partido = Lpar.FirstOrDefault(x => x.Id == Resultado.Partido);
+                                                <td colspan="2"> <img src="@Url.Content(partido.LogoURL)" id="imagen" />    </td>
+
+                                                <td colspan="2">@Resultado.Votos</td>
+                                            }
+                                            else if (Resultado.Independiente != 0)
+                                            {
+                                                var partido = Lpar.FirstOrDefault(x => x.Id == Resultado.Independiente && x.Independiente == true);
+                                                <td colspan="2"> <img src="@Url.Content(partido.LogoURL)" id="imagen" />    </td>
+
+                                                <td colspan="2">@Resultado.Votos</td>
+                                            }
+
+                                        }
+                                    </tr>
+                                }
+
+                                @foreach (var Resultado in ResultadoFinal4)
+                                {
+                                    <tr style="text-align:center">
+                                        @{
+                                            if (Resultado.Combinacion != 0)
+                                            {
+                                                var Combina = LCom.FirstOrDefault(x => x.Id == Resultado.Combinacion);
+                                                <td colspan="2" style="height:30px"> <img src="@Url.Content(Combina.LogoURL)" id="imagenc" />    </td>
+
+                                                <td colspan="2">@Resultado.Votos</td>
+                                            }
+                                        }
+                                    </tr>
+                                }
+
+                                <tr style="text-align:center">
+                                    <td colspan="2"> NO REGISTRADOS  </td>
+                                    <td colspan="2">@CabeceraReg4.Sum(x => x.NoRegistrados)</td>
+                                </tr>
+                                <tr class="espacio"></tr>
+                                <tr style="text-align:center">
+                                    <td colspan="2" style=" width:50%"> VOTOS VALIDOS  </td>
+                                    @{int ValidosReg4 = CabeceraReg4.Sum(x => x.Total) - CabeceraReg4.Sum(x => x.Nulos);
+                                        <td colspan="2" style=" width:50%"> @ValidosReg4 </td>
+                                    }
+                                </tr>
+                                <tr class="espacio"></tr>
+                                <tr style="text-align:center">
+                                    <td colspan="2" style=" width:50%"> VOTOS  NULOS  </td>
+                                    <td colspan="2" style=" width:50%">@CabeceraReg4.Sum(x => x.Nulos)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    }
+                </div>
+                <div class="col-4">
+                    @{
+                        var ResultadoReg5 = Model.RegidorLista.Where(x => x.LVotosActa.LActaDetalle.LCasilla.LSeccion.DemarcacionId == Model.ListaDemarcacion.Select(x => x.Id).ElementAt(5));
+                        var CabeceraReg5 = Model.VotosActaReg.Where(x => x.LActaDetalle.LCasilla.LSeccion.DemarcacionId == Model.ListaDemarcacion.Select(x => x.Id).ElementAt(5));
+                        var PartidosReg5 = ResultadoReg5.Where(x => x.IdPartido != 0).ToList();
+                        var CoalicionesReg5 = ResultadoReg5.Where(x => x.IdCoalicion != 0).ToList();
+
+                        var PartidoVotos5 = PartidosReg5.GroupBy(x => x.IdPartido).Select(g => new ElementosCartel
+                        {
+                            Partido = g.Key,
+                            Coalicion = g.First().IdCoalicion,
+                            Combinacion = g.First().IdCombinacion,
+                            Independiente = g.First().IdIndependiente,
+                            Votos = g.Sum(x => x.Votos)
+                        }).ToList();
+                        var CoalicionVotos5 = CoalicionesReg5.GroupBy(x => x.IdCombinacion).Select(g => new ElementosCartel
+                        {
+                            Partido = g.First().IdPartido,
+                            Coalicion = g.First().IdCoalicion,
+                            Combinacion = g.Key,
+                            Independiente = g.First().IdIndependiente,
+                            Votos = g.Sum(x => x.Votos)
+
+                        }).ToList();
+                        var ResultadoFinal5 = PartidoVotos5.Concat(CoalicionVotos5).ToList();
+
+                        <table style="width:100%" border="" class="default">
+                            <thead>
+
+                                <tr style="text-align:center">
+                                    <th rowspan="2" colspan="2" style="width:50%"><strong> Partido, Coalicion o Candidato </strong></th>
+                                    <th colspan="2" style="width:50%; height:50%;"><strong> Resultado (con número)</strong></th>
+                                </tr>
+                                <tr style="text-align:center" class="Regidurias">
+                                    <th colspan="2" style="height:50px"> <strong>Regidurias @Model.ListaDemarcacion.Select(x => x.Nombre).ElementAt(5)</strong></th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                @foreach (var Resultado in ResultadoFinal5)
+                                {
+                                    <tr style="text-align:center">
+                                        @{
+                                            if (Resultado.Partido != 0)
+                                            {
+                                                var partido = Lpar.FirstOrDefault(x => x.Id == Resultado.Partido);
+                                                <td colspan="2"> <img src="@Url.Content(partido.LogoURL)" id="imagen" />    </td>
+
+                                                <td colspan="2">@Resultado.Votos</td>
+                                            }
+                                            else if (Resultado.Independiente != 0)
+                                            {
+                                                var partido = Lpar.FirstOrDefault(x => x.Id == Resultado.Independiente && x.Independiente == true);
+                                                <td colspan="2"> <img src="@Url.Content(partido.LogoURL)" id="imagen" />    </td>
+
+                                                <td colspan="2">@Resultado.Votos</td>
+                                            }
+
+                                        }
+                                    </tr>
+                                }
+
+                                @foreach (var Resultado in ResultadoFinal5)
+                                {
+                                    <tr style="text-align:center">
+                                        @{
+                                            if (Resultado.Combinacion != 0)
+                                            {
+                                                var Combina = LCom.FirstOrDefault(x => x.Id == Resultado.Combinacion);
+                                                <td colspan="2" style="height:30px"> <img src="@Url.Content(Combina.LogoURL)" id="imagenc" />    </td>
+
+                                                <td colspan="2">@Resultado.Votos</td>
+                                            }
+                                        }
+                                    </tr>
+                                }
+
+                                <tr style="text-align:center">
+                                    <td colspan="2"> NO REGISTRADOS  </td>
+                                    <td colspan="2">@CabeceraReg5.Sum(x => x.NoRegistrados)</td>
+                                </tr>
+                                <tr class="espacio"></tr>
+                                <tr style="text-align:center">
+                                    <td colspan="2" style=" width:50%"> VOTOS VALIDOS  </td>
+                                    @{int ValidosReg5 = CabeceraReg5.Sum(x => x.Total) - CabeceraReg5.Sum(x => x.Nulos);
+                                        <td colspan="2" style=" width:50%"> @ValidosReg5 </td>
+                                    }
+                                </tr>
+                                <tr class="espacio"></tr>
+                                <tr style="text-align:center">
+                                    <td colspan="2" style=" width:50%"> VOTOS  NULOS  </td>
+                                    <td colspan="2" style=" width:50%">@CabeceraReg5.Sum(x => x.Nulos)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    }
+                </div>
+            </div>
+            <div class="saltopagina"></div>
+            <header>
+
+                <img src="~/Logos/CabeceraReg.png" />
+
+            </header>
+            <br />
+            <div class="form-group row">
+                <div class="col-12">
+                    <p><strong>ENTIDAD FEDERATIVA (ESTADO):</strong> &nbsp; &nbsp; &nbsp; <u>NAYARIT</u></p>
+                </div>
+
+            </div>
+            <div class="form-group row">
+                <div class="col-6">
+                    <p> <strong>MUNICIPIO:</strong> &nbsp;&nbsp;&nbsp; <u>@Model.Municipio.ToUpper()</u></p>
+                </div>
+                <div class="col-6">
+                    <p> <strong>DISTRITO ELECTORAL LOCAL:</strong> &nbsp;&nbsp;&nbsp; <u>@Model.Distrito</u></p>
+                </div>
+
+            </div>
+            <div class="form-group row">
+                <div class="col-5">
+                    <p> <strong>ESTOS RESULTADOS CORRESPONDEN A:</strong> &nbsp;&nbsp;<u> @Model.CasillasCapturadas </u></p>
+                </div>
+                <div class="col-3">
+                    <p> <strong>CASILLAS DEL TOTAL DE:</strong> &nbsp;&nbsp; <u>@Model.CasillasTotales </u></p>
+                </div>
+                <div class="col-4">
+                    <p> <strong>QUE COMPRENDEN EL MUNICIPIO,</strong></p>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-3">
+                    <p> <strong>HASTA LAS:</strong> &nbsp;&nbsp;<u> @Model.HoraFin </u></p>
+                </div>
+                <div class="col-3">
+                    <p> <strong>HORAS DEL DIA</strong> &nbsp;&nbsp; <u>@Model.DiaFin </u></p>
+                </div>
+                <div class="col-3">
+                    <p> <strong>DE JUNIO DE 2021.</strong></p>
+                </div>
+            </div>
+            <br />
+            <div class="form-group row">
+                <div class="col-4">
+                    @{
+                        var ResultadoReg6 = Model.RegidorLista.Where(x => x.LVotosActa.LActaDetalle.LCasilla.LSeccion.DemarcacionId == Model.ListaDemarcacion.Select(x => x.Id).ElementAt(6));
+                        var CabeceraReg6 = Model.VotosActaReg.Where(x => x.LActaDetalle.LCasilla.LSeccion.DemarcacionId == Model.ListaDemarcacion.Select(x => x.Id).ElementAt(6));
+                        var PartidosReg6 = ResultadoReg6.Where(x => x.IdPartido != 0).ToList();
+                        var CoalicionesReg6 = ResultadoReg6.Where(x => x.IdCoalicion != 0).ToList();
+
+                        var PartidoVotos6 = PartidosReg6.GroupBy(x => x.IdPartido).Select(g => new ElementosCartel
+                        {
+                            Partido = g.Key,
+                            Coalicion = g.First().IdCoalicion,
+                            Combinacion = g.First().IdCombinacion,
+                            Independiente = g.First().IdIndependiente,
+                            Votos = g.Sum(x => x.Votos)
+                        }).ToList();
+                        var CoalicionVotos6 = CoalicionesReg6.GroupBy(x => x.IdCombinacion).Select(g => new ElementosCartel
+                        {
+                            Partido = g.First().IdPartido,
+                            Coalicion = g.First().IdCoalicion,
+                            Combinacion = g.Key,
+                            Independiente = g.First().IdIndependiente,
+                            Votos = g.Sum(x => x.Votos)
+
+                        }).ToList();
+                        var ResultadoFinal6 = PartidoVotos6.Concat(CoalicionVotos6).ToList();
+
+                        <table style="width:100%" border="" class="default">
+                            <thead>
+
+                                <tr style="text-align:center">
+                                    <th rowspan="2" colspan="2" style="width:50%"><strong> Partido, Coalicion o Candidato </strong></th>
+                                    <th colspan="2" style="width:50%; height:50%;"><strong> Resultado (con número)</strong></th>
+                                </tr>
+                                <tr style="text-align:center" class="Regidurias">
+                                    <th colspan="2" style="height:50px"> <strong>Regidurias @Model.ListaDemarcacion.Select(x => x.Nombre).ElementAt(6)</strong></th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                @foreach (var Resultado in ResultadoFinal6)
+                                {
+                                    <tr style="text-align:center">
+                                        @{
+                                            if (Resultado.Partido != 0)
+                                            {
+                                                var partido = Lpar.FirstOrDefault(x => x.Id == Resultado.Partido);
+                                                <td colspan="2"> <img src="@Url.Content(partido.LogoURL)" id="imagen" />    </td>
+
+                                                <td colspan="2">@Resultado.Votos</td>
+                                            }
+                                            else if (Resultado.Independiente != 0)
+                                            {
+                                                var partido = Lpar.FirstOrDefault(x => x.Id == Resultado.Independiente && x.Independiente == true);
+                                                <td colspan="2"> <img src="@Url.Content(partido.LogoURL)" id="imagen" />    </td>
+
+                                                <td colspan="2">@Resultado.Votos</td>
+                                            }
+
+                                        }
+                                    </tr>
+                                }
+
+                                @foreach (var Resultado in ResultadoFinal6)
+                                {
+                                    <tr style="text-align:center">
+                                        @{
+                                            if (Resultado.Combinacion != 0)
+                                            {
+                                                var Combina = LCom.FirstOrDefault(x => x.Id == Resultado.Combinacion);
+                                                <td colspan="2" style="height:30px"> <img src="@Url.Content(Combina.LogoURL)" id="imagenc" />    </td>
+
+                                                <td colspan="2">@Resultado.Votos</td>
+                                            }
+                                        }
+                                    </tr>
+                                }
+
+                                <tr style="text-align:center">
+                                    <td colspan="2"> NO REGISTRADOS  </td>
+                                    <td colspan="2">@CabeceraReg6.Sum(x => x.NoRegistrados)</td>
+                                </tr>
+                                <tr class="espacio"></tr>
+                                <tr style="text-align:center">
+                                    <td colspan="2" style=" width:50%"> VOTOS VALIDOS  </td>
+                                    @{int ValidosReg6 = CabeceraReg6.Sum(x => x.Total) - CabeceraReg6.Sum(x => x.Nulos);
+                                        <td colspan="2" style=" width:50%"> @ValidosReg6 </td>
+                                    }
+                                </tr>
+                                <tr class="espacio"></tr>
+                                <tr style="text-align:center">
+                                    <td colspan="2" style=" width:50%"> VOTOS  NULOS  </td>
+                                    <td colspan="2" style=" width:50%">@CabeceraReg6.Sum(x => x.Nulos)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    }
+                </div>
+            </div>
+        }
+
+
+
+    </body>
+</html>

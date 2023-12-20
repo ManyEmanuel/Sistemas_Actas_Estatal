@@ -1,0 +1,94 @@
+﻿@model WebComputos.Models.ViewModels.MenuDinamicoVM
+
+@if (Model.LDistrito.Count() > 0)
+{
+    <li class="nav-item has-treeview">
+        <a class="nav-link" href="#">
+            <i class="far fa-building nav-icon"></i>
+            <p>Diputaciones</p>
+            <i class="right fas fa-angle-left"></i>
+        </a>
+        <ul class="nav nav-treeview">
+            <li class="nav-item has-treeview">
+                <a class="nav-link" href="#">
+                    <i class="far fa-building nav-icon"></i>
+                    <p>Por Municipio</p>
+                    <i class="right fas fa-angle-left"></i>
+                </a>
+                <ul class="nav nav-treeview">
+                    @foreach (var item in Model.LDistrito)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="Admin" asp-controller="ConsultaResultados" asp-action="DiputadoMunicipio" asp-route-id="@item.Value">
+                                <i class="far fa-dot-circle nav-icon"></i>
+                                <p>Distrito @item.</p>
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </li>
+            <li class="nav-item has-treeview">
+                <a class="nav-link" href="#">
+                    <i class="far fa-building nav-icon"></i>
+                    <p>Por Distrito</p>
+                    <i class="right fas fa-angle-left"></i>
+                </a>
+                <ul class="nav nav-treeview">
+                    @foreach (var item in Model.LDistrito)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="Admin" asp-controller="ConsultaResultados" asp-action="DiputadoDistrito" asp-route-id="@item.Value">
+                                <i class="far fa-dot-circle nav-icon"></i>
+                                <p>Distrito @item.Value</p>
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </li>         
+        </ul>
+    </li>
+}
+
+@if (Model.LDemarcaciones.Count() > 0)
+{
+    <li class="nav-item has-treeview">
+        <a class="nav-link" href="#">
+            <i class="far fa-building nav-icon"></i>
+            <p>Regidurías</p>
+            <i class="right fas fa-angle-left"></i>
+        </a>
+        <ul class="nav nav-treeview">
+            @foreach (var item in Model.LDemarcaciones)
+            {
+                var secciones = Model.Lsecciones.Where(x => x.DemarcacionId == item.Id).ToList();
+                if (secciones.Count > 0)
+                {
+
+                }
+                <li>
+                    <a class="nav-link"  asp-area="Admin" asp-controller="ConsultaResultados" asp-action="RegidorMunicipio" asp-route-id="@item.Id">
+                        <i class="far fa-dot-circle nav-icon"></i>
+                        <p>@item.Nombre</p>
+                    </a>
+                </li>
+            }
+        </ul>
+    </li>
+
+    @*<li class="dropdown-submenu">
+            <a class="dropdown-item dropdown-toggle" href="#">Regidores</a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                @foreach (var item in Model.LDemarcaciones)
+                {
+                    var secciones = Model.Lsecciones.Where(x => x.Demarcacion == item.idDemarcacion).ToList();
+                    if (secciones.Count > 0)
+                    {
+
+                    }
+                    <li><a class="dropdown-item" asp-area="Admin" asp-controller="ConsultaResultados" asp-action="RegidorMunicipio" asp-route-id="@item.idDemarcacion">@item.Nombre</a></li>
+
+
+                }
+            </ul>
+        </li>*@
+}

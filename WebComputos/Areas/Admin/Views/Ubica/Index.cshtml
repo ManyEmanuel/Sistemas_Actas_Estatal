@@ -1,0 +1,71 @@
+﻿@model WebComputos.Models.ViewModels.UbicaCasillaVM
+@{
+    ViewData["Title"] = "Ubica tu casilla";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<br />
+<style>
+    .Justificar {
+        text-align: justify;
+    }
+
+    .Derecha {
+        text-align: right;
+    }
+</style>
+
+<div class="row">
+    <div class="col-md-1"></div>
+    <div class="col-md-10 text-center">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title"> Ubica tu casilla</h2>
+            </div>
+            <div class="card-body">
+                <form method="post" asp-action="Reporte">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="card-text">Seleccione el tipo de búsqueda</label>
+                            <select name="Opciones" id="Opciones" class="custom-select">
+                                <option value=1>General</option>
+                                <option value=2>Municipio</option>
+                                <option value=3>Distrito</option>
+                                <option value=4>Demarcación</option>
+                                <option value=5>Sección</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="card-text" id="mun" style="display:none">Municipio</label>
+                            @Html.DropDownListFor(m => m.Municipio, Model.Municipio,
+                            "-Seleccione un municipio-", new { @class = "custom-select", @id = "Municipio", @style = "display:none" })
+                            <label class="card-text" id="dis" style="display:none">Distrito</label>
+                            @Html.DropDownListFor(m => m.Distrito, Model.Distrito,
+                            "-Seleccione un distrito-", new { @class = "custom-select", @id = "Distrito", @style = "display:none" })
+                        </div>
+                        <div class="col-md-3">
+                            <label class="card-text" id="dem" style="display:none">Demarcación</label>
+                            @Html.DropDownListFor(m => m.Demarcacion, Model.Demarcacion,
+                            "-Seleccione una demarcación-", new { @class = "custom-select", @id = "Demarcacion", @style = "display:none" })
+                            <label class="card-text" id="sec" style="display:none">Sección</label>
+                            @Html.DropDownListFor(m => m.Seccion, Model.Seccion,
+                            "-Seleccione una sección-", new { @class = "custom-select", @id = "Seccion", @style = "display:none" })
+                        </div>
+                        <div class="col-md-3">
+                            <br />
+                            <button type="submit" class="btn btn-success form-control" formtarget="_blank">Imprimir</button>
+                        </div>
+                        <input type="hidden" id="Tipo" asp-for="@Model.TipoBusqueda" value="1" />
+                        <input type="hidden" id="Primer" asp-for="@Model.PrimerNum" value="0" />
+                        <input type="hidden" id="Segundo" asp-for="@Model.SegundoNum" value="0" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-1"></div>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/Ubica.js"></script>
+}

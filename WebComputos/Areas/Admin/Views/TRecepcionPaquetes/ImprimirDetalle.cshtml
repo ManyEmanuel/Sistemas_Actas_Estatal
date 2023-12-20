@@ -1,0 +1,236 @@
+﻿@model WebComputos.Models.ViewModels.T_Recepcion_Paquete_VM
+
+@{
+    ViewData["Title"] = "Reporte";
+    Layout = "";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+
+    <!--Css todos-->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
+</head>
+<body>
+
+    <style>
+        header {
+            width: auto;
+            clear: both;
+        }
+
+        .Texto {
+            width: auto;
+            height: 25px;
+            background: #656464;
+        }
+
+
+        .Texto1 {
+            text-align: center;
+            font-size: 140%;
+            font-weight: bold;
+            color: white;
+        }
+
+        .TextoCuerpo {
+            text-align: justify;
+            font-size: 120%;
+        }
+
+        .TextoFirma {
+            text-align: center;
+            font-size: 120%;
+        }
+
+        .TextoCabecera {
+            text-align: right;
+            font-size: 120%;
+            font-weight: bold;
+            margin-bottom: 0px;
+            padding-bottom: 0em;
+        }
+
+        .color {
+            background-color: #F9B9EE;
+        }
+
+        .linea {
+            color: black;
+            font-size: 2;
+        }
+    </style>
+    @*<header>
+            <div class="form-group row">
+                <div class="col-4">
+                    <img src="/Imagenes/Logos/IEEN200.png" />
+                </div>
+                <div class="col-4">
+
+                </div>
+                <div class="col-4">
+                    <p class="TextoCabecera">  ANEXO 2 <br /> PROCESO ELECTORAL LOCAL 2021 <br /> NAYARIT </p>
+                </div>
+            </div>
+        </header>
+        <div class=" Texto">
+            <p class="Texto1">
+                RECIBO DE ENTREGA DEL PAQUETE ELECTORAL AL CONSEJO MUNICIPAL
+            </p>
+        </div>
+        <div class="form-group row">
+            <div class="col-4">
+                <p class="TextoCuerpo">MUNICIPIO: <b> <u>@Model.Municipio </u></b></p>
+            </div>
+            <div class="col-3">
+                <p class="TextoCuerpo">DISTRITO: <b> <u>  @Model.Distrito </u></b> </p>
+            </div>
+            <div class="col-5">
+                <p class="TextoCuerpo">DEMARCACIÓN MUNICIPAL ELECTORAL: <b> <u>@Model.Demarcacion</u></b></p>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-12">
+                <p class="TextoCuerpo">
+                    Siendo las <b><u>@Model.RecPaquetes.HoraRecepcion.ToShortTimeString()</u></b> del dia <b><u>@Model.RecPaquetes.FechaRecepcion.Day</u></b> de junio de 2021, el (la)C. <b><u>@Model.RecPaquetes.Entrega</u></b>, quien participó como <b><u>@Model.RecPaquetes.Cargo,</u></b>
+                    hace entrega a este Consejo Municipal del paquete electoral de la casilla tipo <b><u>@Model.NombreCas</u></b> sección número <b><u>@Model.NSeccion</u></b>, que se ubicó en: <b><u>[DIRECCIÓN] </u></b>, con los expedientes de la elección de Diputados/as,
+                    Gobernador/a, Presidente/a y Síndico/a y Regidores/as, conforme a los artículos 191,192,193 de la Ley Electoral del Estado de Nayarit.
+                </p>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-6">
+                <p class="TextoCuerpo">El paquete electoral se entregó:</p>
+            </div>
+        </div>
+        <div class="color">
+            <div class="form-group row">
+                <div class="col-1"></div>
+                <div class="col-5">
+
+                    <input type="radio" id="obs1" name="obs" value="1" class="form-check-input" asp-for="RecPaquetes.Observaciones" disabled />
+                    <p class="TextoCuerpo">Sin muestras de alteración, firmado y con cinta de seguridad</p>
+                </div>
+                <div class="col-5">
+                    <input type="radio" id="obs4" name="obs" value="4" class="form-check-input" asp-for="RecPaquetes.Observaciones" disabled />
+                    <p class="TextoCuerpo">Sin muestras de alteración y sin firmas</p>
+                </div>
+                <div class="col-1"></div>
+            </div>
+            <div class="form-group row">
+                <div class="col-1"></div>
+                <div class="col-5">
+                    <input type="radio" id="obs2" name="obs" value="2" class="form-check-input" asp-for="RecPaquetes.Observaciones" disabled />
+                    <p class="TextoCuerpo"> Sin muestras de alteración, firmado y sin cinta de seguridad</p>
+                </div>
+                <div class="col-5">
+                    <input type="radio" id="obs5" name="obs" value="5" class="form-check-input" asp-for="RecPaquetes.Observaciones" disabled />
+                    <p class="TextoCuerpo">Con muestras de alteración y sin firmas</p>
+                </div>
+                <div class="col-1"></div>
+            </div>
+            <div class="form-group row">
+                <div class="col-1"></div>
+                <div class="col-5">
+                    <input type="radio" id="obs3" name="obs" value="3" class="form-check-input" asp-for="RecPaquetes.Observaciones" disabled />
+                    <p class="TextoCuerpo"> Con muestras de alteración y firmado</p>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-6">
+                <p class="TextoCuerpo">Por fuera del paquete electoral se recibieron:</p>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-1"></div>
+            <div class="col-5">
+                <p class="TextoCuerpo">Un sobre para el PREP </p>
+            </div>
+            <div class="col-1">
+                <input id="Sobre1" type="radio" name="Sobre" value="1" asp-for="RecPaquetes.SobrePrep" disabled />
+                <p class="TextoCuerpo">Si </p>
+            </div>
+            <div class="col-1">
+                <input id="Sobre2" type="radio" name="Sobre" value="0" asp-for="RecPaquetes.SobrePrep" disabled />
+                <p class="TextoCuerpo">No</p>
+            </div>
+            <div class="col-1"></div>
+        </div>
+        <div class="form-group row">
+            <div class="col-12">
+                <p class="TextoCuerpo">
+                    Que dice contener copia de las Actas de Escrutinio y Cómputo de la elección de Diputados/as, Gobernador/a, Presidente/a y Sindíco/a y Regidores/as por los principios de mayoría relativa
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-1"></div>
+            <div class="col-5">
+                <p class="TextoCuerpo">Una bolsa que va por fuera del paquete electoral para el consejo municipal </p>
+            </div>
+            <div class="col-1">
+                <input id="Paq1" type="radio" name="Paquete" value="1" asp-for="RecPaquetes.SobrePrep" disabled />
+                <p class="TextoCuerpo">Si </p>
+            </div>
+            <div class="col-1">
+                <input id="Paq2" type="radio" name="Paquete" value="0" asp-for="RecPaquetes.SobrePrep" disabled />
+                <p class="TextoCuerpo">No </p>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-12">
+                <p class="TextoCuerpo">
+                    Que dice contener copia de las actas de Escrutinio y Cómputo de la elección de Diputados/as, Gobernador/a, Presidente/a y Sindíco/a y Regidores/as por los principios de mayoria relativa,
+                    la Constancia de clausura de casilla y remisión de los Paquetes Electorales al Consejo Municipal, y el Recibo de copia legible de las actas de casilla entregados a
+                    los/las representantes de los partidos políticos y de candidatos/as independientes.
+                </p>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-1"></div>
+            <div class="col-4">
+                <p class="TextoFirma">
+                    Funcionario/a de casilla que entrega
+                </p>
+            </div>
+            <div class="col-2"></div>
+            <div class="col-4">
+                <p class="TextoFirma">
+                    Recibe en el Consejo Municipal
+                </p>
+            </div>
+            <div class="col-1"></div>
+        </div>
+        <br />
+        <br />
+        <br />
+        <div class="form-group row">
+            <div class="col-1"></div>
+            <div class="col-4">
+                <hr color ="black" size=3 />
+                <p class="TextoFirma">
+                    NOMBRE Y FIRMA
+                </p>
+            </div>
+            <div class="col-2"></div>
+            <div class="col-4">
+                <hr color ="black" size=3 >
+                <p class="TextoFirma">
+                    NOMBRE Y FIRMA
+                </p>
+            </div>
+            <div class="col-1"></div>
+        </div>*@
+
+</body>
+</html>

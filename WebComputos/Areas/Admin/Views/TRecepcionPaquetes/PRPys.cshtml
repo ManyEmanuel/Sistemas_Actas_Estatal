@@ -1,0 +1,113 @@
+﻿
+@{
+    ViewData["Title"] = "Causales";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<br />
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title"> Puntos de recuento de la elección de Presidente y Sindico del municipio de @ViewBag.Municipio</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-2 text-center">
+                        <dl>
+                            <dt> Casillas de Recuento</dt>
+                            <dd id="causal"> @ViewBag.Causal</dd>
+                        </dl>
+                    </div>
+                    <div class="col-md-2 text-center">
+                        <dl>
+                            <dt>Grupos de trabajo</dt>
+                            <dd> <input type="number" id="grupos" class="text-center" /></dd>
+                        </dl>
+                    </div>
+                    <div class="col-md-2 text-center">
+                        <dl>
+                            <dt> Horas de captura </dt>
+                            <dd> <input type="number" id="horas" class="text-center" /> </dd>
+                        </dl>
+                    </div>
+                    <div class="col-md-2 text-center">
+                        <dl>
+                            <dt> Segmentos disponibles</dt>
+                            <dd> Segmentos cada 30 minutos disponibles </dd>
+                        </dl>
+                    </div>
+                    <div class="col-md-1"></div>
+                    <div class="col-md-2 text-center">
+                        <dl>
+                            <dt> </dt>
+                            <dd><input type="button" value="Calcular" class="btn btn-primary form-control" id="calcular" /></dd>
+                        </dl>
+                    </div>
+                    <div class="col-md-1"></div>
+                </div>
+                <br />
+                <br />
+                <div class="row">
+                    <div class="col-md-6 text-center">
+                        <dl>
+                            <dt><h1 id="total"></h1></dt>
+                            <dd><h5 id="textotal"></h5></dd>
+                        </dl>
+                    </div>
+                    <div class="col-md-6 text-center">
+                        <dl>
+                            <dt> <h1 id="redondeo"></h1></dt>
+                            <dd> <h5 id="texredondeo"> </h5></dd>
+                        </dl>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 text-center" id="ver">
+                        <div class="alert alert-default-primary alert-dismissible">
+                            <h1><i class="icon fas fa-info"></i><strong>INFORMACIÓN</strong> </h1>
+                            <h1 id="Mensaje"></h1>
+
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <br />
+                <div class="row">
+
+                    <div class="col-md-3"></div>
+                    <div class="col-md-3 text-center">
+                        <table id="tbcausal" class="table table-hover table-bordered text-center" style="display:none">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">Grupo de trabajo</th>
+                                    <th class="text-center">Puntos de recuento</th>
+                                    <th class="text-center">Casillas a capturar</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-1"></div>
+                    <div class="col-md-2 text-center">
+                        <h6 id="textoc"></h6>
+                        <select id="tipo" class="form-control text-center">
+                            <option value="0">Propuesta</option>
+                            <option value="1">Ensayo Definitivo</option>
+                        </select>
+                        <br />
+                        <input type="button" value="Guardar" id="aray" class="btn btn-primary form-control" />
+                        <input type="hidden" value="@ViewBag.Comprobacion" id="Comprobacion" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts
+{
+    <script src="~/js/PRPys.js"></script>
+}

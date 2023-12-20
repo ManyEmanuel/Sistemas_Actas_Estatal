@@ -1,0 +1,446 @@
+﻿
+@model WebComputos.Models.T_Recepcion_Paquete
+
+
+@{
+    IEnumerable<SelectListItem> Entrega = ViewBag.Entrega;
+    IEnumerable<SelectListItem> Cargo = ViewBag.Cargo;
+    IEnumerable<SelectListItem> Lugar = ViewBag.Lugar;
+    IEnumerable<SelectListItem> Medio = ViewBag.Medio;
+
+    IEnumerable<SelectListItem> Seccion = ViewBag.Seccion;
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int contador = 0;
+    string[] texto = new[] { "Si", "No" };
+}
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+
+</head>
+<br />
+<div class="row" id="Completo">
+    <div class="col-md-12">
+        <div class="card card-purple">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fas fa-clipboard"></i>
+                    Formulario de registro de paquetes electorales
+                </h3>
+            </div>
+            <div class="card-body">
+                <form id="RecepcionPaquete">
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label>Siendo las </label>
+                            <input type="time" asp-for="HoraRecepcion" class="form-control" id="hora" />
+                            <span asp-validation-for="HoraRecepcion" class="text-danger"></span>
+
+                        </div>
+                        <div class="col-md-3">
+                            <label>del dia</label>
+                            <input type="date" id="fini" asp-for="FechaRecepcion" class="form-control" />
+                            <span asp-validation-for="FechaRecepcion" class="text-danger"></span>
+                            <input type="hidden" asp-for="IdCasilla" id="idcas" class="form-control" />
+
+                        </div>
+                        <div class="col-md-3">
+                            <label>la o el Ciudadano</label>
+                            <input asp-for="Nombre_Entrega" class="form-control" id="Entrega" />
+                            <span asp-validation-for="Nombre_Entrega" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-3">
+                            <label>Quien participó como</label>
+                            <select asp-for="Cargo_Entrega" class="custom-select" asp-items="Cargo" id="Cargo">
+                                <option>Selecciona Cargo</option>
+                            </select>
+                            <input id="Horsis" type="hidden" asp-for="HoraRegistro" class="form-control" />
+                            <input id="Fecsis" type="hidden" asp-for="FechaRegistro" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label>Sección:</label>
+                            @Html.DropDownList("Secciones", Seccion, "-Seleccione una sección-", new { @class = "form-control", @id = "Seccion", @data_live_search = "true" })
+                        </div>
+                        <div class="col-md-3">
+                            <label for="casid">Tipo Casilla:</label>
+                            <select id="casid" name="casid" asp-items='@(new SelectList(string.Empty,"value","text"))' class="form-control"></select>
+                            <span asp-validation-for="IdCasilla" class="text-danger"></span>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-body bg-gray-light">
+                                    <div class="col-md-12">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="form-group">
+                                                    <label> El paquete electoral se entrego: </label><br />
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <label> Con Firma </label>
+                                                        </div>
+                                                        <div class="col-md-6 text-right">
+                                                            <div class="row text-right">
+                                                                @foreach (var opcion in ViewBag.Opcion)
+                                                                {
+                                                                    <div class="col-md-2">
+                                                                        @{string nomid = "firma" + contador;
+
+                                                                            <input class="custom-control-input" name="Firma" type="radio" id="@nomid" asp-for="Firma" value="@opcion" />
+                                                                            <label for="@nomid" class="custom-control-label">@texto[contador]</label>
+
+                                                                            contador = contador + 1;
+                                                                        }
+                                                                    </div>
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <label> Con muestras de alteración </label>
+                                                        </div>
+                                                        <div class="col-md-6 text-right">
+                                                            <div class="row text-right">
+                                                                @{contador = 0; }
+                                                                @foreach (var opcion in ViewBag.Opcion)
+                                                                {
+                                                                    <div class="col-md-2">
+                                                                        @{string nomid = "alteracion" + contador;
+
+                                                                            <input class="custom-control-input" name="Alteracion" type="radio" id="@nomid" asp-for="Alteracion" value="@opcion" />
+                                                                            <label for="@nomid" class="custom-control-label">@texto[contador]</label>
+
+                                                                            contador = contador + 1;
+                                                                        }
+                                                                    </div>
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <label> Con cinta o etiqueta de seguridad</label>
+                                                        </div>
+                                                        <div class="col-md-6 text-right">
+                                                            <div class="row text-right">
+                                                                @{contador = 0; }
+                                                                @foreach (var opcion in ViewBag.Opcion)
+                                                                {
+                                                                    <div class="col-md-2">
+                                                                        @{string nomid = "cinta" + contador;
+                                                                            <input class="custom-control-input" name="Cinta" type="radio" id="@nomid" asp-for="Cinta" value="@opcion" />
+                                                                            <label for="@nomid" class="custom-control-label">@texto[contador]</label>
+                                                                            contador = @contador + 1;
+                                                                        }
+                                                                    </div>
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-body bg-gray-light">
+                                    <div class="col-md-12">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="form-group">
+                                                    <label> Por fuera del paquete electoral se recibieron: </label><br />
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <label> Un sobre para el PREP </label>
+                                                        </div>
+                                                        <div class="col-md-6 text-right">
+                                                            <div class="row text-right">
+                                                                @{contador = 0; }
+                                                                @foreach (var opcion in ViewBag.Opcion)
+                                                                {
+                                                                    <div class="col-md-2">
+                                                                        @{string nomid = "Sobre" + contador;
+
+                                                                            <input class="custom-control-input" name="Sobre" type="radio" id="@nomid" asp-for="SobrePrep" value="@opcion" />
+                                                                            <label for="@nomid" class="custom-control-label">@texto[contador]</label>
+
+                                                                            contador = contador + 1;
+                                                                        }
+                                                                    </div>
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <label> Una bolsa que va por fuera del paquete electoral para el consejo municipal</label>
+                                                        </div>
+                                                        <div class="col-md-6 text-right">
+                                                            <div class="row text-right">
+                                                                @{contador = 0; }
+                                                                @foreach (var opcion in ViewBag.Opcion)
+                                                                {
+                                                                    <div class="col-md-2">
+                                                                        @{string nomid = "Paquete" + contador;
+                                                                            <input class="custom-control-input" name="Paquete" type="radio" id="@nomid" asp-for="PaqueteElec" value="@opcion" />
+                                                                            <label for="@nomid" class="custom-control-label">@texto[contador]</label>
+                                                                            contador = @contador + 1;
+                                                                        }
+                                                                    </div>
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label>Entrega:</label>
+                            <select asp-for="Cargo_Recibe" class="custom-select" asp-items="Entrega" id="Recibe">
+                                <option>Selecciona Cargo</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label>Recibe en el:</label>
+                            <select asp-for="Lugar_Entrega" class="custom-select" asp-items="Lugar" id="Lugar">
+                                <option>Selecciona lugar</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label>Medio por el que se entrega:</label>
+                            <select asp-for="Medio_Entrega" class="custom-select" asp-items="Medio" id="Medio">
+                                <option>Selecciona medio de entrega</option>
+                            </select>
+                        </div>
+
+                    </div>
+                    
+                    <div class="form-group">
+                        <input type="hidden" id="pasar" name="Pasar" class="form-control" />
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-8 offset-4">
+                            <div class="text-right">
+                                <button type="button" onclick="Registrar()" class="btn btn-success btn-lg rounded">Guardar</button>
+                                <button type="button" class="btn btn-danger btn-lg rounded" style="width:auto;"><a asp-action="Index" class="text-white">Cancelar</a></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts
+{
+    @*<script src="~/js/Recepcion.js"></script>*@
+    <script>
+        $(document).ready(function () {
+            ListaCasilla();
+            IdCasilla();
+            Sobre();
+            Paquete();
+            Observaciones();
+            Fecha();
+            busqueda();
+        });
+
+        $(function busqueda() {
+            $("#Seccion").selectpicker();
+        });
+
+
+        function fmensaje() {
+            toastr.options = {
+                closeButton: true,
+                progressBar: true,
+                showMethod: 'slideDown',
+                timeOut: 5000
+            };
+        }
+
+        function FechaInicial() {
+            var hoy = new Date();
+            var dd = hoy.getDate();
+            var MM = hoy.getMonth() + 1;
+            var yyyy = hoy.getFullYear();
+
+            if (dd < 10) {
+                dd = '0' + dd;
+            }
+            if (MM < 10) {
+                MM = '0' + MM;
+            }
+            hoy = yyyy + '/' + MM + '/' + dd;
+            document.getElementById("fini").value = hoy;
+        }
+
+        function ListaCasilla() {
+            $("#Seccion").change(function () {
+                var url = "/admin/TRecepcionPaquetes/Casillaid";
+                var ddlsourse = "#Seccion";
+                $.getJSON(url, { id: $(ddlsourse).val() }, function (data) {
+                    var items = '';
+                    $("#casid").empty();
+                    $.each(data, function (i, row) {
+                        items += "<option value='" + row.value + "'>" + row.text + "</option>";
+                    });
+                    $("#casid").html(items);
+                    document.getElementById("casid").focus();
+                })
+            });
+        }
+
+
+
+        function IdCasilla() {
+            $("#casid").focus(function () {
+                var a = document.getElementById("casid").value;
+                document.getElementById("idcas").value = a;
+                console.log(document.getElementById("idcas").value);
+            });
+
+            $("#casid").change(function () {
+                var a = document.getElementById("casid").value;
+                document.getElementById("idcas").value = a;
+                console.log(document.getElementById("idcas").value);
+            });
+        }
+
+        function Registrar() {
+            bloqueo();
+            if (Validar() == true) {
+
+                var items = {};
+                items["HoraRecepcion"] = $("#hora").val();
+                items["FechaRecepcion"] = $("#fini").val();
+                items["Nombre_Entrega"] = $("#Entrega").val();
+                items["Cargo_Entrega"] = $("#Cargo").val();
+                items["Lugar_Entrega"] = $("#Lugar").val();
+                items["Cargo_Recibe"] = $("#Recibe").val();
+                items["Medio_Entrega"] = $("#Medio").val();
+                items["Firma"] = $('input:radio[name=Firma]:checked').val();
+                items["Alteracion"] = $('input:radio[name=Alteracion]:checked').val();
+                items["Cinta"] = $('input:radio[name=Cinta]:checked').val();
+                items["PaqueteElec"] = $('input:radio[name=Paquete]:checked').val();
+                items["SobrePrep"] = $('input:radio[name=Sobre]:checked').val();
+                items["IdCasilla"] = $("#idcas").val();
+                $.ajax({
+                    url: '/admin/TRecepcionPaquetes/Create',
+                    type: 'POST',
+                    data: {
+                        item: items
+                    },
+                    success: function (data) {
+                        if (data.success) {
+                            toastr.success(data.mensaje, {
+                                closeButton: true,
+                                progressBar: true,
+                                showMethod: 'slideDown',
+                            });
+                            window.setTimeout(Refresco, 3000);
+
+                        }
+                        else {
+                            desbloqueo();
+                            toastr.error(data.mensaje);
+                        }
+                    },
+                })
+            }
+            else {
+            }
+        }
+
+        function Refresco() {
+            window.location.reload(true);
+        }
+        function bloqueo() {
+            $('#RecepcionPaquete input').attr('disabled', 'disabled');
+            $('#RecepcionPaquete button').attr('disabled', 'disabled');
+            $('#RecepcionPaquete select').attr('disabled', 'disabled');
+        }
+
+        function desbloqueo() {
+            $('#RecepcionPaquete input').removeAttr('disabled');
+            $('#RecepcionPaquete button').removeAttr('disabled');
+            $('#RecepcionPaquete select').removeAttr('disabled');
+        }
+
+        function Validar() {
+            var form = $('#RecepcionPaquete');
+            $.validator.unobtrusive.parse(form);
+            var validate = form.validate().form();
+            var unobtrusiveValidation = form.data('unobtrusiveValidation');
+            return validate;
+        }
+
+
+        function Sobre() {
+            $("input[name=Sobre]").click(function () {
+                var sobre = $('input:radio[name=Sobre]:checked').val();
+                document.getElementById("sobrePrep").value = sobre;
+            });
+        }
+
+        function Paquete() {
+            $("input[name=Paquete]").click(function () {
+                var paq = $('input:radio[name=Paquete]:checked').val();
+                document.getElementById("PaqPrep").value = paq;
+            });
+        }
+
+        function Observaciones() {
+            $("input[name=obs]").click(function () {
+                var obs = $('input:radio[name=obs]:checked').val();
+                document.getElementById("Resob").value = obs;
+            });
+        }
+
+        function Fecha() {
+            $("#Guardar").click(function () {
+                var hoy = new Date();
+                var dd = hoy.getDate();
+                var MM = hoy.getMonth() + 1;
+                var yyyy = hoy.getFullYear();
+
+                if (dd < 10) {
+                    dd = '0' + dd;
+                }
+                if (MM < 10) {
+                    MM = '0' + MM;
+                }
+                hoy = dd + '/' + MM + '/' + yyyy;
+                document.getElementById("Fecsis").value = hoy;
+
+                var hor = new Date();
+                var hh = hor.getHours();
+                var min = hor.getMinutes();
+                hor = hh + ':' + min;
+                document.getElementById("Horsis").value = hor;
+
+            });
+        }
+
+
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+
+}

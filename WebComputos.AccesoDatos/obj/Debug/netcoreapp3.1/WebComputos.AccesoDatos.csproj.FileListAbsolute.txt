@@ -1,0 +1,112 @@
+C:\Users\Alexis Hernandez\Documents\ProyectosWeb\WebComputos\WebComputos.AccesoDatos\bin\Debug\netcoreapp3.1\WebComputos.AccesoDatos.deps.json
+C:\Users\Alexis Hernandez\Documents\ProyectosWeb\WebComputos\WebComputos.AccesoDatos\bin\Debug\netcoreapp3.1\WebComputos.AccesoDatos.dll
+C:\Users\Alexis Hernandez\Documents\ProyectosWeb\WebComputos\WebComputos.AccesoDatos\obj\Debug\netcoreapp3.1\WebComputos.AccesoDatos.AssemblyInfoInputs.cache
+C:\Users\Alexis Hernandez\Documents\ProyectosWeb\WebComputos\WebComputos.AccesoDatos\obj\Debug\netcoreapp3.1\WebComputos.AccesoDatos.AssemblyInfo.cs
+C:\Users\Alexis Hernandez\Documents\ProyectosWeb\WebComputos\WebComputos.AccesoDatos\obj\Debug\netcoreapp3.1\WebComputos.AccesoDatos.csprojAssemblyReference.cache
+C:\Users\Alexis Hernandez\Documents\ProyectosWeb\WebComputos\WebComputos.AccesoDatos\bin\Debug\netcoreapp3.1\WebComputos.AccesoDatos.pdb
+C:\Users\Alexis Hernandez\Documents\ProyectosWeb\WebComputos\WebComputos.AccesoDatos\bin\Debug\netcoreapp3.1\WebComputos.Models.dll
+C:\Users\Alexis Hernandez\Documents\ProyectosWeb\WebComputos\WebComputos.AccesoDatos\bin\Debug\netcoreapp3.1\WebComputos.Utilerias.dll
+C:\Users\Alexis Hernandez\Documents\ProyectosWeb\WebComputos\WebComputos.AccesoDatos\bin\Debug\netcoreapp3.1\WebComputos.Models.pdb
+C:\Users\Alexis Hernandez\Documents\ProyectosWeb\WebComputos\WebComputos.AccesoDatos\bin\Debug\netcoreapp3.1\WebComputos.Utilerias.pdb
+C:\Users\Alexis Hernandez\Documents\ProyectosWeb\WebComputos\WebComputos.AccesoDatos\obj\Debug\netcoreapp3.1\WebComputos.AccesoDatos.csproj.CopyComplete
+C:\Users\Alexis Hernandez\Documents\ProyectosWeb\WebComputos\WebComputos.AccesoDatos\obj\Debug\netcoreapp3.1\WebComputos.AccesoDatos.dll
+C:\Users\Alexis Hernandez\Documents\ProyectosWeb\WebComputos\WebComputos.AccesoDatos\obj\Debug\netcoreapp3.1\WebComputos.AccesoDatos.pdb
+D:\Desktop\WebComputos\WebComputos.AccesoDatos\bin\Debug\netcoreapp3.1\WebComputos.AccesoDatos.deps.json
+D:\Desktop\WebComputos\WebComputos.AccesoDatos\bin\Debug\netcoreapp3.1\WebComputos.AccesoDatos.dll
+D:\Desktop\WebComputos\WebComputos.AccesoDatos\bin\Debug\netcoreapp3.1\WebComputos.AccesoDatos.pdb
+D:\Desktop\WebComputos\WebComputos.AccesoDatos\bin\Debug\netcoreapp3.1\WebComputos.Models.dll
+D:\Desktop\WebComputos\WebComputos.AccesoDatos\bin\Debug\netcoreapp3.1\WebComputos.Utilerias.dll
+D:\Desktop\WebComputos\WebComputos.AccesoDatos\bin\Debug\netcoreapp3.1\WebComputos.Models.pdb
+D:\Desktop\WebComputos\WebComputos.AccesoDatos\bin\Debug\netcoreapp3.1\WebComputos.Utilerias.pdb
+D:\Desktop\WebComputos\WebComputos.AccesoDatos\obj\Debug\netcoreapp3.1\WebComputos.AccesoDatos.csprojAssemblyReference.cache
+D:\Desktop\WebComputos\WebComputos.AccesoDatos\obj\Debug\netcoreapp3.1\WebComputos.AccesoDatos.csproj.CoreCompileInputs.cache
+D:\Desktop\WebComputos\WebComputos.AccesoDatos\obj\Debug\netcoreapp3.1\WebComputos.AccesoDatos.AssemblyInfoInputs.cache
+D:\Desktop\WebComputos\WebComputos.AccesoDatos\obj\Debug\netcoreapp3.1\WebComputos.AccesoDatos.AssemblyInfo.cs
+D:\Desktop\WebComputos\WebComputos.AccesoDatos\obj\Debug\netcoreapp3.1\WebComputos.AccesoDatos.csproj.CopyComplete
+D:\Desktop\WebComputos\WebComputos.AccesoDatos\obj\Debug\netcoreapp3.1\WebComputos.AccesoDatos.dll
+D:\Desktop\WebComputos\WebComputos.AccesoDatos\obj\Debug\netcoreapp3.1\WebComputos.AccesoDatos.pdb
+C:\Users\UTIE-01\Desktop\WebComputos\WebComputos.AccesoDatos\bin\Debug\netcoreapp3.1\WebComputos.AccesoDatos.deps.json
+C:\Users\UTIE-01\Desktop\WebComputos\WebComputos.AccesoDatos\bin\Debug\netcoreapp3.1\WebComputos.AccesoDatos.dll
+C:\Users\UTIE-01\Desktop\WebComputos\WebComputos.AccesoDatos\bin\Debug\netcoreapp3.1\WebComputos.AccesoDatos.pdb
+C:\Users\UTIE-01\Desktop\WebComputos\WebComputos.AccesoDatos\bin\Debug\netcoreapp3.1\WebComputos.Models.dll
+C:\Users\UTIE-01\Desktop\WebComputos\WebComputos.AccesoDatos\bin\Debug\netcoreapp3.1\WebComputos.Utilerias.dll
+C:\Users\UTIE-01\Desktop\WebComputos\WebComputos.AccesoDatos\bin\Debug\netcoreapp3.1\WebComputos.Models.pdb
+C:\Users\UTIE-01\Desktop\WebComputos\WebComputos.AccesoDatos\bin\Debug\netcoreapp3.1\WebComputos.Utilerias.pdb
+C:\Users\UTIE-01\Desktop\WebComputos\WebComputos.AccesoDatos\obj\Debug\netcoreapp3.1\WebComputos.AccesoDatos.csprojAssemblyReference.cache
+C:\Users\UTIE-01\Desktop\WebComputos\WebComputos.AccesoDatos\obj\Debug\netcoreapp3.1\WebComputos.AccesoDatos.csproj.CoreCompileInputs.cache
+C:\Users\UTIE-01\Desktop\WebComputos\WebComputos.AccesoDatos\obj\Debug\netcoreapp3.1\WebComputos.AccesoDatos.AssemblyInfoInputs.cache
+C:\Users\UTIE-01\Desktop\WebComputos\WebComputos.AccesoDatos\obj\Debug\netcoreapp3.1\WebComputos.AccesoDatos.AssemblyInfo.cs
+C:\Users\UTIE-01\Desktop\WebComputos\WebComputos.AccesoDatos\obj\Debug\netcoreapp3.1\WebComputos.AccesoDatos.csproj.CopyComplete
+C:\Users\UTIE-01\Desktop\WebComputos\WebComputos.AccesoDatos\obj\Debug\netcoreapp3.1\WebComputos.AccesoDatos.dll
+C:\Users\UTIE-01\Desktop\WebComputos\WebComputos.AccesoDatos\obj\Debug\netcoreapp3.1\WebComputos.AccesoDatos.pdb
+D:\Desktop\Respaldo MAnny 15-05\WebComputos\WebComputos.AccesoDatos\bin\Debug\netcoreapp3.1\WebComputos.AccesoDatos.deps.json
+D:\Desktop\Respaldo MAnny 15-05\WebComputos\WebComputos.AccesoDatos\bin\Debug\netcoreapp3.1\WebComputos.AccesoDatos.dll
+D:\Desktop\Respaldo MAnny 15-05\WebComputos\WebComputos.AccesoDatos\bin\Debug\netcoreapp3.1\WebComputos.AccesoDatos.pdb
+D:\Desktop\Respaldo MAnny 15-05\WebComputos\WebComputos.AccesoDatos\bin\Debug\netcoreapp3.1\WebComputos.Models.dll
+D:\Desktop\Respaldo MAnny 15-05\WebComputos\WebComputos.AccesoDatos\bin\Debug\netcoreapp3.1\WebComputos.Utilerias.dll
+D:\Desktop\Respaldo MAnny 15-05\WebComputos\WebComputos.AccesoDatos\bin\Debug\netcoreapp3.1\WebComputos.Models.pdb
+D:\Desktop\Respaldo MAnny 15-05\WebComputos\WebComputos.AccesoDatos\bin\Debug\netcoreapp3.1\WebComputos.Utilerias.pdb
+D:\Desktop\Respaldo MAnny 15-05\WebComputos\WebComputos.AccesoDatos\obj\Debug\netcoreapp3.1\WebComputos.AccesoDatos.csprojAssemblyReference.cache
+D:\Desktop\Respaldo MAnny 15-05\WebComputos\WebComputos.AccesoDatos\obj\Debug\netcoreapp3.1\WebComputos.AccesoDatos.csproj.CoreCompileInputs.cache
+D:\Desktop\Respaldo MAnny 15-05\WebComputos\WebComputos.AccesoDatos\obj\Debug\netcoreapp3.1\WebComputos.AccesoDatos.AssemblyInfoInputs.cache
+D:\Desktop\Respaldo MAnny 15-05\WebComputos\WebComputos.AccesoDatos\obj\Debug\netcoreapp3.1\WebComputos.AccesoDatos.AssemblyInfo.cs
+D:\Desktop\Respaldo MAnny 15-05\WebComputos\WebComputos.AccesoDatos\obj\Debug\netcoreapp3.1\WebComputos.AccesoDatos.csproj.CopyComplete
+D:\Desktop\Respaldo MAnny 15-05\WebComputos\WebComputos.AccesoDatos\obj\Debug\netcoreapp3.1\WebComputos.AccesoDatos.dll
+D:\Desktop\Respaldo MAnny 15-05\WebComputos\WebComputos.AccesoDatos\obj\Debug\netcoreapp3.1\WebComputos.AccesoDatos.pdb
+D:\Desktop\26Medianoche\WebComputos\WebComputos.AccesoDatos\bin\Debug\netcoreapp3.1\WebComputos.AccesoDatos.deps.json
+D:\Desktop\26Medianoche\WebComputos\WebComputos.AccesoDatos\bin\Debug\netcoreapp3.1\WebComputos.AccesoDatos.dll
+D:\Desktop\26Medianoche\WebComputos\WebComputos.AccesoDatos\bin\Debug\netcoreapp3.1\WebComputos.AccesoDatos.pdb
+D:\Desktop\26Medianoche\WebComputos\WebComputos.AccesoDatos\bin\Debug\netcoreapp3.1\WebComputos.Models.dll
+D:\Desktop\26Medianoche\WebComputos\WebComputos.AccesoDatos\bin\Debug\netcoreapp3.1\WebComputos.Utilerias.dll
+D:\Desktop\26Medianoche\WebComputos\WebComputos.AccesoDatos\bin\Debug\netcoreapp3.1\WebComputos.Models.pdb
+D:\Desktop\26Medianoche\WebComputos\WebComputos.AccesoDatos\bin\Debug\netcoreapp3.1\WebComputos.Utilerias.pdb
+D:\Desktop\26Medianoche\WebComputos\WebComputos.AccesoDatos\obj\Debug\netcoreapp3.1\WebComputos.AccesoDatos.csprojAssemblyReference.cache
+D:\Desktop\26Medianoche\WebComputos\WebComputos.AccesoDatos\obj\Debug\netcoreapp3.1\WebComputos.AccesoDatos.AssemblyInfoInputs.cache
+D:\Desktop\26Medianoche\WebComputos\WebComputos.AccesoDatos\obj\Debug\netcoreapp3.1\WebComputos.AccesoDatos.AssemblyInfo.cs
+D:\Desktop\26Medianoche\WebComputos\WebComputos.AccesoDatos\obj\Debug\netcoreapp3.1\WebComputos.AccesoDatos.csproj.CopyComplete
+D:\Desktop\26Medianoche\WebComputos\WebComputos.AccesoDatos\obj\Debug\netcoreapp3.1\WebComputos.AccesoDatos.dll
+D:\Desktop\26Medianoche\WebComputos\WebComputos.AccesoDatos\obj\Debug\netcoreapp3.1\WebComputos.AccesoDatos.pdb
+D:\Desktop\26Medianoche\WebComputos\WebComputos.AccesoDatos\obj\Debug\netcoreapp3.1\WebComputos.AccesoDatos.csproj.CoreCompileInputs.cache
+D:\Desktop\C#\26Medianoche\WebComputos\WebComputos.AccesoDatos\bin\Debug\netcoreapp3.1\WebComputos.AccesoDatos.deps.json
+D:\Desktop\C#\26Medianoche\WebComputos\WebComputos.AccesoDatos\bin\Debug\netcoreapp3.1\WebComputos.AccesoDatos.dll
+D:\Desktop\C#\26Medianoche\WebComputos\WebComputos.AccesoDatos\bin\Debug\netcoreapp3.1\WebComputos.AccesoDatos.pdb
+D:\Desktop\C#\26Medianoche\WebComputos\WebComputos.AccesoDatos\bin\Debug\netcoreapp3.1\WebComputos.Models.dll
+D:\Desktop\C#\26Medianoche\WebComputos\WebComputos.AccesoDatos\bin\Debug\netcoreapp3.1\WebComputos.Utilerias.dll
+D:\Desktop\C#\26Medianoche\WebComputos\WebComputos.AccesoDatos\bin\Debug\netcoreapp3.1\WebComputos.Models.pdb
+D:\Desktop\C#\26Medianoche\WebComputos\WebComputos.AccesoDatos\bin\Debug\netcoreapp3.1\WebComputos.Utilerias.pdb
+D:\Desktop\C#\26Medianoche\WebComputos\WebComputos.AccesoDatos\obj\Debug\netcoreapp3.1\WebComputos.AccesoDatos.csprojAssemblyReference.cache
+D:\Desktop\C#\26Medianoche\WebComputos\WebComputos.AccesoDatos\obj\Debug\netcoreapp3.1\WebComputos.AccesoDatos.csproj.CoreCompileInputs.cache
+D:\Desktop\C#\26Medianoche\WebComputos\WebComputos.AccesoDatos\obj\Debug\netcoreapp3.1\WebComputos.AccesoDatos.AssemblyInfoInputs.cache
+D:\Desktop\C#\26Medianoche\WebComputos\WebComputos.AccesoDatos\obj\Debug\netcoreapp3.1\WebComputos.AccesoDatos.AssemblyInfo.cs
+D:\Desktop\C#\26Medianoche\WebComputos\WebComputos.AccesoDatos\obj\Debug\netcoreapp3.1\WebComputos.AccesoDatos.csproj.CopyComplete
+D:\Desktop\C#\26Medianoche\WebComputos\WebComputos.AccesoDatos\obj\Debug\netcoreapp3.1\WebComputos.AccesoDatos.dll
+D:\Desktop\C#\26Medianoche\WebComputos\WebComputos.AccesoDatos\obj\Debug\netcoreapp3.1\WebComputos.AccesoDatos.pdb
+C:\Users\PC-INFORMATICA\Documents\GitHub\Sistema_Actas\WebComputos.AccesoDatos\bin\Debug\netcoreapp3.1\WebComputos.AccesoDatos.deps.json
+C:\Users\PC-INFORMATICA\Documents\GitHub\Sistema_Actas\WebComputos.AccesoDatos\bin\Debug\netcoreapp3.1\WebComputos.AccesoDatos.dll
+C:\Users\PC-INFORMATICA\Documents\GitHub\Sistema_Actas\WebComputos.AccesoDatos\bin\Debug\netcoreapp3.1\WebComputos.AccesoDatos.pdb
+C:\Users\PC-INFORMATICA\Documents\GitHub\Sistema_Actas\WebComputos.AccesoDatos\bin\Debug\netcoreapp3.1\WebComputos.Models.dll
+C:\Users\PC-INFORMATICA\Documents\GitHub\Sistema_Actas\WebComputos.AccesoDatos\bin\Debug\netcoreapp3.1\WebComputos.Utilerias.dll
+C:\Users\PC-INFORMATICA\Documents\GitHub\Sistema_Actas\WebComputos.AccesoDatos\bin\Debug\netcoreapp3.1\WebComputos.Models.pdb
+C:\Users\PC-INFORMATICA\Documents\GitHub\Sistema_Actas\WebComputos.AccesoDatos\bin\Debug\netcoreapp3.1\WebComputos.Utilerias.pdb
+C:\Users\PC-INFORMATICA\Documents\GitHub\Sistema_Actas\WebComputos.AccesoDatos\obj\Debug\netcoreapp3.1\WebComputos.AccesoDatos.csprojAssemblyReference.cache
+C:\Users\PC-INFORMATICA\Documents\GitHub\Sistema_Actas\WebComputos.AccesoDatos\obj\Debug\netcoreapp3.1\WebComputos.AccesoDatos.csproj.CoreCompileInputs.cache
+C:\Users\PC-INFORMATICA\Documents\GitHub\Sistema_Actas\WebComputos.AccesoDatos\obj\Debug\netcoreapp3.1\WebComputos.AccesoDatos.AssemblyInfoInputs.cache
+C:\Users\PC-INFORMATICA\Documents\GitHub\Sistema_Actas\WebComputos.AccesoDatos\obj\Debug\netcoreapp3.1\WebComputos.AccesoDatos.AssemblyInfo.cs
+C:\Users\PC-INFORMATICA\Documents\GitHub\Sistema_Actas\WebComputos.AccesoDatos\obj\Debug\netcoreapp3.1\WebComputos.AccesoDatos.csproj.CopyComplete
+C:\Users\PC-INFORMATICA\Documents\GitHub\Sistema_Actas\WebComputos.AccesoDatos\obj\Debug\netcoreapp3.1\WebComputos.AccesoDatos.dll
+C:\Users\PC-INFORMATICA\Documents\GitHub\Sistema_Actas\WebComputos.AccesoDatos\obj\Debug\netcoreapp3.1\WebComputos.AccesoDatos.pdb
+C:\Users\UTIE-03\Desktop\Sistema_Actas Estatal\WebComputos.AccesoDatos\bin\Debug\netcoreapp3.1\WebComputos.AccesoDatos.deps.json
+C:\Users\UTIE-03\Desktop\Sistema_Actas Estatal\WebComputos.AccesoDatos\bin\Debug\netcoreapp3.1\WebComputos.AccesoDatos.dll
+C:\Users\UTIE-03\Desktop\Sistema_Actas Estatal\WebComputos.AccesoDatos\bin\Debug\netcoreapp3.1\WebComputos.AccesoDatos.pdb
+C:\Users\UTIE-03\Desktop\Sistema_Actas Estatal\WebComputos.AccesoDatos\bin\Debug\netcoreapp3.1\WebComputos.Models.dll
+C:\Users\UTIE-03\Desktop\Sistema_Actas Estatal\WebComputos.AccesoDatos\bin\Debug\netcoreapp3.1\WebComputos.Utilerias.dll
+C:\Users\UTIE-03\Desktop\Sistema_Actas Estatal\WebComputos.AccesoDatos\bin\Debug\netcoreapp3.1\WebComputos.Models.pdb
+C:\Users\UTIE-03\Desktop\Sistema_Actas Estatal\WebComputos.AccesoDatos\bin\Debug\netcoreapp3.1\WebComputos.Utilerias.pdb
+C:\Users\UTIE-03\Desktop\Sistema_Actas Estatal\WebComputos.AccesoDatos\obj\Debug\netcoreapp3.1\WebComputos.AccesoDatos.csproj.AssemblyReference.cache
+C:\Users\UTIE-03\Desktop\Sistema_Actas Estatal\WebComputos.AccesoDatos\obj\Debug\netcoreapp3.1\WebComputos.AccesoDatos.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\UTIE-03\Desktop\Sistema_Actas Estatal\WebComputos.AccesoDatos\obj\Debug\netcoreapp3.1\WebComputos.AccesoDatos.AssemblyInfoInputs.cache
+C:\Users\UTIE-03\Desktop\Sistema_Actas Estatal\WebComputos.AccesoDatos\obj\Debug\netcoreapp3.1\WebComputos.AccesoDatos.AssemblyInfo.cs
+C:\Users\UTIE-03\Desktop\Sistema_Actas Estatal\WebComputos.AccesoDatos\obj\Debug\netcoreapp3.1\WebComputos.AccesoDatos.csproj.CoreCompileInputs.cache
+C:\Users\UTIE-03\Desktop\Sistema_Actas Estatal\WebComputos.AccesoDatos\obj\Debug\netcoreapp3.1\WebComputos.AccesoDatos.csproj.CopyComplete
+C:\Users\UTIE-03\Desktop\Sistema_Actas Estatal\WebComputos.AccesoDatos\obj\Debug\netcoreapp3.1\WebComputos.AccesoDatos.dll
+C:\Users\UTIE-03\Desktop\Sistema_Actas Estatal\WebComputos.AccesoDatos\obj\Debug\netcoreapp3.1\WebComputos.AccesoDatos.pdb

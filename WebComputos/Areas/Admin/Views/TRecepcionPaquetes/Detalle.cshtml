@@ -1,0 +1,218 @@
+﻿
+
+@{
+    IEnumerable<SelectListItem> Entrega = ViewBag.Entrega;
+    IEnumerable<SelectListItem> Cargo = ViewBag.Cargo;
+    IEnumerable<SelectListItem> Lugar = ViewBag.Lugar;
+    IEnumerable<SelectListItem> Medio = ViewBag.Medio;
+
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int contador = 0;
+    string[] texto = new[] { "Si", "No" };
+    T_Recepcion_Paquete Paquete = ViewBag.Paquete;
+}
+<br />
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-purple">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fas fa-clipboard-list"></i>
+                    Datos registrados en la casilla @ViewBag.NombreSeccion @ViewBag.Casilla
+                </h3>
+            </div>
+            <div class="card-body">
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <label asp-for="@Paquete.HoraRecepcion"></label>
+                        <input type="time" asp-for="@Paquete.HoraRecepcion" class="form-control" id="hora" disabled />
+                        <span asp-validation-for="@Paquete.HoraRecepcion" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-3">
+                        <label asp-for="@Paquete.FechaRecepcion"></label>
+                        <input type="date" id="fini" asp-for="@Paquete.FechaRecepcion" class="form-control" disabled />
+                        <span asp-validation-for="@Paquete.FechaRecepcion" class="text-danger"></span>
+                        <input type="hidden" asp-for="@Paquete.IdCasilla" id="idcas" class="form-control" />
+                    </div>
+                    <div class="col-md-3">
+                        <label asp-for="@Paquete.Nombre_Entrega" class="control-label"></label>
+                        <input asp-for="@Paquete.Nombre_Entrega" class="form-control" id="Entrega" disabled />
+                        <span asp-validation-for="@Paquete.Nombre_Entrega" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-3">
+                        <label>Cargo de la persona que entrega el Paquete:</label>
+                        <select asp-for="@Paquete.Cargo_Entrega" class="custom-select" asp-items="Cargo" id="Cargo" disabled>
+                            <option>Selecciona Cargo</option>
+                        </select>
+                        <input id="Horsis" type="hidden" asp-for="@Paquete.HoraRegistro" class="form-control" disabled />
+                        <input id="Fecsis" type="hidden" asp-for="@Paquete.FechaRegistro" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body bg-gray-light">
+                                <div class="col-md-12">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="form-group">
+                                                <label> El paquete electoral se entrego: </label><br />
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <label> Con Firma </label>
+                                                    </div>
+                                                    <div class="col-md-6 text-right">
+                                                        <div class="row text-right">
+                                                            @foreach (var opcion in ViewBag.Opcion)
+                                                            {
+                                                                <div class="col-md-2">
+                                                                    @{string nomid = "firma" + contador;
+
+                                                                        <input class="custom-control-input" name="Firma" type="radio" id="@nomid" asp-for="@Paquete.Firma" value="@opcion" disabled />
+                                                                        <label for="@nomid" class="custom-control-label">@texto[contador]</label>
+
+                                                                        contador = contador + 1;
+                                                                    }
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <label> Con muestras de alteración </label>
+                                                    </div>
+                                                    <div class="col-md-6 text-right">
+                                                        <div class="row text-right">
+                                                            @{contador = 0; }
+                                                            @foreach (var opcion in ViewBag.Opcion)
+                                                            {
+                                                                <div class="col-md-2">
+                                                                    @{string nomid = "alteracion" + contador;
+
+                                                                        <input class="custom-control-input" name="Alteracion" type="radio" id="@nomid" asp-for="@Paquete.Alteracion" value="@opcion" disabled />
+                                                                        <label for="@nomid" class="custom-control-label">@texto[contador]</label>
+
+                                                                        contador = contador + 1;
+                                                                    }
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <label> Con cinta o etiqueta de seguridad</label>
+                                                    </div>
+                                                    <div class="col-md-6 text-right">
+                                                        <div class="row text-right">
+                                                            @{contador = 0; }
+                                                            @foreach (var opcion in ViewBag.Opcion)
+                                                            {
+                                                                <div class="col-md-2">
+                                                                    @{string nomid = "cinta" + contador;
+                                                                        <input class="custom-control-input" name="Cinta" type="radio" id="@nomid" asp-for="@Paquete.Cinta" value="@opcion" disabled />
+                                                                        <label for="@nomid" class="custom-control-label">@texto[contador]</label>
+                                                                        contador = @contador + 1;
+                                                                    }
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body bg-gray-light">
+                                <div class="col-md-12">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="form-group">
+                                                <label> Por fuera del paquete electoral se recibieron: </label><br />
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <label> Un sobre para el PREP </label>
+                                                    </div>
+                                                    <div class="col-md-6 text-right">
+                                                        <div class="row text-right">
+                                                            @{contador = 0; }
+                                                            @foreach (var opcion in ViewBag.Opcion)
+                                                            {
+                                                                <div class="col-md-2">
+                                                                    @{string nomid = "Sobre" + contador;
+
+                                                                        <input class="custom-control-input" name="Sobre" type="radio" id="@nomid" asp-for="@Paquete.SobrePrep" value="@opcion" disabled />
+                                                                        <label for="@nomid" class="custom-control-label">@texto[contador]</label>
+
+                                                                        contador = contador + 1;
+                                                                    }
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <label> Una bolsa que va por fuera del paquete electoral para el consejo municipal</label>
+                                                    </div>
+                                                    <div class="col-md-6 text-right">
+                                                        <div class="row text-right">
+                                                            @{contador = 0; }
+                                                            @foreach (var opcion in ViewBag.Opcion)
+                                                            {
+                                                                <div class="col-md-2">
+                                                                    @{string nomid = "Paquete" + contador;
+                                                                        <input class="custom-control-input" name="Paquete" type="radio" id="@nomid" asp-for="@Paquete.PaqueteElec" value="@opcion" disabled />
+                                                                        <label for="@nomid" class="custom-control-label">@texto[contador]</label>
+                                                                        contador = @contador + 1;
+                                                                    }
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <label>Entrega:</label>
+                        <select asp-for="@Paquete.Cargo_Recibe" class="custom-select" asp-items="Entrega" id="Recibe" disabled>
+                            <option>Selecciona Cargo</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label>Recibe en el:</label>
+                        <select asp-for="@Paquete.Lugar_Entrega" class="custom-select" asp-items="Lugar" id="Lugar" disabled>
+                            <option>Selecciona lugar</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label>Medio por el que se entrega:</label>
+                        <select asp-for="@Paquete.Medio_Entrega" class="custom-select" asp-items="Medio" id="Medio" disabled>
+                            <option>Selecciona medio de entrega</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <button type="button" class="btn btn-danger btn-lg rounded" style="width:auto;"><a asp-action="Index" class="text-white">Volver</a></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

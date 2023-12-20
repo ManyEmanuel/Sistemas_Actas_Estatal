@@ -1,0 +1,116 @@
+﻿@{
+    ViewData["Title"] = "Voto en el Extranjero";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<head>
+    <link rel="stylesheet" href="~/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+</head>
+<br />
+<style>
+    .centrar {
+        justify-content: center;
+        align-items: center;
+    }
+
+    table.dataTable tbody td {
+        vertical-align: middle;
+    }
+</style>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Información Complementaria del Acta del Voto en el Extranjero</h3>
+            </div>
+            <div class="card-body">
+                <div class="col-md text-right">
+                    <a asp-action="CreateExt" class="btn btn-secondary"><i class="fas fa-plus"></i> Registrar Información Complementaria</a>
+                </div>
+                <br />
+                <table id="tblExt" class="table table-hover table-bordered text-center">
+                    <thead>
+                        <tr>
+                            <th class="text-center">Numero de Mesa</th>
+                            <th class="text-center">Opciones</th>
+
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    @*<script src="~/js/Actas.js"></script>*@
+    <script src="~/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            CargarDatatable();
+        });
+        function CargarDatatable() {
+            const str2 = 'Mesa';
+
+            dataTable = $("#tblExt").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+                "ajax": {
+                    "url": `/admin/VotoExtranjero/CargarComplemento`,
+                    "type": "GET",
+                    "datatype": "json"
+                },
+                "columns": [
+                    {
+                        "data": "numMesa",
+                        "render": function (data) {
+                            return `<div class="text-center">
+                             <p>Mesa ${data}</p>   
+                            `;
+                        },
+                    },
+
+                    {
+                        "data": "id",
+                        "render": function (data) {
+                            return `<div class="text-center">
+                            <a href='/Admin/VotoExtranjero/DetalleExt/${data}' class='btn btn-info text-white' style='cursor:pointer; width:120px;' >
+                            <i class='fas fa-list'></i> Ver detalle
+                            </a>`;
+                        },
+                    }
+
+                ],
+                "language": {
+                    "decimal": ",",
+                    "emptyTable": "No hay registros",
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                    "infoEmpty": "Mostrando 0 de 0 Entradas",
+                    "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                    "infoPostFix": "",
+                    "thousands": ",",
+                    "lengthMenu": "Mostrar _MENU_ Entradas",
+                    "loadingRecords": "Cargando...",
+                    "processing": "Procesando...",
+                    "search": "Buscar:",
+                    "zeroRecords": "Sin resultados encontrados",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Ultimo",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    },
+                    "width": "100%"
+                }
+            });
+            console.log(c);
+
+
+        }
+
+    </script>
+}

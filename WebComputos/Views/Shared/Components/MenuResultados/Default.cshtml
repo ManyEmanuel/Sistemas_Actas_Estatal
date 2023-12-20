@@ -1,0 +1,146 @@
+﻿@model WebComputos.Models.ViewModels.MenuDinamicoVM
+@{
+    IEnumerable<SelectListItem> ComprobarDipRP = ViewBag.ComprobarDipRP;
+    IEnumerable<SelectListItem> ComprobarRegRP = ViewBag.ComprobarRegRP;
+    IEnumerable<SelectListItem> Diputacion = ViewBag.Diputacion;
+    IEnumerable<SelectListItem> Regiduria = ViewBag.Regidura;
+}
+
+
+@if (Model.LDistrito.Count() > 0)
+{
+    @if (ComprobarDipRP.Count() != 0)
+    {
+        <li class="nav-item has-treeview">
+            <a class="nav-link" href="#">
+                <i class="far fa-building nav-icon"></i>
+                <p>Diputaciones</p>
+                <i class="right fas fa-angle-left"></i>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="Admin" asp-controller="TResultadosActas" asp-action="IndexDip">
+                        <i class="far fa-dot-circle nav-icon"></i>
+                        <p>Diputaciones MR</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="Admin" asp-controller="TResultadosActas" asp-action="IndexDipRP">
+                        <i class="far fa-dot-circle nav-icon"></i>
+                        <p>Diputaciónes RP</p>
+                    </a>
+                </li>
+            </ul>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link" asp-area="Admin" asp-controller="TResultadosActas" asp-action="IndexDip">
+                <i class="far fa-dot-circle nav-icon"></i>
+                <p>Diputaciones</p>
+            </a>
+        </li>
+    }
+    @*<li class="nav-item has-treeview">
+            <a class="nav-link" href="#">
+                <i class="far fa-building nav-icon"></i>
+                <p>Diputaciones</p>
+                <i class="right fas fa-angle-left"></i>
+            </a>
+            <ul class="nav nav-treeview">
+                @foreach (var item in Model.LDistrito)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="Admin" asp-controller="TResultadosActas" asp-action="IndexDip" asp-route-id="@item.Value">
+                            <i class="far fa-dot-circle nav-icon"></i>
+                            <p>Distrito @item.Value</p>
+                        </a>
+                    </li>
+                }
+                @if (ComprobarDipRP.Count() != 0)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="Admin" asp-controller="TResultadosActas" asp-action="IndexDipRP" >
+                            <i class="far fa-dot-circle nav-icon"></i>
+                            <p>Diputación RP</p>
+                        </a>
+                    </li>
+                }
+
+            </ul>
+        </li>*@
+
+}
+
+@if (Model.LDemarcaciones.Count() > 0)
+{
+    @if (ComprobarRegRP.Count() != 0)
+    {
+        <li class="nav-item has-treeview">
+            <a class="nav-link" href="#">
+                <i class="far fa-building nav-icon"></i>
+                <p>Regidurías</p>
+                <i class="right fas fa-angle-left"></i>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="Admin" asp-controller="TResultadosActas" asp-action="IndexReg">
+                        <i class="far fa-dot-circle nav-icon"></i>
+                        <p>Regidurías MR </p>
+                    </a>
+                </li>
+
+
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="Admin" asp-controller="TResultadosActas" asp-action="IndexRegRP">
+                        <i class="far fa-dot-circle nav-icon"></i>
+                        <p>Regiduría RP</p>
+                    </a>
+                </li>
+            </ul>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link" asp-area="Admin" asp-controller="TResultadosActas" asp-action="IndexReg">
+                <i class="far fa-dot-circle nav-icon"></i>
+                <p>Regidurías</p>
+            </a>
+        </li>
+    }
+
+    @*<li class="nav-item has-treeview">
+            <a class="nav-link" href="#">
+                <i class="far fa-building nav-icon"></i>
+                <p>Regidurías</p>
+                <i class="right fas fa-angle-left"></i>
+            </a>
+            <ul class="nav nav-treeview">
+                @foreach (var item in Model.LDemarcaciones)
+                {
+                    var secciones = Model.Lsecciones.Where(x => x.DemarcacionId == item.Id).ToList();
+                    if (secciones.Count > 0)
+                    {
+
+                    }
+                    <li>
+                        <a class="nav-link" asp-area="Admin" asp-controller="TResultadosActas" asp-action="IndexReg" asp-route-id="@item.Id">
+                            <i class="far fa-dot-circle nav-icon"></i>
+                            <p>@item.Nombre</p>
+                        </a>
+                    </li>
+                }
+                @if (ComprobarRegRP.Count() != 0)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="Admin" asp-controller="TResultadosActas" asp-action="IndexRegRP">
+                            <i class="far fa-dot-circle nav-icon"></i>
+                            <p>Regiduría RP</p>
+                        </a>
+                    </li>
+                }
+            </ul>
+        </li>*@
+}

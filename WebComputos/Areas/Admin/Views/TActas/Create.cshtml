@@ -1,0 +1,462 @@
+﻿@model WebComputos.Models.T_Acta
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    IEnumerable<SelectListItem> Gubernatura = ViewBag.Gubernatura;
+    IEnumerable<SelectListItem> Ayuntamiento = ViewBag.Ayuntamiento;
+    IEnumerable<SelectListItem> Diputacion = ViewBag.Diputacion;
+    IEnumerable<SelectListItem> Regiduria = ViewBag.Regidura;
+    IEnumerable<SelectListItem> ComprobarDipRP = ViewBag.ComprobarDiputacionRP;
+    IEnumerable<SelectListItem> ComprobarRegRP = ViewBag.ComprobarRegiduriaRP;
+    IEnumerable<SelectListItem> Estatus = ViewBag.Estatus;
+    
+}
+
+
+@section Scripts
+{
+    <script src="~/js/ActasVP.js"></script>
+}
+<style>
+  .prueba{
+      vertical-align:bottom;
+  }
+</style>
+<br />
+<div class="row">
+    <div class="col-md-12 text-center">
+        <h4>Registro de información complementaria de actas</h4>
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-secondary card-tabs">
+            <div class="card-header p-0 pt-1">
+                <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="custom-tabs-one-home-tab" data-toggle="pill" href="#custom-tabs-one-home" role="tab" aria-controls="custom-tabs-one-home" aria-selected="true">Gubernatura</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-one-profile-tab" data-toggle="pill" href="#custom-tabs-one-profile" role="tab" aria-controls="custom-tabs-one-profile" aria-selected="false">Ayuntamiento</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-one-messages-tab" data-toggle="pill" href="#custom-tabs-one-messages" role="tab" aria-controls="custom-tabs-one-messages" aria-selected="false">Diputación</a>
+                    </li>
+
+                    @{ if (ComprobarDipRP.Count() != 0)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" id="custom-tabs-one-messages-tab-RP" data-toggle="pill" href="#custom-tabs-one-messages-RP" role="tab" aria-controls="custom-tabs-one-messages-RP" aria-selected="false">Diputación RP</a>
+                            </li>
+                        }
+                    }
+
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-one-settings-tab" data-toggle="pill" href="#custom-tabs-one-settings" role="tab" aria-controls="custom-tabs-one-settings" aria-selected="false">Regiduría</a>
+                    </li>
+                    @{ 
+                        if (ComprobarRegRP.Count() != 0)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" id="custom-tabs-one-settings-tab-RP" data-toggle="pill" href="#custom-tabs-one-settings-RP" role="tab" aria-controls="custom-tabs-one-settings-RP" aria-selected="false">Regiduría RP</a>
+                            </li>
+                        }
+                    }
+                    
+                </ul>
+            </div>
+            <div class="card-body">
+                <div class="tab-content" id="custom-tabs-one-tabContent">
+                    <div class="tab-pane fade show active" id="custom-tabs-one-home" role="tabpanel" aria-labelledby="custom-tabs-one-home-tab">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card card-secondary">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Actas de Gubernatura</h3>
+                                    </div>
+                                    <form id="RegistroActaG">
+                                        <div class="card-body">
+                                            <div class="text-danger"></div>
+                                            <div class="form-group row">
+                                                <div class="col-md-3">
+                                                    <label>[1] Datos de la Casilla,</label>
+                                                    <label for="Seccion1">Sección:</label>
+                                                    @Html.DropDownList("Gubernatura", Gubernatura, "-Seleccione una sección-", new { @class = "form-control", @id = "Seccion1" })
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label for="casid1">Casilla:</label>
+                                                    <select id="casid1" name="casid" asp-items='@(new SelectList(string.Empty,"value","text"))' class="form-control"></select>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label for="est">Estatus en la que se recibió el acta:</label>
+                                                    @Html.DropDownList("Estatus", Estatus, "-Estatus del Acta-", new { @class = "form-control", @id = "est1" })
+                                                    <span asp-validation-for="Estatus" class="text-danger"></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <div class="col-md-3 prueba">
+                                                    <label asp-for="Sobrantes" class="control-label">[2] Boletas sobrantes de la elección:</label>
+                                                    <input asp-for="Sobrantes" class="form-control nuevaposicion" value="0" id="Sobrantes1" min="0" />
+                                                    <span asp-validation-for="Sobrantes" class="text-danger"></span>
+                                                </div>
+                                                <div class="col-md-3 prueba1">
+                                                    <label asp-for="VotosCiudadanos" class="control-label">[3] Personas que votaron:</label>
+                                                    <input asp-for="VotosCiudadanos" class="form-control" id="Ciudadanos1" value="0" min="0" />
+                                                    <span asp-validation-for="VotosCiudadanos" class="text-danger"></span>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label asp-for="VotosRepresentantes" id="textRepresentantes1" class="control-label text-justify">[4] Representantes de partidos políticos y de candidatos/as independientes que votaron en la casilla no incluidos/as en la lista nominal:</label>
+                                                    <input asp-for="VotosRepresentantes" class="form-control" id="Representantes1" value="0" min="0" />
+                                                    <span asp-validation-for="VotosRepresentantes" class="text-danger"></span>
+                                                </div>
+                                                <div class="col-md-3 prueba2">
+                                                    <label asp-for="TotalVotos" id="textTotal1" class="control-label">[5] Suma de las cantidades de los apartados [3] y [4]:</label>
+                                                    <input asp-for="TotalVotos" class="form-control" id="Total1" value="0" min="0"/>
+                                                    <span asp-validation-for="TotalVotos" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                
+                                                <div class="col-md-3">
+                                                    <label asp-for="VotosUrnas" class="control-label"> Votos de la elección sacados de la urna:</label>
+                                                    <input asp-for="VotosUrnas" class="form-control" id="Urnas1" value="0" min="0" />
+                                                    <span asp-validation-for="VotosUrnas" class="text-danger"></span>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="control-label">¿Se presentaron incidentes durante el escrutinio y cómputo de la elección?</label>
+                                                    <div class="row">
+                                                        <div class="col-md-6 text-center">
+                                                            <input class="custom-control-input" name="Chein1" type="radio" id="inci1" value="True" />
+                                                            <label for="inci1" class="custom-control-label">Si</label>
+                                                        </div>
+                                                        <div class="col-md-6 text-center">
+                                                            <input class="custom-control-input" name="Chein1" type="radio" id="inci2" value="False" />
+                                                            <label for="inci2" class="custom-control-label">No</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="control-label">Describa brevemente</label>
+                                                    <input type="text" id="Descri1" asp-for="DesIncidentes" class="form-control"  />
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-2">
+                                                <input type="hidden" asp-for="Incidentes" class="form-control" id="incidente1" />
+                                                <span asp-validation-for="Incidentes" class="text-danger"></span>
+                                            </div>
+                                            <div class="text-right">
+                                                <button type="button" onclick="RegistrarG()" class="btn btn-success btn-lg rounded">Guardar</button>
+                                                <button type="button" class="btn btn-danger btn-lg rounded" style="width:auto;"><a asp-action="Index" class="text-white">Cancelar</a></button>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="hidden" id="cmb1" class="form-control" value="1" placeholder="1" />
+                                                <input type="hidden" id="idres1" asp-for="IdActaDetalle" />
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="custom-tabs-one-profile" role="tabpanel" aria-labelledby="custom-tabs-one-profile-tab">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card card-secondary">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Actas de Ayuntamiento</h3>
+                                    </div>
+                                    <form id="RegistroActaY">
+                                        <div class="card-body">
+                                            <div class="form-group row">
+                                                <div class="col-md-3">
+                                                    <label>[1] Datos de la Casilla,</label>
+                                                    <label for="Seccion2">Sección:</label>
+                                                    @Html.DropDownList("Ayuntamiento", Ayuntamiento, "-Seleccione una sección-", new { @class = "form-control", @id = "Seccion2" })
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label for="casid2">Casilla:</label>
+                                                    <select id="casid2" name="casid" asp-items='@(new SelectList(string.Empty,"value","text"))' class="form-control"></select>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label for="est">Estatus en la que se recibió el acta:</label>
+                                                    @Html.DropDownList("Estatus", Estatus, "-Estatus del Acta-", new { @class = "form-control", @id = "est2" })
+                                                    <span asp-validation-for="Estatus" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-md-3">
+                                                    <label asp-for="Sobrantes" class="control-label">[2] Boletas sobrantes de la elección:</label>
+                                                    <input asp-for="Sobrantes" class="form-control" value="0" id="Sobrantes2" min="0"/>
+                                                    <span asp-validation-for="Sobrantes" class="text-danger"></span>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label asp-for="VotosCiudadanos" class="control-label">[3] Personas que votaron:</label>
+                                                    <input asp-for="VotosCiudadanos" class="form-control" id="Ciudadanos2" value="0" min="0"/>
+                                                    <span asp-validation-for="VotosCiudadanos" class="text-danger"></span>
+                                                </div>
+                                            
+                                                <div class="col-md-3">
+                                                    <label asp-for="VotosRepresentantes" id="textRepresentantes2" class="control-label text-justify">[4] Representantes de partidos políticos y de candidatos/as independientes que votaron en la casilla no incluidos/as en la lista nominal:</label>
+                                                    <input asp-for="VotosRepresentantes" class="form-control" id="Representantes2" value="0" min="0"/>
+                                                    <span asp-validation-for="VotosRepresentantes" class="text-danger"></span>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label asp-for="TotalVotos" id="textTotal2" class="control-label">[5] Suma de las cantidades de los apartados [3] y [4]:</label>
+                                                    <input asp-for="TotalVotos" class="form-control" id="Total2" value="0" min="0"/>
+                                                    <span asp-validation-for="TotalVotos" class="text-danger"></span>
+                                                </div>
+
+                                            </div>
+                                            <div class="form-group row">
+                                               
+                                                <div class="col-md-3">
+                                                    <label asp-for="VotosUrnas" class="control-label">Votos de la elección sacados de la urna:</label>
+                                                    <input asp-for="VotosUrnas" class="form-control" id="Urnas2" value="0" min="0"/>
+                                                    <span asp-validation-for="VotosUrnas" class="text-danger"></span>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="control-label">¿Se presentaron incidentes durante el escrutinio y cómputo de la elección?</label>
+                                                    <div class="row">
+                                                        <div class="col-md-6 text-center">
+                                                            <input class="custom-control-input" name="Chein2" type="radio" id="inci3" value="True" />
+                                                            <label for="inci3" class="custom-control-label">Si</label>
+                                                        </div>
+                                                        <div class="col-md-6 text-center">
+                                                            <input class="custom-control-input" name="Chein2" type="radio" id="inci4" value="False"  />
+                                                            <label for="inci4" class="custom-control-label">No</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="control-label">Describa brevemente</label>
+                                                    <input type="text" id="Descri2" asp-for="DesIncidentes" class="form-control"  />
+                                                </div>
+                                            </div>
+
+                                            
+                                                <input type="hidden" asp-for="Incidentes" class="form-control" id="incidente2" />
+                                                <span asp-validation-for="Incidentes" class="text-danger"></span>
+                                            
+                                            <div class="text-right">
+                                                <button type="button" onclick="RegistrarA()" class="btn btn-success btn-lg rounded">Guardar</button>
+                                                <button type="button" class="btn btn-danger btn-lg rounded" style="width:auto;"><a asp-action="Index" class="text-white">Cancelar</a></button>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="hidden" id="cmb2" class="form-control" value="2" placeholder="2" />
+                                                <input type="hidden" id="idres2" asp-for="IdActaDetalle" />
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="custom-tabs-one-messages" role="tabpanel" aria-labelledby="custom-tabs-one-messages-tab">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card card-secondary">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Actas de Diputación</h3>
+                                    </div>
+                                    <form id="RegistroActaD">
+                                        <div class="card-body">
+                                            <div class="form-group row">
+                                                <div class="col-md-3">
+                                                    <label>[1] Datos de la Casilla,</label>
+                                                    <label for="Seccion3">Sección:</label>
+                                                    @Html.DropDownList("Diputacion", Diputacion, "-Seleccione una sección-", new { @class = "form-control", @id = "Seccion3" })
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label for="casid3">Casilla:</label>
+                                                    <select id="casid3" name="casid" asp-items='@(new SelectList(string.Empty,"value","text"))' class="form-control"></select>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label for="est">Estatus en la que se recibió el acta:</label>
+                                                    @Html.DropDownList("Estatus", Estatus, "-Estatus del Acta-", new { @class = "form-control", @id = "est3" })
+                                                    <span asp-validation-for="Estatus" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-md-3">
+                                                    <label asp-for="Sobrantes" class="control-label">[2] Boletas sobrantes de la elección:</label>
+                                                    <input asp-for="Sobrantes" class="form-control" value="0" id="Sobrantes3" min="0" />
+                                                    <span asp-validation-for="Sobrantes" class="text-danger"></span>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label asp-for="VotosCiudadanos" class="control-label">[3] Personas que votaron:</label>
+                                                    <input asp-for="VotosCiudadanos" class="form-control" id="Ciudadanos3" value="0" min="0"/>
+                                                    <span asp-validation-for="VotosCiudadanos" class="text-danger"></span>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label asp-for="VotosRepresentantes" id="textRepresentantes3"  class="control-label text-justify">[4] Representantes de partidos políticos y de candidatos/as independientes que votaron en la casilla no incluidos/as en la lista nominal:</label>
+                                                    <input asp-for="VotosRepresentantes" class="form-control" id="Representantes3" value="0" min="0"/>
+                                                    <span asp-validation-for="VotosRepresentantes" class="text-danger"></span>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label asp-for="TotalVotos" id="textTotal3" class="control-label">[5] Suma de las cantidades de los apartados [3] y [4]:</label>
+                                                    <input asp-for="TotalVotos" class="form-control" id="Total3" value="0" min="0"/>
+                                                    <span asp-validation-for="TotalVotos" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                
+                                                <div class="col-md-3">
+                                                    <label asp-for="VotosUrnas" class="control-label">Votos de la elección sacados de la urna:</label>
+                                                    <input asp-for="VotosUrnas" class="form-control" id="Urnas3" value="0" min="0"/>
+                                                    <span asp-validation-for="VotosUrnas" class="text-danger"></span>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="control-label">¿Se presentaron incidentes durante el escrutinio y cómputo de la elección?</label>
+                                                    <div class="row">
+                                                        <div class="col-md-6 text-center">
+                                                            <input class="custom-control-input" name="Chein3" type="radio" id="inci5" value="True" />
+                                                            <label for="inci5" class="custom-control-label">Si</label>
+                                                        </div>
+                                                        <div class="col-md-6 text-center">
+                                                            <input class="custom-control-input" name="Chein3" type="radio" id="inci6" value="False"  />
+                                                            <label for="inci6" class="custom-control-label">No</label>
+                                                        </div>
+                                                    </div>                                                   
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="control-label">Describa brevemente</label>
+                                                    <input type="text" id="Descri3" asp-for="DesIncidentes" class="form-control" disabled/>
+                                                </div>
+                                            </div>
+
+                                          
+                                                <input type="hidden" asp-for="Incidentes" class="form-control" id="incidente3" />
+                                                <span asp-validation-for="Incidentes" class="text-danger"></span>
+                                            
+                                            <div class="text-right">
+                                                <button type="button" onclick="RegistrarD()" class="btn btn-success btn-lg rounded">Guardar</button>
+                                                <button type="button" class="btn btn-danger btn-lg rounded" style="width:auto;"><a asp-action="Index" class="text-white">Cancelar</a></button>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="hidden" id="cmb3" class="form-control" value="3" placeholder="3" />
+                                                <input type="hidden" id="idres3" asp-for="IdActaDetalle" />
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="custom-tabs-one-messages-RP" role="tabpanel" aria-labelledby="custom-tabs-one-messages-tab-RP">
+                        <partial name="_ActasDipRP" />
+                    </div>
+                    <div class="tab-pane fade" id="custom-tabs-one-settings" role="tabpanel" aria-labelledby="custom-tabs-one-settings-tab">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card card-secondary">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Actas de Regiduría</h3>
+                                    </div>
+                                    <form id="RegistroActaR">
+                                        <div class="card-body">
+                                            <div class="form-group row">
+                                                <div class="col-md-3">
+                                                    <label>[1] Datos de la Casilla,</label>
+                                                    <label for="Seccion4">Sección:</label>
+                                                    @Html.DropDownList("Regiduria", Regiduria, "-Seleccione una sección-", new { @class = "form-control", @id = "Seccion4" })
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label for="casid4">Casilla:</label>
+                                                    <select id="casid4" name="casid" asp-items='@(new SelectList(string.Empty,"value","text"))' class="form-control"></select>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label for="est">Estatus en la que se recibió el acta:</label>
+                                                    @Html.DropDownList("Estatus", Estatus, "-Estatus del Acta-", new { @class = "form-control", @id = "est4" })
+                                                    <span asp-validation-for="Estatus" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-md-3">
+                                                    <label asp-for="Sobrantes" class="control-label">[2] Boletas sobrantes de la elección:</label>
+                                                    <input asp-for="Sobrantes" class="form-control" value="0" id="Sobrantes4" min="0" />
+                                                    <span asp-validation-for="Sobrantes" class="text-danger"></span>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label asp-for="VotosCiudadanos" class="control-label">[3] Personas que votaron:</label>
+                                                    <input asp-for="VotosCiudadanos" class="form-control" id="Ciudadanos4" value="0" min="0"/>
+                                                    <span asp-validation-for="VotosCiudadanos" class="text-danger"></span>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label asp-for="VotosRepresentantes" id="textRepresentantes4" class="control-label text-justify">[4] Representantes de partidos políticos y de candidatos/as independientes que votaron en la casilla no incluidos/as en la lista nominal:</label>
+                                                    <input asp-for="VotosRepresentantes" class="form-control" id="Representantes4" value="0" min="0" />
+                                                    <span asp-validation-for="VotosRepresentantes" class="text-danger"></span>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label asp-for="TotalVotos" id="textTotal4" class="control-label">[4] Suma de las cantidades de los apartados [3] y [4]:</label>
+                                                    <input asp-for="TotalVotos" class="form-control" id="Total4" value="0" min="0" />
+                                                    <span asp-validation-for="TotalVotos" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                           
+                                            <div class="form-group row">
+                                                
+                                                <div class="col-md-3">
+                                                    <label asp-for="VotosUrnas" class="control-label">Votos de la elección sacados de la urna:</label>
+                                                    <input asp-for="VotosUrnas" class="form-control" id="Urnas4" value="0" min="0"/>
+                                                    <span asp-validation-for="VotosUrnas" class="text-danger"></span>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="control-label">¿Se presentaron incidentes durante el escrutinio y cómputo de la elección?</label>
+                                                    <div class="row">
+                                                        <div class="col-md-6 text-center">
+                                                            <input class="custom-control-input" name="Chein4" type="radio" id="inci7" value="True" />
+                                                            <label for="inci7" class="custom-control-label">Si</label>
+                                                        </div>
+                                                        <div class="col-md-6 text-center">
+                                                            <input class="custom-control-input" name="Chein4" type="radio" id="inci8" value="False" />
+                                                            <label for="inci8" class="custom-control-label">No</label>
+                                                        </div>
+                                                    </div>
+
+
+                                                    @*<div class="form-check">
+                                                        <input class="form-check-input" id="inci7" type="radio" name="Chein4" value="True" />
+                                                        <label for="inci7" class="form-check-label">Si</label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" id="inci8" type="radio" name="Chein4" value="False" />
+                                                        <label for="inci8" class="form-check-label text-md-right">No</label>
+                                                    </div>*@
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="control-label">Describa brevemente</label>
+                                                    <input type="text" id="Descri4" asp-for="DesIncidentes" class="form-control" disabled/>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-2">
+                                                <input type="hidden" asp-for="Incidentes" class="form-control" id="incidente4" />
+                                                <span asp-validation-for="Incidentes" class="text-danger"></span>
+                                            </div>
+                                            <div class="text-right">
+                                                <button type="button" onclick="RegistrarR()" class="btn btn-success btn-lg rounded">Guardar</button>
+                                                <button type="button" class="btn btn-danger btn-lg rounded" style="width:auto;"><a asp-action="Index" class="text-white">Cancelar</a></button>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="hidden" id="cmb4" class="form-control" value="4" placeholder="4" />
+                                                <input type="hidden" id="idres4" asp-for="IdActaDetalle" />
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="custom-tabs-one-settings-RP" role="tabpanel" aria-labelledby="custom-tabs-one-settings-tab-RP">
+                        <partial name="_ActasRegRP" />
+                    </div>
+                </div>              
+            </div>          
+        </div>       
+    </div>   
+</div>
+

@@ -1,0 +1,89 @@
+﻿@model WebComputos.Models.ViewModels.MenuDinamicoVM
+
+@if (Model.LDistrito.Count() > 0)
+{
+    <li class="nav-item has-treeview">
+        <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-list-alt"></i>
+            <p>
+                Causales de Recuento
+                <i class="fas fa-angle-left right"></i>
+            </p>
+        </a>
+        @if (User.IsInRole("Admin") || User.IsInRole("IEEN"))
+        {
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="Admin" asp-controller="TRecepcionPaquetes" asp-action="CreateGobAdmin">
+                        <i class="far fa-building nav-icon"></i>
+                        <p>Gubernatura</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="Admin" asp-controller="TRecepcionPaquetes" asp-action="CreatePysAdmin">
+                        <i class="far fa-building nav-icon"></i>
+                        <p>Presidencia y Sind.</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="Admin" asp-controller="TRecepcionPaquetes" asp-action="CreateDipAdmin">
+                        <i class="far fa-building nav-icon"></i>
+                        <p>Diputaciones</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="Admin" asp-controller="TRecepcionPaquetes" asp-action="CreateRegAdmin">
+                        <i class="far fa-building nav-icon"></i>
+                        <p>Regidurías</p>
+                    </a>
+                </li>
+            </ul>
+        }
+        else
+        {
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a class="nav-link" asp-area="Admin" asp-controller="TRecepcionPaquetes" asp-action="CausalesGob">
+                    <i class="far fa-building nav-icon"></i>
+                    <p>Gubernatura</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" asp-area="Admin" asp-controller="TRecepcionPaquetes" asp-action="CausalesPys">
+                    <i class="far fa-building nav-icon"></i>
+                    <p>Presidencia y Sind.</p>
+                </a>
+            </li>
+
+            <li class="nav-item has-treeview">
+                <a class="nav-link" href="#">
+                    <i class="far fa-building nav-icon"></i>
+                    <p>Diputaciones</p>
+                    <i class="right fas fa-angle-left"></i>
+                </a>
+                <ul class="nav nav-treeview">
+                    @foreach (var item in Model.LDistrito)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="Admin" asp-controller="TRecepcionPaquetes" asp-action="CausalesDip" asp-route-id="@item.Value">
+                                <i class="far fa-dot-circle nav-icon"></i>
+                                <p>Distrito @item.Value</p>
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </li>
+            @await Component.InvokeAsync("MenuDinamico")
+            <li class="nav-item">
+                <a class="nav-link" asp-area="Admin" asp-controller="TRecepcionPaquetes" asp-action="HistorialSubsanada">
+                    <i class="far fa-building nav-icon"></i>
+                    <p>Casillas Subsanadas</p>
+                </a>
+            </li>
+        </ul>
+
+            }
+
+        </li>
+
+}

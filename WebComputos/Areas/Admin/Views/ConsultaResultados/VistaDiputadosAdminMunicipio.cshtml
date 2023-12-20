@@ -1,0 +1,350 @@
+﻿
+@{
+    ViewData["Title"] = "Gobernador por Municipio";
+    Layout = "";
+    IEnumerable<T_Partido> Lpar = ViewBag.Partido;
+    IEnumerable<T_Combinacion> Lcom = ViewBag.Combinacion;
+    //IEnumerable<T_Coalicion> Lcoa = ViewBag.Coalicion;
+    List<ElementosListas> LResActa = ViewBag.ResultadosActas;
+    //List<ElementosListas> LResActor = ViewBag.ResultadosActor;
+    IEnumerable<T_Votos_Acta> Lreg = ViewBag.ResultadosCabecera;
+    //IEnumerable<T_Detalle_Votos_Acta_Partido> LrePar = ViewBag.ResultadosDistribucion;
+    //int resli = 0;
+    //var Actores = LResActor.OrderByDescending(x => x.Coalicion).ToList();
+    //if (LrePar == null)
+    //{
+    //    resli = 0;
+    //}
+    //else
+    //{
+    //    resli = LrePar.Count();
+    //}
+}
+<style>
+    .externo {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+    }
+
+    #centrador {
+        position: relative;
+        width: 100px;
+        height: 80px;
+        background-color: white;
+    }
+
+    #imagen {
+        position: absolute;
+        width: 50px;
+        height: 50px;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+    }
+
+    #imagenx {
+        position: absolute;
+        width: 50px;
+        height: 25px;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+    }
+
+    #imagenc {
+        position: absolute;
+        width: 100px;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+    }
+</style>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-secondary">
+            <div class="card-header">
+                <h3 class="card-title"> Resultados de la elección de Diputados del @ViewBag.Distritos</h3>
+            </div>
+            <div class="card-body">
+                @if (LResActa.Count() != 0)
+                {
+                    @if (LResActa.Count != 0)
+                    {
+
+                        <div class="card bg-gradient-gray">
+                            <div class="card-body">
+                                <h5 class="card-text text-center">Distribución total de votos</h5>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            @foreach (var actas in LResActa)
+                            {
+                                if (actas.Partido != 0)
+                                {
+                                    var partido = Lpar.FirstOrDefault(x => x.Id == actas.Partido);
+                                    <div class="col-md-2">
+                                        <div class="card externo border">
+                                            <div id="centrador">                                                                                           
+                                                <img src="@Url.Content(partido.LogoURL)" id="imagen" />
+                                            </div>
+                                            <div class="card-body">
+                                                @Html.TextBox(actas.Votos.ToString(), actas.Votos, new { @type = "number", @class = "form-control text-center", @readonly = "readonly" })
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                }
+                                else if (actas.Independiente != 0)
+                                {
+                                    var partido = Lpar.FirstOrDefault(x => x.Independiente == true && x.Id == actas.Independiente);
+
+
+                                    <div class="col-md-2">
+                                        <div class="card externo border">
+                                            <div id="centrador">
+                                                <img src="@Url.Content(partido.LogoURL)" id="imagen" />
+                                            </div>
+                                            <div class="card-body">
+                                                @Html.TextBox(actas.Votos.ToString(), actas.Votos, new { @type = "number", @class = "form-control text-center", @readonly = "readonly" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                else if (actas.Coalicion != 0)
+                                {
+                                    var com = Lcom.FirstOrDefault(x => x.Id == actas.Combinacion);
+                                    <div class="col-md-2">
+                                        <div class="card externo border">
+                                            <div id="centrador">
+                                                <img src="@Url.Content(com.LogoURL)" id="imagenc" />
+                                                
+                                            </div>
+                                            <div class="card-body">
+                                                @Html.TextBox(actas.Votos.ToString(), actas.Votos, new { @type = "number", @class = "form-control text-center", @readonly = "readonly" })
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                }
+
+                            }
+
+                        </div>
+                        <div class="row">
+                            @foreach (var resa in Lreg)
+                            {
+                                <div class="col-md-2">
+                                    <div class="card border">
+                                        <div class="card-body">
+                                            <p class="text-center"> Candidatos no registrados </p>
+                                            @Html.TextBox(resa.NoRegistrados.ToString(), resa.NoRegistrados, new { @type = "number", @class = " form-control text-center", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="card border">
+                                        <div class="card-body">
+                                            <p class="text-center"> Votos Nulos </p>
+                                            @Html.TextBox(resa.Nulos.ToString(), resa.Nulos, new { @type = "number", @class = " form-control text-center", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="card border">
+                                        <div class="card-body">
+                                            <p class="text-center"> Total de votos</p>
+                                            @Html.TextBox(resa.Total.ToString(), resa.Total, new { @type = "number", @class = "form-control text-center", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        <br />
+                        @*<div class="card bg-gradient-gray">
+                            <div class="card-body">
+                                <h5 class="card-text text-center">Distribución de votos por partido politico</h5>
+                            </div>
+                        </div>
+                        @if (resli != 0)
+                        {
+                            <div class="row">
+                                @foreach (var actas in LrePar)
+                                {
+                                    if (actas.IdPartido != 0)
+                                    {
+                                        var partido = Lpar.FirstOrDefault(x => x.Id == actas.IdPartido);
+                                        <div class="col-md-2">
+                                            <div class="card externo border">
+                                                <div id="centrador">                                                   
+                                                    <img src="@Url.Content(partido.LogoURL)" id="imagen" />                                                   
+                                                </div>
+                                                <div class="card-body">
+                                                    @Html.TextBox(actas.Votos.ToString(), actas.Votos, new { @class = "form-control text-center", @type = "number", @readonly = "readonly" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                    else if (actas.IdIndependiente != 0)
+                                    {
+                                        var partido = Lpar.FirstOrDefault(x => x.Independiente == true && x.Id == actas.IdIndependiente);
+                                        <div class="col-md-2">
+                                            <div class="card externo border">
+                                                <div id="centrador">
+                                                    <img src="@Url.Content(partido.LogoURL)" id="imagen" />
+                                                </div>
+                                                <div class="card-body">
+                                                    @Html.TextBox(actas.Votos.ToString(), actas.Votos, new { @class = "form-control text-center", @type = "number", @readonly = "readonly" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                            <div class="row">
+                                @foreach (var resa in Lreg)
+                                {
+                                    <div class="col-md-2">
+                                        <div class="card border">
+                                            <div class="card-body">
+                                                <p class="text-center"> Candidatos no registrados </p>
+                                                @Html.TextBox(resa.NoRegistrados.ToString(), resa.NoRegistrados, new { @type = "number", @class = " form-control text-center", @readonly = "readonly" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="card border">
+                                            <div class="card-body">
+                                                <p class="text-center"> Votos Nulos </p>
+                                                @Html.TextBox(resa.Nulos.ToString(), resa.Nulos, new { @type = "number", @class = " form-control text-center", @readonly = "readonly" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="card border">
+                                            <div class="card-body">
+                                                <p class="text-center"> Total de votos</p>
+                                                @Html.TextBox(resa.Total.ToString(), resa.Total, new { @type = "number", @class = "form-control text-center", @readonly = "readonly" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+                            </div>
+
+
+                        }
+                        else
+                        {
+                            <div class="alert alert-info alert-dismissible">
+                                <h5><i class="icon fas fa-info"></i> Sin Resultados</h5>
+                                No se ha capturado el total de las casillas de la elección, para realizar la distribución de votos
+                            </div>
+
+                        }
+                        <br />
+                        <div class="card bg-gradient-gray">
+                            <div class="card-body">
+                                <h5 class="card-text text-center">Distribución de votos por actor politico</h5>
+                            </div>
+                        </div>
+                        <div class="row">
+                             
+                            @foreach (var actas in Actores)
+                            {
+                                @if (actas.Coalicion != 0)
+                                {
+                                    var com = Lcoa.FirstOrDefault(x => x.Id == actas.Coalicion);
+                                    <div class="col-md-2">
+                                        <div class="card externo border">
+                                            <div id="centrador">
+                                                <img src="@Url.Content(com.LogoURL)" id="imagen" />
+                                            </div>
+                                            <div class="card-body">
+                                                @Html.TextBox(actas.Votos.ToString(), actas.Votos, new { @type = "number", @class = "form-control text-center", @readonly = "readonly" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                 }
+                               else if (actas.Partido != 0)
+                                {
+                                    var partido = Lpar.FirstOrDefault(x => x.Id == actas.Partido);
+                                    <div class="col-md-2">
+                                        <div class="card externo border">
+                                            <div id="centrador">                                              
+                                                <img src="@Url.Content(partido.LogoURL)" id="imagen" />                                                
+                                            </div>
+                                            <div class="card-body">
+                                                @Html.TextBox(actas.Votos.ToString(), actas.Votos, new { @class = "form-control text-center", @type = "number", @readonly = "readonly" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                else if (actas.Independiente != 0)
+                                {
+                                    var partido = Lpar.FirstOrDefault(x => x.Independiente == true && x.Id == actas.Independiente);
+                                    <div class="col-md-2">
+                                        <div class="card externo border">
+                                            <div id="centrador">
+                                                <img src="@Url.Content(partido.LogoURL)" id="imagen" />
+                                            </div>
+                                            <div class="card-body">
+                                                @Html.TextBox(actas.Votos.ToString(), actas.Votos, new { @class = "form-control text-center", @type = "number", @readonly = "readonly" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+                            }
+                        </div>
+
+                        @foreach (var resa in Lreg)
+                        {
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <div class="card border">
+                                        <div class="card-body">
+                                            <p class="text-center"> Candidatos no registrados </p>
+                                            @Html.TextBox(resa.NoRegistrados.ToString(), resa.NoRegistrados, new { @type = "number", @class = " form-control text-center", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="card border">
+                                        <div class="card-body">
+                                            <p class="text-center"> Votos Nulos </p>
+                                            @Html.TextBox(resa.Nulos.ToString(), resa.Nulos, new { @type = "number", @class = " form-control text-center", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="card border">
+                                        <div class="card-body">
+                                            <p class="text-center"> Total de votos</p>
+                                            @Html.TextBox(resa.Total.ToString(), resa.Total, new { @type = "number", @class = "form-control text-center", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }*@
+                    }
+                }
+                else
+                {
+                    <div class="alert alert-info alert-dismissible">
+                        <h5><i class="icon fas fa-info"></i> Sin Resultados</h5>
+                        Por el momento no se cuenta con los registros de resultados de esta elección
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+

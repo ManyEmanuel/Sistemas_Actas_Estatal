@@ -1,0 +1,204 @@
+﻿@model WebComputos.Models.ViewModels.T_Votos_Actas_Extranjero_VM
+@{
+    IEnumerable<T_Partido> Lpar = ViewBag.partido;
+    IEnumerable<T_Combinacion> Lcom = ViewBag.combinacion;
+    IEnumerable<T_Detalle_Votos_Ext> Lres = ViewBag.Resact;
+    IEnumerable<T_Votos_Acta_Ext> Lreg = ViewBag.Registro;
+    ViewData["Title"] = "Votos en el Extranjero";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .externo {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+    }
+
+    #centrador {
+        position: relative;
+        width: 100px;
+        height: 80px;
+        background-color: white;
+    }
+
+    #imagen {
+        position: absolute;
+        width: 50px;
+        height: 50px;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+    }
+
+    #imagenx {
+        position: absolute;
+        width: 50px;
+        height: 25px;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+    }
+
+    #imagenc {
+        position: absolute;
+        width: 75px;
+        height: 75px;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+    }
+</style>
+<br />
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-secondary">
+            <div class="card-header">
+                <h3 class="card-title"> Registro de votos</h3>
+            </div>
+            @if (Lpar.Count() > 0)
+            {
+                <form method="post" asp-action="CapturaVotos">
+                    <div class="card-body">
+                        <div class="row">
+                            @{
+                                int contador = 0;
+                            }
+                            @foreach (var Resultado in Model.DetalleVotosExt)
+                            {
+                                if (Resultado.IdPartido != 0)
+                                {
+                                    var partido = Lpar.FirstOrDefault(x => x.Id == Resultado.IdPartido && x.Independiente == false);
+                                    <div class="col-md-2">
+                                        <div class="card externo border">
+                                            <div id="centrador">
+                                                <img src="@Url.Content(partido.LogoURL)" id="imagen" />
+                                            </div>
+                                            <div class="card-body">
+                                                @Html.TextBoxFor(x => x.DetalleVotosExt[contador].Votos, new { @type = "number", @class = "form-control text-center" })
+                                                @Html.HiddenFor(x => x.DetalleVotosExt[contador].IdPartido)
+                                                @Html.HiddenFor(x => x.DetalleVotosExt[contador].Id)
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                contador++;
+                            }
+                        </div>
+                        <br />
+                        
+                        @if (Model.DetalleVotosExt.Where(x => x.IdCoalicion != 0).Count() != 0)
+                        {
+
+
+                            <div class="card bg-gradient-gray">
+                                <div class="card-body">
+                                    <h5 class="card-text text-center">Coaliciones</h5>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                @{
+                                    int contador1 = 0;
+                                }
+
+                                @foreach (var Combi in Model.DetalleVotosExt)
+                                {
+                                    if (Combi.IdCombinacion != 0)
+                                    {
+                                        var coalicion = Lcom.FirstOrDefault(x => x.Id == Combi.IdCombinacion);
+                                        <div class="col-md-2">
+                                            <div class="card externo border">
+                                                <div id="centrador">
+                                                    <img src="@Url.Content(coalicion.LogoURL)" id="imagenc" />
+                                                </div>
+                                                <div class="card-body">
+                                                    @*//<p class="text-center">@Html.Label(coalicion.Combinacion)</p>*@
+                                                    @Html.TextBoxFor(x => x.DetalleVotosExt[contador1].Votos, new { @type = "number", @class = "form-control text-center" })
+                                                    @Html.HiddenFor(x => x.DetalleVotosExt[contador1].IdCombinacion)
+                                                    @Html.HiddenFor(x => x.DetalleVotosExt[contador1].IdCoalicion)
+                                                    @Html.HiddenFor(x => x.DetalleVotosExt[contador1].Id)
+                                                </div>
+                                            </div>
+
+
+                                            <p class="text-center">
+
+                                            </p>
+                                            <p class="text-center">
+                                        </div>
+
+                                    }
+                                    contador1++;
+
+                                }
+                            </div>
+                                    }
+                        <br />
+                        <div class="card bg-gradient-gray">
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">
+                                <div class="card border">
+                                    <div class="card-body">
+                                        <p class="text-center">Candidatos no registrados</p>
+                                        @Html.HiddenFor(x => x.Votos_Ext.Id)
+                                        @Html.TextBoxFor(x => x.Votos_Ext.NoRegistrados, new { @type = "number", @class = "form-control text-center" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="card border">
+                                    <div class="card-body">
+                                        <p class="text-center">Votos Nulos</p>
+                                        @Html.HiddenFor(x => x.Votos_Ext.Id)
+                                        @Html.TextBoxFor(x => x.Votos_Ext.Nulos, new { @type = "number", @class = "form-control text-center" })
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="card border">
+                                    <div class="card-body">
+                                        <p class="text-center">Total de Votos</p>
+                                        @Html.HiddenFor(x => x.Votos_Ext.Id)
+                                        @Html.TextBoxFor(x => x.Votos_Ext.Total, new { @type = "number", @class = "form-control text-center" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="text-right">
+                            <input class="btn btn-success btn-lg rounded" type="submit" value="Guardar votos" />
+
+
+                        </div>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>
+
+
+
+<style>
+    input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+</style>
+
+
+@section Scripts
+{
+    <script src="~/js/Resultados.js"></script>
+}

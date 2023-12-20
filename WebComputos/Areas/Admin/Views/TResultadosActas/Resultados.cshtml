@@ -1,0 +1,242 @@
+﻿@model WebComputos.Models.ViewModels.T_Votos_Actas_VM
+@{
+    IEnumerable<T_Partido> Lpar = ViewBag.partido;
+    IEnumerable<T_Combinacion> Lcom = ViewBag.combinacion;
+    IEnumerable<T_Detalle_Votos_Acta> Lres = ViewBag.Resact;
+    IEnumerable<T_Votos_Acta> Lreg = ViewBag.Registro;
+    Layout = "";
+}
+<style>
+    .externo {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+    }
+
+    #centrador {
+        position: relative;
+        width: 100px;
+        height: 80px;
+        background-color: white;
+    }
+
+    #imagen {
+        position: absolute;
+        width: 50px;
+        height: 50px;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+    }
+
+    #imagenx {
+        position: absolute;
+        width: 50px;
+        height: 25px;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+    }
+
+    #imagenc {
+        position: absolute;
+        width: 75px;
+        height: 75px;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+    }
+</style>
+<br />
+
+<div class="row" id="Prueba">
+    <div class="col-md-12">
+        <div class="card card-secondary">
+            <div class="card-header">
+                <h3 class="card-title"> Registro de votos</h3>
+            </div>
+            @if (Lpar.Count() > 0)
+            {
+                <form method="post" asp-action="CapturaVotos" onKeypress="if(event.keyCode == 13) event.returnValue = false;" onsubmit="checkSubmit();">
+                    <div class="card-body">
+                        <div class="row">
+                            @{
+                                int contador = 0;
+                            }
+                            @foreach (var Resultado in Model.DetalleVotosActasList)
+                            {
+                                if (Resultado.IdPartido != 0 && Resultado.IdIndependiente == 0)
+                                {
+                                    var partido = Lpar.FirstOrDefault(x => x.Id == Resultado.IdPartido && x.Independiente == false);
+                                    <div class="col-md-2">
+                                        <div class="card externo border">
+                                            <div id="centrador">
+                                                <img src="@Url.Content(partido.LogoURL)" id="imagen" />
+                                            </div>
+                                            <div class="card-body">
+                                                @Html.TextBoxFor(x => x.DetalleVotosActasList[contador].Votos, new { @type = "number", @min = "0", @class = "form-control text-center", @id=contador+"Partido"})
+                                                @Html.HiddenFor(x => x.DetalleVotosActasList[contador].IdPartido)
+                                                @Html.HiddenFor(x => x.DetalleVotosActasList[contador].IdDetalleVotosActa)
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                contador++;
+                            }
+                        </div>
+                        <br />
+                        @if (Model.DetalleVotosActasList.Where(x => x.IdIndependiente != 0).Count() != 0)
+                        {
+
+                            <div class="card bg-gradient-gray">
+                                <div class="card-body">
+                                    <h5 class="card-text text-center">Candidatos Independientes</h5>
+                                </div>
+                            </div>
+                            <br />
+
+                            <div class="row">
+                                @{
+                                    int contador2 = 0;
+                                }
+                                @foreach (var Inde in Model.DetalleVotosActasList)
+                                {
+                                    if (Inde.IdIndependiente != 0)
+                                    {
+                                        var coalicion = Lpar.FirstOrDefault(x => x.Independiente == true && x.Id == Inde.IdIndependiente);
+                                        <div class="col-md-2">
+                                            <div class="card externo border">
+                                                <div id="centrador">
+                                                    <img src="@Url.Content(coalicion.LogoURL)" id="imagen" />
+                                                </div>
+                                                <div class="card-body">
+                                                    <p class="text-center">@Html.Label(coalicion.Siglas)</p>
+                                                    @Html.TextBoxFor(x => x.DetalleVotosActasList[contador2].Votos, new { @type = "number", @min = "0", @class = "form-control text-center",  @id = contador2 + "Independiente" })
+                                                    @Html.HiddenFor(x => x.DetalleVotosActasList[contador2].IdIndependiente)
+                                                    @Html.HiddenFor(x => x.DetalleVotosActasList[contador2].IdDetalleVotosActa)
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                    contador2++;
+                                }
+                            </div>
+                        }
+                        @if (Model.DetalleVotosActasList.Where(x => x.IdCoalicion != 0).Count() != 0)
+                        {
+
+
+                            <div class="card bg-gradient-gray">
+                                <div class="card-body">
+                                    <h5 class="card-text text-center">Coaliciones</h5>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                @{
+                                    int contador1 = 0;
+                                }
+
+                                @foreach (var Combi in Model.DetalleVotosActasList)
+                                {
+                                    if (Combi.IdCombinacion != 0)
+                                    {
+                                        var coalicion = Lcom.FirstOrDefault(x => x.Id == Combi.IdCombinacion);
+                                        <div class="col-md-2">
+                                            <div class="card externo border">
+                                                <div id="centrador">
+                                                    <img src="@Url.Content(coalicion.LogoURL)" id="imagenc" />
+                                                </div>
+                                                <div class="card-body">
+
+                                                    @Html.TextBoxFor(x => x.DetalleVotosActasList[contador1].Votos, new { @type = "number", @min = "0", @class = "form-control text-center", @id = contador1 + "Coalicion" })
+                                                    @Html.HiddenFor(x => x.DetalleVotosActasList[contador1].IdCombinacion)
+                                                    @Html.HiddenFor(x => x.DetalleVotosActasList[contador1].IdCoalicion)                                                   
+                                                    @Html.HiddenFor(x => x.DetalleVotosActasList[contador1].IdDetalleVotosActa)
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    }
+                                    contador1++;
+
+                                }
+                            </div>
+                        }
+                        <br />
+                        <div class="card bg-gradient-gray">
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">
+                                <div class="card border">
+                                    <div class="card-body">
+                                        <p class="text-center">Candidatos no registrados</p>
+                                        @Html.HiddenFor(x => x.Votos_Acta.IdRegistroVotos)
+                                        @Html.HiddenFor(x => x.Votos_Acta.IdActaDetalle)
+                                        @Html.TextBoxFor(x => x.Votos_Acta.NoRegistrados, new { @type = "number", @min = "0", @class = "form-control text-center" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="card border">
+                                    <div class="card-body">
+                                        <p class="text-center">Votos Nulos</p>
+                                        @Html.HiddenFor(x => x.Votos_Acta.IdRegistroVotos)
+                                        @Html.TextBoxFor(x => x.Votos_Acta.Nulos, new { @type = "number", @min = "0", @class = "form-control text-center" })
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="card border">
+                                    <div class="card-body">
+                                        <p class="text-center">Total de Votos</p>
+                                        @Html.HiddenFor(x => x.Votos_Acta.IdRegistroVotos)
+                                        @Html.TextBoxFor(x => x.Votos_Acta.Total, new { @type = "number", @min = "0", @class = "form-control text-center" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="text-right">
+                            <input class="btn btn-success btn-lg rounded" type="submit" value="Guardar votos" id="GVotos"/>
+
+                            @if (ViewBag.Eleccion == 1)
+                            {
+                                <input id="cancelar" class="btn btn-danger btn-lg rounded" type="button" value="Cancelar" style="width:auto;" onclick="location.href='@Url.Action("CreateGob", "TResultadosActas")'" />
+                            }
+                            @if (ViewBag.Eleccion == 2)
+                            {
+                                <input id="cancelar" class="btn btn-danger btn-lg rounded" type="button" value="Cancelar" style="width:auto;" onclick="location.href='@Url.Action("CreatePys", "TResultadosActas")'" />
+                            }
+                            @if (ViewBag.Eleccion == 3)
+                            {
+                                <input id="cancelar" class="btn btn-danger btn-lg rounded" type="button" value="Cancelar" style="width:auto;" onclick="location.href='@Url.Action("CreateDip", "TResultadosActas")'" />
+                            }
+                            @if (ViewBag.Eleccion == 4)
+                            {
+                                <input id="cancelar" class="btn btn-danger btn-lg rounded" type="button" value="Cancelar" style="width:auto;" onclick="location.href='@Url.Action("CreateReg", "TResultadosActas")'" />
+                            }
+
+                        </div>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>
+
+<style>
+    input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+</style>

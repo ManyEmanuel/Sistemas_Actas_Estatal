@@ -1,0 +1,48 @@
+﻿
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    IEnumerable<SelectListItem> Municipio = ViewBag.ListaMunicipio;
+
+}
+<br />
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-secondary">
+            <div class="card-header">
+                <h3 class="card-title">Resultados de la elección de Gubernatura en el Estado de Nayarit</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-2">
+                        <label for="Municipios">Municipio</label>
+                        @Html.DropDownList("Municipio", Municipio, "-Seleccione un Municipio-", new { @class = "form-control", @id = "Municipios" })<br />
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="VistaParcial" class="col-md-12">
+
+</div>
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            Cargar();
+        });
+
+        function Cargar() {
+            $("#Municipios").change(function () {
+                var a = document.getElementById("Municipios").value;
+                $("#VistaParcial").load(`VistaGobernadorAdminMunicipio/${a}`)
+
+            })
+        }
+
+    </script>
+
+}

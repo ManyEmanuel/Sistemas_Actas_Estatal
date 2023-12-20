@@ -1,0 +1,40 @@
+﻿@model IList<WebComputos.Models.T_Votos_Acta>
+@{
+    IEnumerable<T_Votos_Acta> Lreg = ViewBag.Registro;
+}
+
+<br />
+<br />
+<div class="row">
+    @{
+        int contnor = 0;
+    }
+    @foreach (var det in Model)
+    {
+        var detalles = Lreg.FirstOrDefault();
+        <div class="col-md-3">
+            <p class="text-center">Candidatos no registrados</p>
+
+            @Html.HiddenFor(x => x[contnor].IdRegistroVotos)
+            @Html.HiddenFor(x => x[contnor].IdActaDetalle)
+            <p class="text-center">@Html.TextBoxFor(x => x[contnor].NoRegistrados, new { @type = "number", @style = "text-align:center; width : 80px " }) </p>
+        </div>
+        <div class="col-md-3">
+            <p class="text-center">Candidatos no registrados</p>
+
+            @Html.HiddenFor(x => x[contnor].IdRegistroVotos)
+
+            @Html.HiddenFor(x => x[contnor].IdActaDetalle)
+            <p class="text-center">@Html.TextBoxFor(x => x[contnor].Nulos, new { @type = "number", @style = "text-align:center; width : 80px " }) </p>
+        </div>
+        <div class="col-md-3">
+            <p class="text-center">Candidatos no registrados</p>
+
+            @Html.HiddenFor(x => x[contnor].IdRegistroVotos)
+
+            @Html.HiddenFor(x => x[contnor].IdActaDetalle)
+            <p class="text-center">@Html.TextBoxFor(x => x[contnor].Total, new { @type = "number", @style = "text-align:center; width : 80px " }) </p>
+        </div>
+    }
+
+</div>

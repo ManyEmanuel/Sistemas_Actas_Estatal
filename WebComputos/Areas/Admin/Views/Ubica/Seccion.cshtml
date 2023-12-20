@@ -1,0 +1,241 @@
+﻿@model WebComputos.Models.ViewModels.UbicaCasillaVM
+
+@{
+    ViewData["Title"] = "Reporte";
+    Layout = "";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+
+    <!--Css todos-->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
+</head>
+<body>
+    <style>
+        header {
+            width: auto;
+            clear: both;
+        }
+
+        .Texto {
+            width: auto;
+            height: 25px;
+            background: #656464;
+        }
+
+        .Texto1 {
+            text-align: center;
+            font-size: 140%;
+            font-weight: bold;
+            color: white;
+        }
+
+        .Texto2 {
+            text-align: center;
+            font-size: 140%;
+            font-weight: bold;
+            color: black;
+        }
+
+        .TextoCuerpo {
+            text-align: center;
+            font-size: 160%;
+        }
+
+        .TextoFirma {
+            text-align: center;
+            font-size: 120%;
+        }
+
+        .TextoCabecera {
+            text-align: center;
+            font-size: 120%;
+            font-weight: bold;
+            margin-bottom: 0px;
+            padding-bottom: 0em;
+        }
+
+        .color {
+            background-color: #F9B9EE;
+        }
+
+        .linea {
+            color: black;
+            font-size: 2;
+        }
+
+        .saltopagina {
+            display: none;
+        }
+
+        .saltopagina {
+            display: block;
+            page-break-before: always;
+        }
+
+        .Derecha {
+            text-align: right;
+        }
+
+        table td:first-child {
+            width: 5%;
+        }
+
+        table td:nth-child(2) {
+            width: 5%;
+        }
+
+        table td:nth-child(3) {
+            width: 5%;
+        }
+
+        table td:nth-child(4) {
+            width: 5%;
+        }
+
+        table td:nth-child(5) {
+            width: 5%;
+        }
+
+        table td:nth-child(6) {
+            width: 5%;
+        }
+
+        table td:nth-child(7) {
+            width: 20%;
+        }
+
+        table td:nth-child(8) {
+            width: 20%;
+        }
+
+        table td:nth-child(9) {
+            width: 20%;
+        }
+
+        table td:last-child {
+            width: 10%;
+        }
+    </style>
+    <header>
+        <div class="form-group row">
+            <div class="col-4">
+                <img src="/Imagenes/Logos/IEEN200.png" />
+            </div>
+            <div class="col-4">
+                <p class="Texto2">LISTADO GENERAL DE CASILLAS DE LA SECCIÓN @Model.Secc <br /> DEL MUNICIPIO DE @Model.Mun.ToUpper()</p>
+            </div>
+        </div>
+    </header>
+
+    <div class="form-group row">
+        <div class="col-12">
+            <table class="table table-bordered">
+                <thead class="thead-light">
+                    <tr>
+                        <th class="text-center" scope="col">#</th>
+                        <th class="text-center" scope="col">No. de Sección</th>
+                        <th class="text-center" scope="col">Tipo de Sección</th>
+                        <th class="text-center" scope="col">Padrón Electoral</th>
+                        <th class="text-center" scope="col">Lista Nominal</th>
+                        <th class="text-center" scope="col">Tipo de Casilla</th>
+                        <th class="text-center" scope="col">Domicilio</th>
+                        <th class="text-center" scope="col">Ubicación</th>
+                        <th class="text-center" scope="col">Referencia</th>
+                        <th class="text-center" scope="col">Tipo de Lugar</th>
+
+                    </tr>
+                </thead>
+                @{
+                    int num = 0;
+                    string lugar = "";
+                }
+                @foreach (var row in Model.ReporteCasilla)
+                {
+                    num = num + 1;
+                    if (row.Lugar == "1")
+                    {
+                        lugar = "Edificio";
+                    }
+                    else if (row.Lugar == "2")
+                    {
+                        lugar = "Oficina Pública";
+                    }
+                    else if (row.Lugar == "3")
+                    {
+                        lugar = "Lugar Público";
+                    }
+                    else if (row.Lugar == "4")
+                    {
+                        lugar = "Particular";
+                    }
+                    else if (row.Lugar == "5")
+                    {
+                        lugar = "Escuela";
+                    }
+                    <tr>
+                        <th class="text-center" scope="col">@num</th>
+                        <td class="text-center">@row.NoSeccion</td>
+                        <td class="text-center">@row.TipoSeccion</td>
+                        <td class="text-center">@row.Padron</td>
+                        <td class="text-center">@row.Lista</td>
+                        <td class="text-center">@row.TipoCasilla</td>
+                        <td class="text-center">@row.Domicilio</td>
+                        <td class="text-center">@row.Ubicacion</td>
+                        <td class="text-center">@row.Referencia</td>
+                        <td class="text-center">@lugar</td>
+
+
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-4">
+            <table class="table table-bordered Si">
+                <thead class="thead-light">
+                    <tr>
+                        <th class="text-center" scope="col">Tipo de Casilla </th>
+                        <th class="text-center" scope="col">Total</th>
+
+                    </tr>
+                </thead>
+                <tr>
+                    <td class="text-center">Basica</td>
+                    <td class="text-center">@Model.Basica</td>
+                </tr>
+                <tr>
+                    <td class="text-center">Contigua</td>
+                    <td class="text-center">@Model.Contigua</td>
+                </tr>
+                <tr>
+                    <td class="text-center">Extraordinaria</td>
+                    <td class="text-center">@Model.Extra</td>
+                </tr>
+                <tr>
+                    <td class="text-center">Extraordinaria Contigua</td>
+                    <td class="text-center">@Model.ExtraCon</td>
+                </tr>
+                <tr>
+                    <td class="text-center">Especial</td>
+                    <td class="text-center">@Model.Especial</td>
+                </tr>
+                <tr>
+                    <td class="text-center">Total de Casillas</td>
+                    <td class="text-center">@Model.Total</td>
+                </tr>
+
+            </table>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,195 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    IEnumerable<SelectListItem> Municipio = ViewBag.ListaMunicipio;
+}
+<br />
+<head>
+    <link rel="stylesheet" href="~/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+</head>
+<br />
+<style>
+    .centrar {
+        justify-content: center;
+        align-items: center;
+    }
+
+    table.dataTable tbody td {
+        vertical-align: middle;
+    }
+</style>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                
+                    <h3 class="card-title">Información Complementaria de la elección de Regidurías del Estado de Nayarit</h3>
+                <input type="hidden" id="Demarcacion" value="@ViewBag.IdDemarcacion"/>
+               
+            </div>
+
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-2">
+                        <label for="Municipios">Municipio</label>
+                        @Html.DropDownList("Municipio", Municipio, "-Seleccione un Municipio-", new { @class = "form-control", @id = "Municipios" })<br />
+                    </div>
+                    <div class="col-md-2">
+                        <label for="Demarcacion">Demarcación:</label>
+                        <select id="Demarcaciones" name="Demarcacion" asp-items='@(new SelectList(string.Empty,"value","text"))' class="form-control"></select>
+                    </div>
+                </div><br />
+                <table id="tblActasReg" class="table table-hover table-bordered text-center">
+                    <thead>
+                        <tr>
+                            <th class="text-center">Sección</th>
+                            <th class="text-center">Casilla</th>
+                            <th class="text-center">Opciones</th>
+
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    @*<script src="~/js/Actas.js"></script>*@
+    <script>
+        $(document).ready(function () {
+            Administrador();
+            AdministradorDem();
+            VerTabla();
+        });
+        function VerTabla() {
+            var tablA = document.getElementById("tblActasReg");
+            tablA.style.visibility = "hidden";
+        }
+
+        function Administrador() {
+            $("#Municipios").change(function () {
+
+                var url = "/admin/TResultadosActas/DemarcacionAdmin";
+                var b = document.getElementById("Municipios").value;
+                $.getJSON(url, { demarcacion: b }, function (data) {
+                    var items = '';
+                    $("#Demarcaciones").empty();
+                    $.each(data, function (j, row) {
+                        items += "<option value='" + row.value + "'>" + row.text + "</option>";
+                    });
+                    $("#Demarcaciones").html(items);
+                    document.getElementById("Demarcaciones").focus();
+                    var a = document.getElementById("Demarcaciones").value;
+                    table = $('#tblActasReg').DataTable();
+                    table.destroy();
+                    var tablA = document.getElementById("tblActasReg");
+                    tablA.style.visibility = "visible";
+                    dataTable = $("#tblActasReg").DataTable({
+                        "responsive": true,
+                        "autoWidth": false,
+                        "ajax": {
+                            "url": "/admin/TResultadosActas/CargarRegAdmin",
+                            "type": "GET",
+                            "datatype": "json",
+                            "data": { DD: a, Ele: 4 }
+                        },
+                        "columns": [
+                            { "data": "lActaDetalle.lCasilla.lSeccion.seccion" },
+                            { "data": "lActaDetalle.lCasilla.nombre" },
+                            {
+                                "data": "idActa",
+                                "render": function (data) {
+                                    return `<div class="text-center">
+                            <a href='/Admin/TActas/Detalle/${data}' class='btn btn-info text-white' style='cursor:pointer; width:120px;' >
+                            <i class='fas fa-list'></i> Ver detalle
+                            </a>`;
+                                },
+                            }
+                        ],
+                        "language": {
+                            "decimal": ",",
+                            "emptyTable": "No hay registros",
+                            "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                            "infoEmpty": "Mostrando 0 de 0 Entradas",
+                            "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                            "infoPostFix": "",
+                            "thousands": ",",
+                            "lengthMenu": "Mostrar _MENU_ Entradas",
+                            "loadingRecords": "Cargando...",
+                            "processing": "Procesando...",
+                            "search": "Buscar:",
+                            "zeroRecords": "Sin resultados encontrados",
+                            "paginate": {
+                                "first": "Primero",
+                                "last": "Ultimo",
+                                "next": "Siguiente",
+                                "previous": "Anterior"
+                            },
+                            "width": "100%"
+                        }
+                    });
+                })
+            });
+        }
+
+        function AdministradorDem() {
+            $("#Demarcaciones").change(function () {
+                var a = document.getElementById("Demarcaciones").value;
+                table = $('#tblActasReg').DataTable();
+                table.destroy();
+                dataTable = $("#tblActasReg").DataTable({
+                    "responsive": true,
+                    "autoWidth": false,
+                    "ajax": {
+                        "url": "/admin/TResultadosActas/CargarRegAdmin",
+                        "type": "GET",
+                        "datatype": "json",
+                        "data": { DD: a, Ele: 4 }
+                    },
+                    "columns": [
+                        { "data": "lActaDetalle.lCasilla.lSeccion.seccion" },
+                        { "data": "lActaDetalle.lCasilla.nombre" },
+                        {
+                            "data": "idActa",
+                            "render": function (data) {
+                                return `<div class="text-center">
+                            <a href='/Admin/TActas/Detalle/${data}' class='btn btn-info text-white' style='cursor:pointer; width:120px;' >
+                            <i class='fas fa-list'></i> Ver detalle
+                            </a>`;
+                            },
+                        }
+                    ],
+                    "language": {
+                        "decimal": ",",
+                        "emptyTable": "No hay registros",
+                        "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                        "infoEmpty": "Mostrando 0 de 0 Entradas",
+                        "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                        "infoPostFix": "",
+                        "thousands": ",",
+                        "lengthMenu": "Mostrar _MENU_ Entradas",
+                        "loadingRecords": "Cargando...",
+                        "processing": "Procesando...",
+                        "search": "Buscar:",
+                        "zeroRecords": "Sin resultados encontrados",
+                        "paginate": {
+                            "first": "Primero",
+                            "last": "Ultimo",
+                            "next": "Siguiente",
+                            "previous": "Anterior"
+                        },
+                        "width": "100%"
+                    }
+                });
+
+            });
+        }
+    </script>
+    <script src="~/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+}

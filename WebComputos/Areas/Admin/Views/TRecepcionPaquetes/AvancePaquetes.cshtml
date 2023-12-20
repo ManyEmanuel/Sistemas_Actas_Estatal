@@ -1,0 +1,139 @@
+﻿@{
+    ViewData["Title"] = "Avance recepción de paquetes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<br />
+<head>
+    <link rel="stylesheet" href="~/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+</head>
+<style>
+    .centrar {
+        justify-content: center;
+        align-items: center;
+    }
+
+    table.dataTable tbody td {
+        vertical-align: middle;
+    }
+</style>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">
+                    Paquetes recibidos a nivel Estatal
+                </h3>
+            </div>
+            @*ViewBag.Total = TotalCasillas.Count();
+                ViewBag.Recibidos = TotalRecibidas.Count();
+                ViewBag.Restantes = TotalCasillas.Count() - TotalRecibidas.Count();
+                ViewBag.PorRecibidos = Convert.ToDouble(decimales);
+                ViewBag.PorFaltantes = Reci;*@
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p style="background:#E185E3; color:white; font-weight:bold; padding:15px;margin-top:40px; margin-bottom:40px; text-align:center; font-size:22px;">Paquetes Recibidos @ViewBag.Recibidos de @ViewBag.Total - @ViewBag.PorRecibidos%</p>
+                        <p style="background:#D3D3D3; color:white; font-weight:bold; padding:15px;margin-top:40px; margin-bottom:40px; text-align:center; font-size:22px;">Paquetes Faltantes @ViewBag.Restantes de @ViewBag.Total - @ViewBag.PorFaltantes%</p>
+                    </div>
+                    <div class="col-md-6">
+                        <div id="donut-chart" style="height: 300px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Listado de paquetes recibidos</h3>
+            </div>
+            <div class="card-body">
+                <table id="tblavance" class="table table-hover table-bordered text-center" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th class="text-center">#</th>
+                            <th class="text-center">Municipio</th>
+                            <th class="text-center">Total a recibir</th>
+                            <th class="text-center">Recibidos</th>
+                            <th class="text-center">Faltantes</th>
+                            <th class="text-center"> % de Avance</th>
+                            <th class="text-center"> Ver </th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- /.card -->
+
+@section Scripts
+{
+    <script src="~/js/AvanceRecepcion.js"></script>
+    <script src="~/plugins/flot/jquery.flot.js"></script>
+    <script src="~/plugins/flot-old/jquery.flot.resize.min.js"></script>
+
+    <script src="~/plugins/flot-old/jquery.flot.pie.min.js"></script>
+    <script>
+        $(function () {
+            var donutData = [
+                {
+                    label: 'Recibidos',
+                    data: @ViewBag.PorRecibidos,
+                    color: '#E185E3'
+                },
+                {
+                    label: 'Faltantes',
+                    data: @ViewBag.PorFaltantes,
+                    color: '#D3D3D3'
+                }
+            ]
+            $.plot('#donut-chart', donutData, {
+                series: {
+                    pie: {
+                        show: true,
+                        radius: 1,
+                        label: {
+                            show: false,
+                            radius: 2 / 3,
+                            formatter: labelFormatter,
+                            threshold: 0.1
+                        }
+
+                    }
+                },
+                legend: {
+                    show: false
+                }
+            })
+            /*
+             * END DONUT CHART
+             */
+
+
+
+        })
+        function labelFormatter(label, series) {
+            return '<div style="font-size:15px; text-align:center; color: #fff; font-weight: 600;">'
+                + label
+                + '<br>'
+                + Math.round(series.percent) + '%</div>'
+        }
+    </script>
+    <script src="~/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+
+}
+
+
